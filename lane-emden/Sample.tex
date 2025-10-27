@@ -43,22 +43,34 @@
 
 \begin{Frontmatter}
 
-\title[fsagg]{La ecuación de Lane-Emden}
+\title{Resolución Numérica de la ecuación de Lane-Emden}
 
-\author{Matihus Alberth Molina Larios}\orcid{https://orcid.org/0000-0002-9582-9051}
+\author[1]{Matihus Alberth Molina Larios}\orcid{https://orcid.org/0000-0002-9582-9051}
+\author[2]{Carlos Alonso Aznarán Laos}\orcid{https://orcid.org/0000-0001-8314-2271}
 
-\authormark{Bruno Colbos \textit{et al}.}
+\authormark{Matihus Alberth Molina Larios \textit{et al}.}
 
-\address{\orgname{Universidad Nacional Mayor de San Marcos, Facultad de Ciencias Matemáticas}, \orgaddress{\street{Calle Germán Amézaga 375, Lima, 15081, Peru}, \country{Perú}};\email{matihus.molina@unmsm.edu.pe}}
+\address[1]{\orgdiv{Facultad de Ciencias Matemáticas}, \orgname{Universidad Nacional Mayor de San Marcos}, \orgaddress{\street{Calle Germán Amézaga 375, Lima}, \postcode{15081}, \country{Perú}};\email{matihus.molina@unmsm.edu.pe}}
+\address[2]{\orgdiv{Facultad de Ciencias}, \orgname{Universidad Nacional de Ingeniería}, \orgaddress{\street{Av. Túpac Amaru N$^{\circ}210$ Rímac, Lima}, \postcode{15032}, \country{Perú}};\email{caznaranl@uni.pe}}
 
+\received{4 de diciembre de 2025}
+%\revised{10 de diciembre de 2025}
+\accepted{12 de diciembre de 2025}
 
-\received{4 de Mayo de 2025}
-%\revised{10 de Mayo de 2025}
-\accepted{12 de Mayo de 2025}
+\keywords{Lane-endem, ADM}
 
-\keywords{Lane-endem equation, EDP, ADM}
-
-\abstract{La ecuación de Lane--Emden es un modelo clásico de ecuaciones diferenciales ordinarias no lineales con simetría esférica que describe la distribución de densidad en el equilibrio en una esfera de un gas isotérmico politrópico. En este trabajo se analizan sus principales propiedades matemáticas, enfatizando los métodos empleados para estudiar la existencia, unicidad y comportamiento de las soluciones. Asimismo, se discuten las implicaciones del índice politrópico en la estructura del problema y se presentan resultados que evidencian la riqueza analítica del modelo.}
+\abstract{
+    La ecuación de Lane-Emden es un modelo clásico de ecuaciones
+    diferenciales ordinarias no lineales con simetría esférica que
+    describe la distribución de densidad en el equilibrio en una
+    esfera de un gas isotérmico politrópico.
+    En este trabajo se analizan sus principales propiedades
+    matemáticas, enfatizando los métodos empleados para estudiar la
+    existencia, unicidad y comportamiento de las soluciones.
+    Asimismo, se discuten las implicaciones del índice politrópico
+    en la estructura del problema y se presentan resultados que
+    evidencian la riqueza analítica del modelo.
+}
 
 \end{Frontmatter}
 
@@ -67,7 +79,19 @@
 \vspace*{14pt}
 \section{Introducción}
 
-La ecuación de Lane--Emden\cite{lane1870,emden1907} constituye uno de los modelos más estudiados dentro del ámbito de las ecuaciones diferenciales ordinarias no lineales con simetría esférica. Si bien su origen se encuentra en la astrofísica, al modelar la estructura intern   a de esferas gaseosas autogravitantes, su estudio trasciende el contexto físico para convertirse en un problema matemático de gran interés. En particular, esta ecuación permite explorar fenómenos de existencia, unicidad, regularidad y comportamiento asintótico de soluciones en presencia de singularidades, lo cual la convierte en un caso paradigmático dentro del análisis de ecuaciones diferenciales no lineales.
+La ecuación de Lane-Emden~\cite{lane1870,emden1907} constituye uno de
+los modelos más estudiados dentro del ámbito de las ecuaciones
+diferenciales ordinarias no lineales con simetría esférica.
+Si bien su origen se encuentra en la astrofísica, al modelar la
+estructura interna de esferas gaseosas autogravitantes, su estudio
+trasciende el contexto físico para convertirse en un problema
+matemático de gran interés.
+En particular, esta ecuación permite explorar fenómenos de
+existencia, unicidad, regularidad y comportamiento asintótico de
+soluciones en presencia de singularidades, lo cual la convierte en un
+caso paradigmático dentro del análisis de ecuaciones diferenciales
+no lineales.
+
 \subsection{Formulación general del problema}
 
 La ecuación de Lane--Emden en su forma adimensional se expresa como
