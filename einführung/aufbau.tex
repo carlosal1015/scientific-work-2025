@@ -1,0 +1,378 @@
+\section{Construcción de redes neuronales artificiales}
+
+\begin{frame}
+    El elemento básico es la neurona artificial y el nombre se basa en
+    el funcionamiento de las neuronas en el cerebro:
+
+    \pause
+
+    \begin{definition}[Neurona artificial]
+        Sea $w\in\mathbb{R}^{n}$ y $b\in\mathbb{R}$, así como
+        $f\colon\mathbb{R}^{n}\to\mathbb{R}$.
+        Entonces la función se llama
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}
+            f\colon\mathbb{R}^{n}\to\mathbb{R},\quad
+            f\left(x\right)=\sigma\left(\sum_{i=1}^{n}w_{i}x_{i}+b\right),
+        \end{equation*}
+        se denomina \alert{neurona artificial}.
+        El vector $w\in\mathbb{R}^{n}$ se denomina peso y
+        $b\in\mathbb{R}^{n}$ es el sesgo.
+        La función $\sigma\colon\mathbb{R}\to\mathbb{R}$ se denomina
+        \alert{función de activación}.
+    \end{definition}
+
+    \pause
+
+    No existe una definición clara del término función de activación.
+    En cambio, se refiere a una función (no lineal) que determina
+    cuándo se activa la salida de una neurona artificial.
+
+    La variante más simple es la función de Heaviside:
+    \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    \begin{equation*}
+        \sigma_{\text{HS}}\left(s\right)=
+        H\left(s\right)\coloneqq
+        \begin{cases}
+            0, & s< 0.   \\
+            1, & s\geq0.
+        \end{cases}
+    \end{equation*}
+
+    Una función de activación continua es la
+    \alert{Unidad Lineal Rectificada} (ReLU)
+    \begin{equation*}
+        \sigma_{\text{ReLU}}\left(s\right)=
+        \operatorname{ReLu}\left(s\right)\coloneqq
+        \begin{cases}
+            0, & s\leq 0. \\
+            s, & s>0.
+        \end{cases}
+    \end{equation*}
+
+    Las \alert{activaciones sigmoideas} son continuamente
+    diferenciables (con una frecuencia arbitraria).
+    \begin{equation*}
+        \sigma\left(s\right)=
+        \frac{1}{1+\exp\left(-s\right)},
+    \end{equation*}
+    o la tangente hiperbólica
+    \begin{equation*}
+        \sigma_{\tanh}\left(s\right)=
+        \tanh\left(s\right).
+    \end{equation*}
+
+    Estas dos están estrechamente relacionadas, es
+    \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    \begin{equation*}
+        \sigma\left(s\right)=
+        \frac{1}{2}
+        \tanh\left(\frac{x}{2}\right)+
+        \frac{1}{2}.
+    \end{equation*}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=.7\paperwidth]{1110}
+        \caption{Izquierda: Esquema de una neurona artificial con tres
+            señales de entrada, la capa lineal y la activación no lineal.
+            Derecha: El desarrollo de algunas funciones de activación
+            típicas.}
+        \label{fig:11.10}
+    \end{figure}
+    En la Figura~\ref{fig:11.10} mostramos el curso de estas funciones
+    de activación así como la estructura esquemática de una neurona
+    artificial.
+
+    \pause
+
+    \begin{example}[Clasificación con neuronas artificiales]
+        Una neurona artificial con activación de Heaviside
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}
+            f\left(x\right)=
+            H\left({\left\langle w,x\right\rangle}_{2}+b\right),
+        \end{equation*}
+        divide el espacio en un hiperplano, porque cada plano con vector
+        normal $n$ y punto seleccionado $x_{0}$ está dado por
+        \begin{equation*}
+            0=n^{T}\left(x-x_{0}\right)=
+            n^{T}x-
+            n^{T}x_{0}.
+        \end{equation*}
+
+        \pause
+
+        Por lo tanto, el peso corresponde al vector normal, y el sesgo es
+        el producto escalar con el punto seleccionado.
+        Una neurona divide así el espacio en dos mitades más allá del
+        plano, y esta es una de las tareas fundamentales para las que se
+        pueden utilizar redes neuronales artificiales.
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    Dados $x_{1},\dotsc,x_{N}$, a cada una se le asigna una propiedad
+    $y_{i}$, simplemente $y_{i}\in\left\{0,1\right\}$.
+    Buscamos los pesos $w$ y el sesgo $b$ de la neurona artificial
+    tales que $f\left[w,b\right](x_{i})=y_{i}$.
+    Es decir, buscamos un modelo que realice la clasificación de los
+    datos en función de las propiedades.
+    Los pesos refuerzan o debilitan la influencia de la entrada y, por
+    lo tanto, la transición de la no activación de una neurona a la
+    activación.
+    El sesgo asegura un cambio en la activación.
+    Un modelo compuesto por una sola neurona es muy limitado, y debe
+    asumirse que la tarea no puede resolverse con exactitud.
+    En su lugar, intentamos encontrar el mejor modelo; es decir,
+    consideramos el problema de minimización de forma análoga a la
+    regresión de la Sección 4.5 y el Excurso 11.4.
+    \begin{equation*}
+        \min_{\left(w,b\right)}
+        \sum_{i=1}^{N}
+        {\left\|y_{i}-f\left[w,b\right]\left(x_{i}\right)\right\|}^{2}.
+    \end{equation*}
+
+    \pause
+
+    Las redes neuronales artificiales (RNA) se componen de neuronas
+    artificiales individuales.
+    Las RNA más simples son las llamadas redes de una sola capa:
+
+    \begin{definition}[Red de una sola capa]
+        Sea $W\in\mathbb{R}^{n\times m}$ y $b\in\mathbb{R}^{n}$, así como
+        $\sigma\colon\mathbb{R}\to\mathbb{R}$ una función de activación.
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}
+            f\left(x\right)=
+            \sigma\left(Wx+b\right),
+        \end{equation*}
+        En ese caso, la función se denomina red neuronal artificial con
+        una capa y $n$ neuronas artificiales.
+        En este caso, la aplicación de la función de activación debe
+        entenderse por componentes, es decir, para $y\in\mathbb{R}^{n}$
+        es
+        \begin{equation*}
+            \sigma\left(y\right)=
+            {\begin{pmatrix}
+                \sigma\left(y_{i}\right)
+            \end{pmatrix}}_{i=1,\dotsc,n}.
+        \end{equation*}
+    \end{definition}
+    A partir de esta definición, pasamos rápidamente a redes neuronales
+    artificiales más generales, las llamadas redes neuronales
+    profundas.
+    Para ello, conectamos varias redes de una sola capa en serie.
+    La salida de la capa $l$ es la entrada de la capa $l+1$.
+\end{frame}
+
+\begin{frame}
+    \begin{definition}[Red Neuronal Profunda]
+        Sea $L\in\mathbb{N}$ el número de capas.
+        Para $l=1,\dotsc,L$, sea
+        $W^{l}\in\mathbb{N}^{n_{l}\times n_{l-1}}$ y
+        $b^{l}\in\mathbb{R}^{n_{l}}$ el número de capas.
+        La función de activación viene dada por $\sigma\colon\mathbb{R}\to\mathbb{R}$.
+        Entonces, $f\colon\mathbb{R}^{n_{0}}\to\mathbb{R}^{n_{L}}$ viene dada por
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{align*}
+            x^{0}           & =x.                                                  \\
+            \forall l=1,\dotsc,L-1:
+            z^{l}           & =W^{l}x^{l-1}+b^{l}.                                 \\
+            \forall l=1,\dotsc,L-1:
+            x^{l}           & =f^{l}\left(x^{l-1}\right)=\sigma\left(z^{l}\right). \\
+            f\left(x\right) & =x^{L}=W^{L}x^{L-1}+b^{L}.
+        \end{align*}
+    \end{definition}
+    una \alert{red neuronal profunda}.
+    La primera capa $f^{1}\left(\cdot\right)$ se denomina capa de
+    entrada, la última capa $f^{L}\left(\cdot\right)$ es la capa de
+    salida y, por lo general, no se añade ninguna función de activación.
+    Las capas internas se denominan capas ocultas.
+    Nos referimos a la arquitectura de una red neuronal profunda como
+    $\mathcal{N}\left(\sigma;n_{0},n_{1},\dotsc,n_{L}\right)$ o, para
+    abreviar, como $\mathcal{L}\left(L,n\right)$ con $n=\max_{l}n_{l}$.
+    Denotamos el espacio de parámetros correspondiente por
+    \begin{equation*}
+        \mathcal{P}_{\mathcal{N}}=
+        \left\{
+        W=\left(W_{1},\dotsc,W_{L}\right),b=\left(b_{1},\dotsc,b_{L}\right),
+        W_{l}\in\mathbb{R}^{n_{l}\times n_{l-1}},b_{l}\in\mathbb{R}^{n_{l}}
+        \right\}.
+    \end{equation*}
+    Para una elección de parámetro $\left(W,b\right)\in\mathcal{P}$,
+    denotamos por $f\colon\left[W,b\right]\colon\mathbb{R}^{n_{0}}\to\mathbb{R}^{n_{L}}$
+    la función resultante según (11.18).
+    El conjunto de realizaciones, es decir, el conjunto de funciones
+    que se pueden representar en la arquitectura, se denota por
+    \begin{equation*}
+        \mathcal{F}_{\mathcal{N}}=
+        \left\{f\left[W,b\right]\mid \left(W,b\right)\in\mathcal{P}_{\mathcal{N}}\right\}.
+    \end{equation*}
+    Contando los parámetros libres se obtiene:
+    \begin{corollary}[Número de parámetros libres]
+        Sea $\mathcal{N}\left(\sigma;n_{0},\dotsc,n_{L}\right)$ una red
+        neuronal artificial con $L$ capas y $n_{l}$ neuronas artificiales
+        cada una.
+        Entonces, el espacio de parámetros $\mathcal{P}_{\mathcal{N}}$
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}
+            \#\mathcal{P}_{\mathcal{N}}=
+            \sum_{l=1}^{L}
+            n_{l}\left(n_{l-1}+1\right)
+        \end{equation*}
+        tiene un total de parámetros libres, de los cuales
+        $\sum_{l=1}^{L}n_{l}n_{l-1}$ pesos y $\sum_{l=1}^{L}n_{l}$
+        valores de sesgo.
+    \end{corollary}
+\end{frame}
+
+\begin{frame}
+    Una operación básica en aprendizaje automático es la evaluación de
+    una red dada $\mathcal{N}\left(\sigma;n_{0},\dotsc,n_{L}\right)$
+    para parámetros dados
+    $\left(W,b\right)\in\mathcal{P}_{\mathcal{N}}$ para un punto de
+    datos $x\in\mathbb{R}^{n_{0}}$ o, más frecuentemente, para una
+    lista completa de (posiblemente muchos) puntos de datos
+    $x_{i}\in\mathbb{R}^{n_{0}}$ para $i=1,\dotsc,N_{tr}$.
+
+    \begin{algorithm}[H]
+        \TitleOfAlgo{Evaluación de una red neuronal artificial}
+        \Entrada{Red neuronal artificial
+        $\mathcal{N}\left(\sigma;n_{0},\dotsc,n_{L}\right)$,
+        Parámetro $\left(W,b\right)\in\mathcal{P}$ y entrada
+        $x\in\mathbb{R}^{n_{0}}$.}
+        $x^{0}\leftarrow x$\;
+        \ParaCada{$l=1,\dotsc,L$}{$x^{l}\leftarrow W^{l}x^{l-1}+b^{l}$\;}
+        \eSSi{\normalfont $l<L$}{$x^{l}\leftarrow\sigma\left(z^{l}\right)$\;}{$x^{l}\leftarrow z^{l}$\;}
+        \Resultado{Salida de red $x^{L}=f\left[W,b\right]\left(x\right)$.}
+        % \caption{}\label{alg:evalknn}
+    \end{algorithm}
+
+    \begin{alertblock}{Arquitecturas de Red}
+        La definición anterior introduce solo el tipo más simple de redes
+        neuronales artificiales: todas las salidas de la capa $l-1$ son
+        entradas a todas las neuronas artificiales de la capa $l$.
+        Estas redes también se denominan \alert{perceptrones multicapa}.
+        Pertenecen a la categoría de
+        \alert{redes neuronales de propagación hacia adelante}, es
+        decir, la información fluye en una sola
+        dirección, de la capa $1$ a la capa $2$, y así sucesivamente.
+        Las redes neuronales en las que la salida de la capa $l$ también
+        puede servir como entrada de capas anteriores $l^{\prime}<l$ se
+        denominan \alert{redes neuronales recurrentes}.
+    \end{alertblock}
+
+    \pause
+
+    En principio, se puede utilizar una función de activación
+    diferente en cada capa.
+    Si se aplica una función de activación en la última capa, se
+    restringe el espacio de la imagen a $\left(0,1\right)$ en el caso
+    de la activación sigmoidea y a los números no negativos en el
+    caso de la activación $\operatorname{ReLU}$.
+\end{frame}
+
+\begin{frame}
+    Las llamadas conexiones de salto omiten capas individuales.
+    Esto significa que la salida de la capa $l$ puede utilizarse
+    directamente como entrada, por ejemplo, para la capa $l+2$.
+    Otra modificación sencilla son las \alert{redes residuales}, en
+    las que se forma una capa con la forma
+    \begin{equation*}
+        f\left(x\right)=
+        x+
+        \sigma\left(Wx+b\right),
+    \end{equation*}
+    es decir, la salida de la neurona artificial se añade a la
+    entrada.
+
+    Las \alert{redes neuronales convolucionales} desempeñan un papel
+    fundamental en el procesamiento de imágenes.
+    En este caso, cada \alert{capa} es una convolución.
+    La particularidad de las redes convolucionales es que el tamaño de
+    la entrada $x$ no tiene por qué estar necesariamente vinculado al
+    número de pesos.
+    Con los pesos de convolución $W\in\mathbb{R}^{f}$ definimos
+    \begin{equation*}
+        f_{\text{conv}}\left(x\right)=
+        \sigma\left(W\ast x\right),\qquad
+        {\left(W\ast x\right)}_{i}=
+        \sum_{j=1}^{f}
+        W_{j}x_{i-j},
+    \end{equation*}
+    donde $x_{0}=x_{-1}=\cdots=x_{1-f}1=0$.
+    Los mismos pesos se aplican siempre solo a una pequeña parte de
+    las entradas.
+    De esta manera, las funciones en espacios de dimensiones
+    arbitrarias pueden representarse con solo unos pocos parámetros
+    libres (los pesos).
+
+    Las arquitecturas modernas, como las utilizadas en modelos de
+    lenguaje como ChatGPT, son mucho más complejas, pero también
+    utilizan y combinan los modelos básicos presentados aquí.
+
+    Las redes neuronales artificiales utilizadas en la práctica son
+    enormemente grandes; por ejemplo, ChatGPT-3 tiene aproximadamente
+    $200$ mil millones, o $2\cdot 10^{11}$ de parámetros libres.
+\end{frame}
+
+\begin{frame}
+    En la Figura~\ref{fig:11.11} representamos gráficamente algunas
+    redes neuronales artificiales.
+    Se puede encontrar una descripción detallada en la literatura
+        [11, 17, 43, 51, 66].
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=.7\paperwidth]{1111}
+        \caption{Ejemplos de redes neuronales artificiales.
+            Arriba a la izquierda: perceptrón multicapa simple
+            $\mathcal{N}\left(\sigma;2,3,3,2\right)$ con activación
+            sigmoidea (excepto la capa de salida).
+            Arriba a la derecha: esta red representa las funciones
+            $f\colon\mathbb{R}^{2}\to\mathbb{R}^{2}$.
+            Red neuronal profunda con dos entradas y salidas y $L-1$
+            capas ocultas, cada una con $n$ neuronas.
+            Abajo a la izquierda: red neuronal recurrente, donde las
+            salidas también pueden ser entradasde capas anteriores.
+            Abajo a la derecha: red neuronal residual artificial.
+            La entrada se suma a la salida.
+            Esta red representa las funciones
+            $f\colon\mathbb{R}\to\mathbb{R}$
+            con la estructura
+            $f\left(x\right)=x+f\left[W,b\right]\left(x\right)$.}
+        \label{fig:11.11}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    Consideramos únicamente redes neuronales artificiales profundas
+    del tipo definido en la Definición 11.14 y definimos una red con
+    $L$ capas como una función $f\colon\mathbb{R}^{n_{0}}\to\mathbb{R}^{n_{L}}$
+    con las matrices de pesos $W_{l}$ y los vectores de sesgo $b_{l}$ como
+    parámetros libres.
+    Primero, establecemos una conexión simple pero importante:
+    \begin{theorem}
+        Sea
+        \begin{math}
+            \mathcal{N}=
+            \mathcal{N}\left(\sigma,n_{0},\dotsc,n_{L}\right)
+        \end{math}
+        una arquitectura de red con $L$ capas y parámetros
+        $W_{l}\in\mathbb{R}^{n_{l}\times n_{l-1}}$
+        y $b^{l}\in\mathbb{R}^{n_{l}}$ para $l=1,\dotsc,L$.
+        El conjunto de realizaciones
+        \begin{equation*}
+            \mathcal{F}_{\mathcal{N}}\coloneqq
+            \left\{
+            f\left[W,b\right]\colon\mathbb{R}^{n_{0}}\to\mathbb{R}^{n_{L}}\mid
+            \left(W,b\right)\in\mathcal{P}_{\mathcal{N}}
+            \right\}
+        \end{equation*}
+        no es generalmente un espacio vectorial.
+        En particular, $\mathcal{F}_{\mathcal{N}}$ no es cerrado con respecto
+        a la suma ni a la multiplicación escalar.
+    \end{theorem}
+\end{frame}
