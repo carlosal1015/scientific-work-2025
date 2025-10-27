@@ -6,6 +6,7 @@
 % arara: lualatex
 % arara: lualatex
 % arara: clean: { extensions: ['aux', 'blg', 'bbl', 'log', 'out', 'toc'] }
+
 \documentclass{GEM-JNL-FMP}
 
 \usepackage{graphicx}
@@ -42,32 +43,22 @@
 
 \begin{Frontmatter}
 
-\title[fsagg]{Solución númerica de lane-endem}
+\title[fsagg]{La ecuación de Lane-Emden}
 
-\author[1]{Matihus Alberth Molina Larios}\orcid{poner algo}
-\author[2]{Alexandre Girouard}\orcid{0000-0001-8823-831X}
+\author{Matihus Alberth Molina Larios}\orcid{https://orcid.org/0000-0002-9582-9051}
 
-\authormark{Bruno Colbois \textit{et al}.}
+\authormark{Bruno Colbos \textit{et al}.}
 
-\address[1]{\orgname{Universidad Nacional Mayor de San Marcos, Facultad de Ciencias Matemáticas}, \orgaddress{\street{Calle Germán Amézaga 375, Lima, 15081, Peru}, \postcode{CH-2000 Neuchâtel}, \country{Perú}};\email{matihus.molina@unmsm.edu.pe}}
-\address[2]{\orgdiv{Département de mathématiques et de statistique}, \orgname{Université Laval, Pavillon Alexandre\-Vachon}, \orgaddress{\street{1045, av. de la Médecine}, \city{Qu\'ebec}, \postcode{Qc G1V 0A6}, \country{Canada}};\email{alexandre.girouard@mat.ulaval.ca}}
+\address{\orgname{Universidad Nacional Mayor de San Marcos, Facultad de Ciencias Matemáticas}, \orgaddress{\street{Calle Germán Amézaga 375, Lima, 15081, Peru}, \country{Perú}};\email{matihus.molina@unmsm.edu.pe}}
+
 
 \received{4 de Mayo de 2025}
 %\revised{10 de Mayo de 2025}
 \accepted{12 de Mayo de 2025}
 
-\keywords{valores propios Steklov, hipersuperficies}
+\keywords{Lane-endem equation, EDP, ADM}
 
-\abstract{Dada una hipersuperficie suave y compacta $M$ con frontera
-$\Sigma=\partial M$, demostraremos la existencia de una sucesión
-$M_{j}$ de hipersuperficies con la misma frontera que $M$, tal que
-cada valor propio Steklov $\sigma_{k}\left(M_{j}\right)$ tiende a
-cero cuando $j$ tiende al infinito.
-Las hipersuperficies $M_{j}$ se obtienen a partir de $M$ mediante una
-perturbación local cerca de un punto de su frontera.
-Sus volúmenes y diámetros son arbitrariamente cercanos a los de $M$,
-mientras que las curvaturas principales de la frontera permanecen
-inalteradas.}
+\abstract{La ecuación de Lane--Emden es un modelo clásico de ecuaciones diferenciales ordinarias no lineales con simetría esférica que describe la distribución de densidad en el equilibrio en una esfera de un gas isotérmico politrópico. En este trabajo se analizan sus principales propiedades matemáticas, enfatizando los métodos empleados para estudiar la existencia, unicidad y comportamiento de las soluciones. Asimismo, se discuten las implicaciones del índice politrópico en la estructura del problema y se presentan resultados que evidencian la riqueza analítica del modelo.}
 
 \end{Frontmatter}
 
@@ -75,475 +66,69 @@ inalteradas.}
 
 \vspace*{14pt}
 \section{Introducción}
-Let $M$ be an $n$-dimensional smooth compact Riemannian manifold with boundary $\Sigma=\partial M$.  The Steklov
-eigenvalue problem on $M$ consists in\vadjust{\clearpage} finding all numbers $\sigma\in\mathbb{R}$ for which there exists a nonzero function $u \in C^\infty(M)$, which solves
-\begin{equation*}
-    \begin{cases}
-        \Delta u = 0 & \text{in  $M$,} \\
-        \partial_\nu u = \sigma u & \text{on  $\Sigma$.}
-    \end{cases}\vspace*{-2pt}
-\end{equation*}
-Here, $\Delta$ is the Laplacian induced from the Riemannian metric $g$ on $M$, and $\partial_\nu$
-is the outward pointing normal derivative along the boundary $\Sigma$. The Steklov eigenvalues
-form an unbounded increasing sequence
-$0 = \sigma_0 \leq \sigma_1 \leq \sigma_2 \leq \dots \to \infty$, each of which is repeated according to its multiplicity.
-Note that if $M$ is connected, then $\sigma_1>0$.
-Vea \cite{GP17,legacy} for background on this problem.
 
-\looseness-1One of our main interests in recent years has been to understand the particular role that the boundary  $\Sigma$ plays with respect to Steklov eigenvalues. Some papers studying this question are \cite{CGH18, PS16,CESG17,CG18,WX09,Kar15,GPPS,CGG17,shamma}.
-In particular, we have considered the effect of various geometric constraints on individual eigenvalues $\sigma_k$. One particularly interesting question is to prescribe a Riemannian metric $g_\Sigma$ on the boundary $\Sigma$ and to investigate lower and upper bounds for the eigenvalue $\sigma_k$ among all Riemmanian metrics $g$ that coincide with $g_\Sigma$ on the boundary. Given any Riemannian metric $g$ on $M$ such that $g=g_\Sigma$ on $\Sigma$, it is proved in \cite{CESG17} that one can make any eigenvalue $\sigma_k$ arbitrarily small by modifying the Riemannian metric $g$ in an arbitrarily small neighborhood $V\subset M$ of a point $p\in\partial M$. More precisely, for each $\epsilon>0$ and each $k\in\mathbb{N}$, there exists a Riemannian metric $\widetilde{g}=\widetilde{g}_{\epsilon,k}$ on $M$ that coincides with $g_\Sigma$ on $\Sigma$ and also with $g$ outside the neighborhood $V$, such that $\sigma_k(M,\widetilde{g})<\epsilon$.
-In \cite{CGG17} a more restrictive constraint was imposed by requiring the manifold $M$ to be a submanifold of $\mathbb{R}^m$ with prescribed boundary $\Sigma=\partial M\subset\mathbb{R}^m$.
-In this context an upper bound for $\sigma_k$ was given in terms of $\Sigma$ and of the volume of $M$. The authors were unable at the time to give a lower bound and they raised the question of whether one exists, or if instead, arbitrarily small eigenvalues are possible. The goal of this paper is to answer that question.
+La ecuación de Lane--Emden\cite{lane1870,emden1907} constituye uno de los modelos más estudiados dentro del ámbito de las ecuaciones diferenciales ordinarias no lineales con simetría esférica. Si bien su origen se encuentra en la astrofísica, al modelar la estructura intern   a de esferas gaseosas autogravitantes, su estudio trasciende el contexto físico para convertirse en un problema matemático de gran interés. En particular, esta ecuación permite explorar fenómenos de existencia, unicidad, regularidad y comportamiento asintótico de soluciones en presencia de singularidades, lo cual la convierte en un caso paradigmático dentro del análisis de ecuaciones diferenciales no lineales.
+\subsection{Formulación general del problema}
 
-\begin{theorem}\label{thm:main}
-Let $M \subset \mathbb{R}^{n+1}$ be a smooth $n$-dimensional compact hypersurface with nonempty boundary $\Sigma=\partial M$. For each $p \in \Sigma$, there exists a sequence of hypersurfaces $M_j\subset\mathbb{R}^{n+1}$, $j\in\mathbb{N}$, with boundary $\partial M_j=\Sigma$
-% Remarque 2
-and with the hypersurface $M_j$ coinciding with $M$ outside of a ball $B(p, \frac{1}{j})$,
-such that\vspace*{-2pt}%
-\begin{gather}\label{limit:mainthm}
-\lim_{j\to\infty}\sigma_k(M_j)=0\qquad\mbox{ for each }k\in\mathbb{N}.
-\vspace*{-2pt}%
-\end{gather}
-% The hypersurface $M_j$ coincides with $M$ outside of a ball $B(p,\frac{1}{j})$ and
-The principal curvatures of $\Sigma\subset M_j$ are independent of $j$. Moreover,
-the volume and diameter of $M_j$ converge to those of $M$ as $j\to\infty$.
-\end{theorem}
+La ecuación de Lane--Emden en su forma adimensional se expresa como
+\[
+\frac{1}{r^{2}} \frac{d}{dr} \left( r^{2} \frac{d\theta}{dr} \right) + \theta^{n} = 0,
+\]
+donde \( \theta = \theta(r) \) es una función escalar dependiente de la variable radial \( r \geq 0 \), y \( n \) es el \emph{índice politrópico}, que determina el tipo de no linealidad del sistema.  
+El problema se complementa con las condiciones de frontera
+\[
+\theta(0) = 1, \quad \theta'(0) = 0,
+\]
+que garantizan la regularidad de la solución en el origen.
 
-In order for \eqref{limit:mainthm} to hold for each $k\in\mathbb{N}$, it is necessary that the perturbed hypersurfaces $M_j$ differ from $M$ arbitrarily close to the boundary $\Sigma$ as $j\to\infty$. Indeed, let $b$ be the number of connected components of $\Sigma$ and note that any hypersurface $\widetilde{M}$ that coincides with $M$ in a neighborhood $\Omega$ of $\Sigma$ satisfies
-$\sigma_{b+1}\geq C>0$, where $C$ is given by a sloshing problem on $\Omega\cap M$; see \cite{CGG17} for details.
+El carácter no lineal y singular de esta ecuación en \( r = 0 \) plantea diversos desafíos analíticos. Su estudio involucra tanto métodos clásicos de ecuaciones diferenciales ordinarias como técnicas más avanzadas del análisis funcional y de la teoría cualitativa.
 
-\begin{remark}\label{remark:regularitycodim}
- Teorema~\ref{thm:main} holds in arbitrary positive codimension and ambient space. We decided to state it for hypersurfaces in $\mathbb{R}^{n+1}$for the sake of notational simplicity. Note also that Teorema~\ref{thm:main} certainly holds under weaker regularity asumptions.
-\end{remark}
+\subsection{Importancia matemática del modelo}
 
-\begin{remark}\label{remark:noncommutative}
-By construction (see Section \ref{section:perturbation}), each manifold $M_j$ coincides with $M$ in a neighborhood $\Omega_j$ of its prescribed boundary $\Sigma$.
-  Hence, the Dirichlet-to-Neumann maps $D_j\colon C^\infty(\Sigma)\rightarrow C^\infty(\Sigma)$ associated with $M_j$ all have the same full symbol~\cite{LeeUhlmann}.
-  The asymptotic behavior of $\sigma_k(M_j)$ as $k\to\infty$ is therefore independent of $j$. That is, for each $j_1, j_2\in\mathbb{N}$ the following holds:
-    $\sigma_k(M_{j_1})-\sigma_k(M_{j_2})=O(k^{-\infty})$; see~\cite[Lema~2.1]{GPPS}. In particular, the limits of $\sigma_k(M_j)$ as $j\to\infty$ and as $k\to\infty$ do not commute.
-\end{remark}
+Desde el punto de vista matemático, la ecuación de Lane--Emden ofrece un marco ideal para analizar varios aspectos teóricos fundamentales.  
+Entre ellos destacan:
+\begin{itemize}
+    \item La aplicación del \emph{teorema de existencia y unicidad de Picard–Lindelöf} a ecuaciones con términos singulares.
+    \item El análisis del comportamiento local de las soluciones cerca del origen y su desarrollo en series de potencias.
+    \item La caracterización de las soluciones para diferentes regímenes del índice politrópico, incluyendo los casos \( n = 0, 1, 5 \), donde se obtienen soluciones analíticas explícitas.\cite{alzate2014}
+\end{itemize}
 
-\vspace*{-10pt}%
-\subsection{La Estrategia de la Demostración}
-For eigenvalues of the Laplace operator, it is well known that one can obtain arbitrarily small eigenvalues by constructing thin Cheeger dumbbells in the interior of the manifold; see \cite{Chavel,CoursColboisMtl}. This strategy does not work for Steklov eigenvalues. For Steklov eigenvalues, it is possible to obtain arbitrarily small eigenvalues by creating thin channels, but this involves deformation of the boundary or a perturbation of the Riemannian metric in the interior of $M$; see \cite{GP10,CESG17}. In order to prove Teorema~\ref{thm:main}, we have to use a more elaborate strategy.
+Estos aspectos hacen de la ecuación de Lane--Emden un laboratorio natural para la aplicación de diversas herramientas analíticas y numéricas, tales como métodos de series, análisis asintótico y técnicas de integración numérica.
 
-Given a smooth function $\widetilde{u}\colon \mathbb{R}^{n+1}\rightarrow\mathbb{R}$, consider the restriction $u=\widetilde{u}\bigl|\bigr._{{M}}$.
-It is well known that if $\int_{\Sigma}u\,dA=0$,
-\begin{gather}\label{ineq:variationalintro}
-\sigma_1(M)\int_{\Sigma}u^2\,dA\leq\int_M|\nabla u|^2\,dV;
-\end{gather}
-see \cite{GP17} and Section \ref{section:prelim} below. Here $\nabla u$ is the tangential gradient of $u$. It is the projection of the ambient gradient $\overline{\nabla}\widetilde{u}$ on the tangent spaces of $M\subset\mathbb{R}^{n+1}$. The basic idea of our demostración is to fix a function $\widetilde{u}\in C^\infty(\mathbb{R}^{n+1})$ and consider the vector field $\overline{\nabla}\widetilde{u}$ in the ambient space $\mathbb{R}^{n+1}$. The hypersurface $M$ is then deformed by creating ``wrinkles''  that tend to make the various tangent spaces $T_pM$, for $p\in\mbox{int }M$, perpendicular to $\overline{\nabla}\widetilde{u}(p)$. This is achieved by ``folding the surface like an accordion'' in the direction perpendicular to $\overline{\nabla}\widetilde{u}$. In the limit the right-hand-side of inequality \eqref{ineq:variationalintro} tends to zero.
-Let us illustrate this strategy with a simple example.
+\subsection{Objetivos del trabajo}
 
-\begin{example}
-Given a smooth function $f\colon \overline{\mathbb{D}}\rightarrow\mathbb{R}$ vanishing on the circle $S^1=\partial\mathbb{D}$, consider the surface
-$$
-S_f:=\mbox{Graph of }f=
-\big\{(x,y,f(x,y)) : (x,y)\in\overline{\mathbb{D}}\big\}.
-$$
-The boundary of $S_f$ is the same for each $f$.
-We will use the function defined by $\widetilde{u}(x,y,z)=x$ and its restriction $u=\widetilde{u}|_{S_f}$ as a trial function in inequality \eqref{ineq:variationalintro}. Because $\nabla\widetilde{u}=(1,0,0)$, it follows from Lema~\ref{lemma:dirichletgraph} that the Dirichlet energy of $u:=\widetilde{u}
-\bigl|\bigr._{{S_f}} \colon S_f\rightarrow\mathbb{R}$ is given by
-$$\int_{S_f}|\nabla u|^2=\int_{\mathbb{D}} \frac{1 + f_y^2}{\sqrt{1 + f_x^2+f_y^2}}
-\,dxdy.$$
-For $n\in\mathbb{N}$, define $f=f_n\colon \overline{\mathbb{D}}\rightarrow\mathbb{R}$ by
-$$f(x,y)=\sin(nx)(\overbrace{1-x^2-y^2}^{\phi(x,y)}).$$
-It follows from
-\begin{gather*}
-f_x^2=n^2\Bigl(\cos(nx)\phi+\frac{1}{n}\sin(nx)\phi_x\Bigr)^2\quad\mbox{ and }\quad
-f_y^2=\sin^2(nx)\phi_y^2
-\end{gather*}
-that
-$$\lim_{n\to\infty}\int_{S_{f_n}}|\nabla u|^2=0.$$
-Together with \eqref{ineq:variationalintro}, this shows that
-$\lim_{n\to\infty}\sigma_1(S_{f_n})=0.$
-\end{example}
+El objetivo principal de este trabajo es realizar un estudio matemático detallado de la ecuación de Lane--Emden, destacando sus propiedades estructurales y los métodos utilizados para describir el comportamiento cualitativo de sus soluciones.  
+En particular, se busca:
+\begin{enumerate}
+    \item Analizar la formulación del problema y su interpretación como una ecuación diferencial ordinaria singular.
+    \item Estudiar los casos en los que existen soluciones analíticas exactas.
+    \item Explorar el comportamiento de las soluciones mediante aproximaciones numéricas y métodos de análisis asintótico.
+\end{enumerate}
 
-La demostración del Teorema~\ref{thm:main} is based on the above idea, but it is technically more involved, because we want to localize this argument to a small neighbourhood of a point $p$ of the boundary. This is a significant gain compared to the above example, because it allows the construction of an arbitrary finite number of disjointly supported trial functions with small Dirichlet energy, leading to the collapse of each eigenvalue $\sigma_k$ rather than just $\sigma_1$.
-For the sake of readability and simplicity, the deformations that we use in the demostración del Teorema~\ref{thm:main} are Lipschitz continuous but only piecewise smooth.
+De este modo, se pretende ofrecer una visión integral del modelo, comprendiendo tanto sus fundamentos teóricos como las herramientas que permiten su estudio riguroso.
 
-\subsection*{Plan del Artículo}
-In Section~\ref{section:prelim} we review the min-max characterization of Steklov eigenvalues, and we prove a lemma regarding the control of the Dirichlet energy under quasi-isometries. We then proceed to construct the perturbed hypersurfaces in Section \ref{section:perturbation}. We use a quasi-isometric chart to a hypersurface with a flat boundary. The perturbed submanifold is then constructed by considering the graph
-of a locally supported oscillating function. Finally, in Section \ref{section:testfunction} an appropriate trial function is used to conclude the demostración del Teorema~\ref{thm:main}.
+\subsection{Estructura del trabajo}
+
+El presente documento se organiza de la siguiente manera:  
+En la Sección~2 se desarrolla el marco teórico necesario, abordando conceptos fundamentales sobre ecuaciones diferenciales no lineales y simetría esférica.  
+En la Sección~3 se presenta el análisis cualitativo y cuantitativo de la ecuación de Lane--Emden, junto con la discusión de los casos particulares y métodos de resolución.  
+Finalmente, en la Sección~4 se exponen las conclusiones generales y posibles líneas de investigación futura relacionadas con el estudio matemático del modelo.
 
 
-\section{Notación y Consideraciones Preliminares}\label{section:prelim}
-
-Let $M$ be a smooth compact manifold with boundary $\Sigma$. The volume form on $M$ is written $dV$, while
-the volume form on $\Sigma$ is $dA$. We denote by $H^1(M)$ the standard Sobolev space of functions in $ L^2(M,dV)$ with weak first derivative in $L^2(M,dV)$.
-The Steklov eigenvalues $\sigma_k$ admits a variational characterization in terms of the \emph{Steklov--Rayleigh quotient} of a function $0\neq u \in H^1(M)$,
-\begin{equation*}\label{StekRayleighQuotient}
-    \mathcal{R}(u) = \frac{\int_{M} |\nabla u|^2\,dV}{\int_{\Sigma} u^2\,dA}.
-\end{equation*}
-The numerator $D(u)=\int_{M} |\nabla u|^2\,dV$ is the \emph{Dirichet energy} of $u\in H^1(M)$.
-It is well known that
-\begin{equation}\label{eq:minmaxsigmak}
-    \sigma_k = \min_{\substack{S \subset H^1(M) \\ \dim S = k+1}}
-    \max_{u \in S \setminus \{0\}} \mathcal{R}(u),
-\end{equation}
-where the minimum is taken over all $(k+1)$-dimensional linear subspaces $S\subset H^1(M)$.
-
-\subsection{Quasi-isometries and Dirichlet Energy}
-
-Let $M$ and $\widetilde{M}$ be two $n$-dimensional Riemannian manifolds with boundary. A diffeomorphism $\phi\colon M\rightarrow\smash{\widetilde{M}}$ is a \emph{quasi-isometry} with constant $C\geq 1$ if for each $p\in M$ and each $0\neq v\in T_pM$,
-$$\frac{1}{C}\leq\frac{\|D_p\phi(v)\|^2}{\|v\|^2}\leq C.$$
-Quasi-isometries provide a control of the Dirichlet energy of a function.
-\begin{lemma}\label{lemma:QIcontrolEnergy}
-Let $\phi\colon M\rightarrow\widetilde{M}$ be a quasi-isometry with constant $C\geq 1$. Let $f\in H^1(\widetilde{M})$; then
-$$\frac{1}{C^{\frac{n}{2}+1}}\leq\frac{\|\nabla (f\circ\phi)\|_{L^2(M)}^2}{\|\nabla f\|_{L^2(\widetilde{M})}^2}\leq C^{\frac{n}{2}+1}.$$
-\end{lemma}
-\begin{proof}
-Let $\widetilde{g}$ be the Riemannian metric of $\widetilde{M}$ and let $g$ be that of $M$. Let $\widehat{g}=\phi^\star(\widetilde{g})$ be the pull-back of the metric $\widetilde{g}$. Because $\phi$ is a quasi-isometry with constant $C$, the following holds for each $0\neq v\in TM$,
-$$\frac{1}{C}\leq \frac{g(v,v)}{\widehat{g}(v,v)}\leq C.$$
-It follows that
-$$\frac{1}{C}g(\nabla_{g}f,\nabla_{g}f)\leq\widehat{g}(\nabla_{\widehat{g}}f,\nabla_{\widehat{g}}f)\leq Cg(\nabla_{g}f,\nabla_{g}f).$$
-The corresponding volume forms satisfy
-$$C^{-n/2}dV_g\leq dV_{\widehat{g}}\leq C^{n/2}dV_g.$$
-This leads to
-\begin{align*}
-\|\nabla (f\circ\phi)\|_{L^2}^2&=\int_M g\bigl(\nabla_g (f\circ\phi),\nabla_g(f\circ\phi)\bigr)\,dV_g\\
-&\leq
-C^{n/2+1}\int_M {\widehat{g}}\bigl(\nabla_{\widehat{g}} (f\circ\phi),\nabla_{\widehat{g}} (f\circ\phi)\bigr)\,dV_{\widehat{g}}\\
-&=
-C^{n/2+1}\int_{\widetilde{M}} {\widetilde{g}}(\nabla_{\widetilde{g}} f,\nabla_{\widetilde{g}} f)\,dV_{\widetilde{g}}.
-\end{align*}
-The proof of the lower bound is identical, and accordingly omitted.
-\end{proof}
-
-\subsection{Quasi-isometric Charts}
-Recall that a subset $M\subset\mathbb{R}^{n+1}$ is a hypersurface with boundary if for each $p\in M$, there exist open sets $W,W'\subset\mathbb{R}^{n+1}$ with $p\in W$ and a diffeomorphism $\psi:W\rightarrow W'$ such that
-$\psi(M\cap W)$ is an open set in the half-space
-$$H=\{x\in\mathbb{R}^{n+1} : x_{n+1}=0, x_1\geq 0\}.$$
-The point $p\in M$ is on the boundary $\Sigma$ of $M$ if and only if $\psi$ sends it to the boundary of the \nobreak{half-space}~$H$:
-$$\psi(p)\in\partial H:=\{x\in H : x_1=0\}.$$
-This definition is coherent. It does not depend on the choice of the diffeomorphism $\psi$;
-see \cite[Chapter~1]{Hi76} for details.
-By further restricting $\psi$ and scaling if necessary, we can assume that it is a quasi-isometry and that its image $W'$ is a cylinder.
-This is summed up in the next lemma.
-\begin{lemma}\label{lemma:flatchart}
-	For each $p\in\Sigma$, there exists a quasi-isometry
-	$$\psi\colon W\longrightarrow W'=B_{\mathbb{R}^n}(0,1)\times (-1,1)$$
-	with $\psi(p)=0$ and such that the image of $M\cap W$ is
-	$$U:=\psi(M\cap W)=\{x\in H : |x|<1\}.$$
-\end{lemma}
-\begin{remark}
-	We identify $U\subset\mathbb{R}^{n+1}$ with a subset of $\mathbb{R}^n$ so that we can write $x=(x_1,\dots,x_n)\in U$ instead of
-	$x=(x_1,\dots,x_n,0)\in U$.
-\end{remark}
-\begin{figure}[h]
-\FIG{\includegraphics{Fig1.pdf}}
-{\caption{The domain $U$}}
-\end{figure}
-In particular, the restriction of $\psi$ to $\Sigma\cap W$ is also a quasi-isometry.
-
-\subsection{Dirichlet Energy on the Graph of a Function}
-Let $U\subset\mathbb{R}^n$ be a bounded open set and let $f\colon U\rightarrow\mathbb{R}$ be a bounded smooth function. Consider the graph
-$$S_f=\{(x,f(x)) : x\in U\}\subset\mathbb{R}^{n+1}.$$
-Given a function $u\colon U\rightarrow\mathbb{R}$, define $\widetilde{u}\colon U\times\mathbb{R}\rightarrow\mathbb{R}$ by $\widetilde{u}(x,x_{n+1})=u(x)$ and define $u_f\colon S_f\rightarrow\mathbb{R}$ by
-\begin{gather}\label{defuf}
-  u_f(x,f(x)) = u(x)=\widetilde{u}\bigl|\bigr._{{S_f}}.
-\end{gather}
-
-\begin{lemma}\label{lemma:dirichletgraph}
-	The Dirichlet energy of $u_f\colon S_f\rightarrow\mathbb{R}$ is
-	\begin{equation}\label{eq:dirichletgraph}
-	\int_{S_f} |\nabla u_f|^2\,dV
-	= \int_U \frac{|\nabla u|^2 + |\nabla u|^2 |\nabla f|^2
-	-\langle {\nabla u}, {\nabla f} \rangle^2}{\sqrt{1 + |\nabla f|^2}}
-	\,dx,
-	\end{equation}
-	where on the left-hand-side $\nabla$, $dV$, and the norm are taken on $S_f$, and on the right-hand-side $dx=dx^1\cdots dx^n$ is the Lebesgue measure on $U$, while $\nabla$ is the usual gradient on $\mathbb{R}^n$.
-\end{lemma}
-
-	The Cauchy--Schwarz inequality gives $|\nabla u|^2 |\nabla f|^2
-- \langle {\nabla u}, {\nabla f} \rangle^2 \geq 0$ with equality if and only
-if $\nabla u = c \nabla f$ for some constant $c$.
-
-\begin{proof}[Demostración del Lema~\ref{lemma:dirichletgraph}]
-	To simplify notation, we will write $S=S_f$.
-	For any point $p\in S$, the gradient $\nabla u_f\in T_pS$ is the projection of $\overline{\nabla}\widetilde{u}$ on $T_pS$,
-	that is,
-	\begin{equation*}
-	\nabla u_f = \overline{\nabla} \widetilde{u} -
-\langle {\overline{\nabla} \widetilde{u}}, {N} \rangle N,
-	\end{equation*}
-	where $N$ is a unit normal vector to $T_pS$.
-	It follows from
-	\begin{align*}
-	\nabla\widetilde{u} &= \Big(\frac{\partial u}{\partial x_1}, \dots, \frac{\partial u}
-	{\partial x_n}, 0\Big),
-	\\%\end{equation*}
-	%and
-	%\begin{equation}
-	N &=\frac{1}{\sqrt{1 + |\nabla f|^2}}\Big(e_{n+1}-\sum_{i=1}^n\frac{\partial f}{\partial x_i}e_i\Big).
-	\end{align*}
-	that
-	\begin{gather}\label{identity:nablauf}
-	|\nabla u_f|^2
-	= \frac{|\nabla u|^2 + |\nabla u|^2|\nabla f|^2
-		- \langle {\nabla u}, {\nabla f} \rangle^2}{1 + |\nabla f|^2}.
-	\end{gather}
-	
-	The volume element on $S_f$ is given by
-	\begin{equation}
-	dV %= \frac{1}{\sqrt{1 + |\nabla f|^2}}(1 + |\nabla f|^2)
-	= \sqrt{1 + |\nabla f|^2}.
-	\end{equation}
-	Together with identity \eqref{identity:nablauf}, this completes the proof.
-\end{proof}
 
 
-\section{Perturbation of the Submanifold $M$}\label{section:perturbation}
 
-Given $p\in\Sigma$, let $\psi$ be the quasi-isometric chart provided by Lema~\ref{lemma:flatchart}. In order to prove Teorema~\ref{thm:main}, we will deform the submanifold $M$ in the neighborhood $W$ of the point $p$ by deforming the neighborhood $U\subset W'$ inside $W'$ and pulling back to $W$ using the quasi-isometry $\psi$.
-Consider a smooth function $f\colon U\rightarrow\mathbb{R}$ that is supported in the interior of $U$ and which satisfies $|f(x)|<1$ for each $x\in U$. This last condition implies that the graph of $f$,
-$$S_f = \{(x, f(x)) : x\in U\},
-$$
-is contained in the cylinder $W'$.
-Hence it can be used to define a deformation of $M$ as follows:
-\begin{gather}\label{def:TM}
-\widetilde{M}_f:=(M\setminus W)\cup\psi^{-1}(S_f).
-\end{gather}
 
-\begin{remark}
-  It might be possible to prove Teorema~\ref{thm:main} by performing a deformation of $M$ directly in the ambient space $\mathbb{R}^{n+1}$, but it appears to be simpler to use quasi-isometric charts.
-\end{remark}
 
-\subsection{Deformation Function}
 
-We now construct specific functions $f$ and $u$ such that the Dirichlet energy of $u_f$, defined by~\eqref{defuf}, is small. Our method is based on Lema~\ref{lemma:dirichletgraph}, which shows that if $\nabla u$ and $\nabla f$ are parallel the numerator of~\eqref{eq:dirichletgraph} is independent of $\nabla f$, while the denominator behaves as $|\nabla f|$. Thus, we want $f$ and $u$
-to have parallel gradients with $|\nabla f|$ big to get a small Dirichlet
-energy for $u_f$.
 
-Consider numbers
-$\epsilon, \partial_1, \partial_2, \rho > 0$ that are sufficiently small and define
-$\partial:=\partial_1 + \partial_2$. These constants will be adjusted later in equation \eqref{dfn:constants}.
-Let $q = (\partial, 0, \dots, 0)\in H$. Consider the following subsets of $U$:
-\begin{align*}
-  A &:= \big\{(x_1, \dots, x_n) \mid  x_1 \geq \partial, \|x - q\| \leq \epsilon\big\}, \\
-  B &:= \big\{(x_1, \dots, x_n) \mid  \partial_1 \leq x_1 \leq \partial,
-      \|\Pi x\| \leq \epsilon\big\}, \\
-  C &:= \big\{(x_1, \dots, x_n) \mid  0 \leq x_1 \leq \partial_1,
-      \|\Pi x\| \leq \epsilon\big\}, \\
-  D &:= \big\{x \in U \setminus (A \cup B \cup C) \mid  d(x,A \cup B \cup C),
-      \leq \rho\big\}
-\end{align*}
-where $\Pi(x_1, x_2, \dots, x_n) = (x_2, \dots, x_n)$ is the projection
-on the boundary. Let $\Omega = A \cup B \cup C$. Vea la Figura~\ref{fig:domain}, where the $x_1$-axis is vertical.
-\begin{figure}[h]
-\FIG{\includegraphics{Fig2.pdf}}
-{\caption{Perturbation region}\label{fig:domain}}
-\end{figure}
 
-Define cutoff functions
-\begin{align*}
-  \eta &\colon  [0, \infty) \to \mathbb{R}, & \gamma &\colon  [0, \partial]  \to \mathbb{R}, \\
-  \eta(t) &= \max\{0, 1- t\}, &
-  \gamma(t) &=
-  \begin{cases}
-    0 & \text{if $t \leq \partial_1$,} \\
-    t - \partial_1 & \text{if $\partial_1 \leq t \leq \partial$}.
-  \end{cases}
-\end{align*}
-Given $\omega>0$, define $f \colon  U \rightarrow \mathbb{R}$ by
-\begin{equation}\label{eq:deffx}
-  f(x) =
-  \begin{cases}
-    \eta\big(\frac{d(x,\Omega)}{\rho}\big)
-    \gamma(x_1) F(\omega \|\Pi x\|) &
-    \text{if $x_1 \leq \partial$,} \\
-    \eta\big(\frac{d(x, \Omega)}{\rho}\big)
-    \partial_2 F(\omega \|x - q \|) & \text{if $x_1 \geq \partial$.}
-  \end{cases}
-\end{equation}
 
-\section{Trial Function}\label{section:testfunction}
 
-The trial function $u$ is supported on $\Omega\subset U$
-and is defined by
-\begin{equation}
-  u(x) =
-  \begin{cases}
-    1 - \frac{\|\Pi x\|}{\epsilon} &\text{if $x \in B \cup C$,} \\
-    1 - \frac{\|x - q\|}{\epsilon} &\text{if $x \in A$,}\\
-    0 &\text{elsewhere}.
-  \end{cases}
-\end{equation}
-By construction, the function $u_f$ defined by~\eqref{defuf} belongs to $H^1(S_f)$, and we can estimate its Dirichlet energy.
-On $A$, the Dirichlet energy of $u_f$ can be made small by taking
-$\omega$ big. Indeed, for almost all $x \in A$,
-\begin{align}\label{eq:nablafonA}
-  \nabla f &=
-  \pm \partial_2 \omega \frac{x - q}{\|x - q\|}
-  ,
-  \\
-  \nabla u &= -
-  \frac{1}{\epsilon}\frac{x - q}{\|x - q\|}
-  ,
-\end{align}
-and using the fact that $\nabla f$ and $\nabla u$ are parallel,
-the Dirichlet energy is
-\begin{align*}
-  \int_{S_f \cap A \times \mathbb{R}} |\nabla u_f|^2 dV
-  &= \int_A \frac{|\nabla u|^2}{\sqrt{1 + |\nabla f|^2}}\,dx
-  = \frac{1}{\epsilon^2}
-  \frac{1}{\sqrt{1 + \partial_2^2 \omega^2}} \mathop{\mbox{Vol}} A\\
-  &= \frac{c_1 \epsilon^{n-2}}{\sqrt{1 + \partial_2^2 \omega^2}}
-\end{align*}
-where $c_1$ is some dimensional constant.
 
-On $B$ and $C$, $\nabla f$ and $\nabla u$ are not parallel, but
-it is possible to make the Dirichlet energy small by making
-the volume of $B$ and $C$ small.
-For $B$, we have for almost all $x \in B$:
-\begin{align}\label{eq:nablafonB}
-  \nabla f(x) &= F(\omega \|\Pi x\|) e_1 \pm \gamma(x_1) \omega
-                \frac{\Pi x}{\|\Pi x\|}, \\
-  \nabla u(x) &= -\frac{1}{\epsilon} \frac{\Pi x}{\|\Pi x\|},
-\end{align}
-and since $e_1$ and $\Pi x$ are orthogonal,
-\begin{equation*}
-  |\nabla f(x)|^2 = F(\omega \|\Pi x\|)^2 + \gamma(x_1)^2 \omega^2.
-\end{equation*}
-Then the Dirichlet energy on $B$ is
-\begin{align*}
-  \int_{S_f \cap B \times \mathbb{R}} |\nabla u_f|^2 dV
-  &= \int_B \frac{\frac{1}{\epsilon^2} + \frac{1}{\epsilon^2}
-    F(\omega \|\Pi x\|)^2}
-    {\sqrt{1 + F(\omega \|\Pi x\|)^2 + \gamma(x_1)^2 \omega^2}}
-    dx\\
-  &\leq \frac{1}{\epsilon^2}
-    \int_B \frac{2}{\sqrt{1 + \gamma(x_1)^2 \omega^2}} dx \\
-  &= c_2 \epsilon^{n-3}
-    \int_0^{\partial_2} \frac{1}{\sqrt{1 + x_1^2 \omega^2}} dx_1 \\
-  &= c_2 \epsilon^{n-3}
-    \frac{\ln(\partial_2 \omega + \sqrt{1 + \partial_2^2})}{\omega},
-\end{align*}
-where $c_2$ is a constant that depends only on the dimension.
-And on $C$, since $f=0$, the Dirichlet energy is simply
-\begin{equation*}
-  \int_{S_f \cap C \times \mathbb{R}} |\nabla u_f|^2 dV = \frac{1}{\epsilon^2} \mathop{\mbox{Vol}} C
-  = c_3 \partial_1 \epsilon^{n-3},
-\end{equation*}
-where $c_3$ is a constant that depends only on the dimension.
-The denominator in the Steklov--Rayleigh quotient of $u_f$ satisfies
- $$\int_{B(0,\epsilon)}\Big(1-\frac{|x|}{\epsilon}\Big)^2\,dx\geq\frac{1}{4}\mathop{\mbox{Vol}}
- \Big({B\Big(0,\frac{\epsilon}{2}\Big)}\Big)=c_4\epsilon^{n-1},$$
-for some constant $c_4>0$.
-In total, the Steklov--Rayleigh quotient of $u_f$ on $S_f$ is bounded as follows:
-\begin{align*}
-  \mathcal{R}(u_f)
-  &\leq \frac{1}{c_4\epsilon^{n-1}}
-    \Big(c_1 \frac{\epsilon^{n-2}}{\sqrt{1 + \partial_2^2 \omega^2}}
-    + c_2 \frac{\epsilon^{n-3} \ln(\partial_2 \omega +
-    \sqrt{1 + \partial_2^2 \omega^2})}{\omega}
-    + c_3 \partial_1 \epsilon^{n-3} \Big)\\
-  &= \frac{1}{c_4}\Big(c_1 \frac{\epsilon^{-1}}{\sqrt{1 + \partial_2^2 \omega^2}}
-    + c_2 \frac{\epsilon^{-2} \ln(\partial_2 \omega + \sqrt{1 +
-    \partial_2^2 \omega^2})}{\omega}
-    + c_3 \partial_1 \epsilon^{-2}\Big).
-\end{align*}
-We are now ready to define the constants more precisely. By using the following:
-\begin{equation}\label{dfn:constants}
-\partial_1 = \epsilon^3,\quad \partial_2 = \epsilon^{3/2},\quad \omega = \epsilon^{-3},\quad \rho=\epsilon,
-\end{equation}
-we obtain
-\begin{equation*}
-  \mathcal{R}(u_f) = \mathcal{O}(\epsilon^{1/2}) \quad \text{as } \epsilon \longrightarrow 0.
-\end{equation*}
-We have proved that a local perturbation of $U$ allows the construction
-of a local trial function with arbitrarily small Steklov--Rayleigh quotient. The proof of our main result is now an easy consequence.
-\begin{proof}[Demostración del Teorema~\ref{thm:main}]
-  Without loss of generality, we work under the asumption that $k\in\mathbb{N}$ is fixed. The general case will then follow by a standard diagonal selection argument.
-  Let $k,j \in \mathbb{N}$ with $j$ sufficiently large. Let $p_1, \dots, p_{k+1} \in B(p, \frac{1}{j}) \cap \Sigma$ be distinct points,
-  and let $\psi$ be the quasi-isometric chart from Lema~\ref{lemma:flatchart}.
-  For each $p_i$, we follow the above construction to obtain  deformation functions $f_i$ that are disjointly supported, by taking $\epsilon>0$ small enough, and trial functions $u_i$ that have disjoint supports contained in
-    in $\psi(B(p,\frac{1}{j}) \cap M)$.
-  By possibly choosing a smaller $\epsilon$ in the previous construction, we guarantee that the Rayleigh quotient of each $u_i$ is smaller than $1/j$.
-     Consider the deformation function $f = f_1 + \dots + f_{k+1}$ supported in $B(p, {1}/{j})$ and the perturbed manifold $M_j = \smash{\widetilde{M}_f}$.
-  Taking the pullback by $\psi$, we obtain $k+1$ trial functions $\psi^*(u_i)$ with disjoint supports and
-  from Lema~\ref{lemma:QIcontrolEnergy}, their
-  Rayleigh quotient is less than ${c}/{j}$ where $c$ is a constant depending on $\psi$.
-  By the variational characterization \eqref{eq:minmaxsigmak} of the eigenvalue $\sigma_k$, we conclude that $\sigma_k(M_j) \leq {c}/{j}$.
-
-\begin{figure}
-\FIG{\includegraphics{Fig3.pdf}}
-{\caption{The set $\{x \mid  f(x) = 0\}$ is shown in grey. The path
-    in bold from an arbitrary $x \in \Omega$ to a point on $\partial \widetilde{M}_f$
-    has length going to 0 as $\epsilon \to 0$}
-  \label{fig:path}}
-\end{figure}
-
-\begin{table}[b]
-\tabcolsep=0pt%
-\TBL{\caption{Este es el título de la tabla.\label{tab1}}}
-{\begin{fntable}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccc@{}}\toprule%
- & \multicolumn{3}{@{}c@{}}{\TCH{Element 1}}& \multicolumn{3}{@{}c@{}}{\TCH{Element 2\smash{\footnotemark[*]}}}
- \\\cmidrule{2-4}\cmidrule{5-7}%
-\TCH{Projectile} & \TCH{Energy} & \TCH{$\sigma_{\mathit{calc}}$} & \TCH{$\sigma_{\mathit{expt}}$} &
-\TCH{Energy} & \TCH{$\sigma_{\mathit{calc}}$} & \TCH{$\sigma_{\mathit{expt}}$} \\\midrule
-\TCH{Element 3}&990 A &1168 &$1547\pm12$ &780 A &1166 &$1239\pm100$\\
-{\TCH{Element 4}}&500 A &961 &$922\pm10$ &900 A &1268 &$1092\pm40$\\
-\botrule
-\end{tabular*}%
-\footnotetext[*]{Este es un ejemplo de nota al pie de tabla.}%
-\end{fntable}}
-\end{table}
-
-Note that
-$$
-\mathop{\mbox{Vol}}(S_f)= \int_{\Omega \cup D}
-\sqrt{1 + |\nabla f|^2} dx_1 \cdots dx_n\geq  \mathop{\mbox{Vol}}(\Omega \cup D).
-$$
-It follows from~\eqref{eq:nablafonA} and~\eqref{eq:nablafonB} that, on $\Omega$, the following holds:
-$$|\nabla f|^2\leq1+\partial_2^2\omega^2=\epsilon^{-3}.$$
-Similarly, it follows from~\eqref{eq:deffx} that on $D$, $$
-|\nabla f|^2\leq c_5\Big(\frac{\partial_2^2}{\epsilon^2}+\partial_2^2\omega^2\Big)=c_5(\epsilon+\epsilon^{-3}),
-$$
-where $c_5$ is a positive constant.
-It follows that
-\begin{align*}
-  |\mathop{\mbox{Vol}}(S_f) - \mathop{\mbox{Vol}}(\Omega \cup D)| &= \int_{\Omega \cup D}
-  \sqrt{1 + |\nabla f|^2} dx_1 \cdots dx_n  - \mathop{\mbox{Vol}}(\Omega \cup D)\\
-  &= \mathcal{O}(\epsilon^{n-3/2}),
-\end{align*}
-which goes to 0 for $n \geq 2$. Finally, it is clear that the curvatures of
-$\partial \widetilde{M}_f$ do not change, as $M$ is kept fixed on some neighborhood
-of the boundary due to the localisation of $f$ by the function $\gamma$, which vanishes near the boundary; see Figure~\ref{fig:path} and the definition~\eqref{eq:deffx} of $f$.
-\end{proof}
-
-\section{Conclusiones}
-
-Algunas conclusiones aquí.
-
-\begin{Backmatter}
-
-\paragraph{Agradecimientos}
-Agradecemos la asistencia técnica del Autor A.
-
-\paragraph{Declaración de financiación}
-This research was supported by grants from the <funder-name><doi>(<award ID>); <funder-name><doi>(<award ID>).
-
-\paragraph{Conflictos de intereses}
-A statement about any financial, professional, contractual or personal relationships or situations that could be perceived to impact the presentation of the work --- or `None' if none exist
-
-\paragraph{Declaración de disponibilidad de datos}
-A statement about how to access data, code and other materials allowing users to understand, verify and replicate findings --- e.g. Replication data and code can be found in Harvard Dataverse: \url{https://doi.org/link}.
-
-\paragraph{Estándares éticos}
-The research meets all ethical guidelines, including adherence to the legal requirements of the study country.
-
-\paragraph{Contribuciones de los autores}
-A.A. and A.B.C. designed the study, abstracted the data wrote the first draft, and approved the final
-version of the manuscript. A.R.E.J., M.R.L., K.L.S., and A.D.P. revised the manuscript and approved the final version.
-
-\paragraph{Material suplementario}
-State whether any supplementary material intended for publication has been provided with the submission.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
 
-\end{Backmatter}
 
 \end{document}
