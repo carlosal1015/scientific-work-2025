@@ -13,6 +13,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{mathrsfs}
 \usepackage{amsthm}
+\usepackage{amsfonts}
 \usepackage{rotating}
 \usepackage{appendix}
 \usepackage[numbers]{natbib}
@@ -42,14 +43,14 @@
 
 \begin{Frontmatter}
 
-\title[Hypersurfaces with Small Steklov Eigenvalues]{Hypersurfaces with Prescribed Boundary and Small Steklov Eigenvalues}
+\title[Hypersurfaces with Small Steklov Eigenvalues]{Resolución de la ecuación de Schrödinger mediante redes neuronales para la simulación de qubits y puertas cuánticas }
 
-\author[1]{Bruno Colbois}\orcid{0000-0002-8514-4315}
-\author[2]{Alexandre Girouard}\orcid{0000-0001-8823-831X}
+\author[1]{Andy Llacsa Quijada}\orcid{0000-0002-8514-4315}
+\author[2]{Carlos }\orcid{0000-0001-8823-831X}
 
-\authormark{Bruno Colbois \textit{et al}.}
+\authormark{Andy Llacsa Quijada \textit{et al}.}
 
-\address[1]{\orgname{Université de Neuchâtel, Institut de Mathématiques, Rue}, \orgaddress{\street{Rue Emile-Argand 11}, \postcode{CH-2000 Neuchâtel}, \country{Switzerland}};\email{bruno.colbois@unine.ch}}
+\address[1]{\orgname{Universidad Nacional de Ingenieria, Rímac}, \orgaddress{\street{Rue Emile-Argand 11}, \postcode{CH-2000 Neuchâtel}, \country{Switzerland}};\email{bruno.colbois@unine.ch}}
 \address[2]{\orgdiv{Département de mathématiques et de statistique}, \orgname{Université Laval, Pavillon Alexandre\-Vachon}, \orgaddress{\street{1045, av. de la Médecine}, \city{Qu\'ebec}, \postcode{Qc G1V 0A6}, \country{Canada}};\email{alexandre.girouard@mat.ulaval.ca}}
 
 \received{4 de Mayo de 2025}
@@ -58,77 +59,52 @@
 
 \keywords{valores propios Steklov, hipersuperficies}
 
-\abstract{Dada una hipersuperficie suave y compacta $M$ con frontera
-$\Sigma=\partial M$, demostraremos la existencia de una sucesión
-$M_{j}$ de hipersuperficies con la misma frontera que $M$, tal que
-cada valor propio Steklov $\sigma_{k}\left(M_{j}\right)$ tiende a
-cero cuando $j$ tiende al infinito.
-Las hipersuperficies $M_{j}$ se obtienen a partir de $M$ mediante una
-perturbación local cerca de un punto de su frontera.
-Sus volúmenes y diámetros son arbitrariamente cercanos a los de $M$,
-mientras que las curvaturas principales de la frontera permanecen
-inalteradas.}
-
+\abstract{
+Exploraremos la aplicación de redes neuronales informadas por la física (PINNs) para hallar la ecuación de Schrödinger, 
+con el objetivo de simular cómo los sistemas cuánticos evolucionan con el tiempo. Se comienza con el caso general continuo y se demuestra 
+la manera en que, en sistemas de dos niveles, la ecuación disminuye a la dinámica de un qubit. Después, se examina la manera en que las
+ soluciones de la ecuación se asocian a transformaciones unitarias vinculadas con puertas cuánticas elementales.
+Por último, se sugiere una aplicación informática en la que una red neuronal aprende la función de onda $\Psi_{\theta }(t)$ que cumple con 
+la ecuación de Schrödinger para un Hamiltoniano específico, lo que demuestra que las redes neuronales pueden funcionar como simuladores 
+cuánticos aproximados. }
 \end{Frontmatter}
 
 \localtableofcontents
 
 \vspace*{14pt}
 \section{Introducción}
-Let $M$ be an $n$-dimensional smooth compact Riemannian manifold with boundary $\Sigma=\partial M$.  The Steklov
-eigenvalue problem on $M$ consists in\vadjust{\clearpage} finding all numbers $\sigma\in\mathbb{R}$ for which there exists a nonzero function $u \in C^\infty(M)$, which solves
-\begin{equation*}
-    \begin{cases}
-        \Delta u = 0 & \text{in  $M$,} \\
-        \partial_\nu u = \sigma u & \text{on  $\Sigma$.}
-    \end{cases}\vspace*{-2pt}
-\end{equation*}
-Here, $\Delta$ is the Laplacian induced from the Riemannian metric $g$ on $M$, and $\partial_\nu$
-is the outward pointing normal derivative along the boundary $\Sigma$. The Steklov eigenvalues
-form an unbounded increasing sequence
-$0 = \sigma_0 \leq \sigma_1 \leq \sigma_2 \leq \dots \to \infty$, each of which is repeated according to its multiplicity.
-Note that if $M$ is connected, then $\sigma_1>0$.
-Vea \cite{GP17,legacy} for background on this problem.
+La simulación de la dinámica cuántica es central en la física teórica y aplicada: desde la evolución de un estado ligado en un átomo 
+hasta la operación de puertas en un computador cuántico. Tradicionalmente, dichas simulaciones se realizan mediante métodos numéricos
+clásicos (diferencias finitas, Crank–Nicolson, métodos espectrales como Split–Step Fourier). En los últimos años, las Physics-Informed 
+Neural Networks (PINNs) han surgido como una alternativa para aproximar soluciones de ecuaciones diferenciales (EDOs y EDPs) imponiendo
+las leyes físicas directamente en la función de pérdida de una red neuronal.
 
-\looseness-1One of our main interests in recent years has been to understand the particular role that the boundary  $\Sigma$ plays with respect to Steklov eigenvalues. Some papers studying this question are \cite{CGH18, PS16,CESG17,CG18,WX09,Kar15,GPPS,CGG17,shamma}.
-In particular, we have considered the effect of various geometric constraints on individual eigenvalues $\sigma_k$. One particularly interesting question is to prescribe a Riemannian metric $g_\Sigma$ on the boundary $\Sigma$ and to investigate lower and upper bounds for the eigenvalue $\sigma_k$ among all Riemmanian metrics $g$ that coincide with $g_\Sigma$ on the boundary. Given any Riemannian metric $g$ on $M$ such that $g=g_\Sigma$ on $\Sigma$, it is proved in \cite{CESG17} that one can make any eigenvalue $\sigma_k$ arbitrarily small by modifying the Riemannian metric $g$ in an arbitrarily small neighborhood $V\subset M$ of a point $p\in\partial M$. More precisely, for each $\epsilon>0$ and each $k\in\mathbb{N}$, there exists a Riemannian metric $\widetilde{g}=\widetilde{g}_{\epsilon,k}$ on $M$ that coincides with $g_\Sigma$ on $\Sigma$ and also with $g$ outside the neighborhood $V$, such that $\sigma_k(M,\widetilde{g})<\epsilon$.
-In \cite{CGG17} a more restrictive constraint was imposed by requiring the manifold $M$ to be a submanifold of $\mathbb{R}^m$ with prescribed boundary $\Sigma=\partial M\subset\mathbb{R}^m$.
-In this context an upper bound for $\sigma_k$ was given in terms of $\Sigma$ and of the volume of $M$. The authors were unable at the time to give a lower bound and they raised the question of whether one exists, or if instead, arbitrarily small eigenvalues are possible. The goal of this paper is to answer that question.
+\section{Notacion y Consideraciones Preliminares}
 
-\begin{theorem}\label{thm:main}
-Let $M \subset \mathbb{R}^{n+1}$ be a smooth $n$-dimensional compact hypersurface with nonempty boundary $\Sigma=\partial M$. For each $p \in \Sigma$, there exists a sequence of hypersurfaces $M_j\subset\mathbb{R}^{n+1}$, $j\in\mathbb{N}$, with boundary $\partial M_j=\Sigma$
-% Remarque 2
-and with the hypersurface $M_j$ coinciding with $M$ outside of a ball $B(p, \frac{1}{j})$,
-such that\vspace*{-2pt}%
-\begin{gather}\label{limit:mainthm}
-\lim_{j\to\infty}\sigma_k(M_j)=0\qquad\mbox{ for each }k\in\mathbb{N}.
-\vspace*{-2pt}%
-\end{gather}
-% The hypersurface $M_j$ coincides with $M$ outside of a ball $B(p,\frac{1}{j})$ and
-The principal curvatures of $\Sigma\subset M_j$ are independent of $j$. Moreover,
-the volume and diameter of $M_j$ converge to those of $M$ as $j\to\infty$.
-\end{theorem}
+\begin{itemize}
+    \item $\hbar$ : constante de Planck reducida
+    \item $\psi(r, t)$ : función de onda (compleja) en espacio y tiempo
+    \item Para qubits denotaremos $|\psi(t)\rangle = (\alpha(t), \beta(t))^\top \in \mathbb{C}^2$
+    \item Normas y productos: $(\cdot, \cdot)$ producto interno; $\|\cdot\|^2 = (\cdot, \cdot)$
+    \item Notación de derivadas parciales: $\partial_t, \partial_z$, y derivadas por autograd en NNs
+\end{itemize}
 
-In order for \eqref{limit:mainthm} to hold for each $k\in\mathbb{N}$, it is necessary that the perturbed hypersurfaces $M_j$ differ from $M$ arbitrarily close to the boundary $\Sigma$ as $j\to\infty$. Indeed, let $b$ be the number of connected components of $\Sigma$ and note that any hypersurface $\widetilde{M}$ that coincides with $M$ in a neighborhood $\Omega$ of $\Sigma$ satisfies
-$\sigma_{b+1}\geq C>0$, where $C$ is given by a sloshing problem on $\Omega\cap M$; see \cite{CGG17} for details.
 
-\begin{remark}\label{remark:regularitycodim}
- Teorema~\ref{thm:main} holds in arbitrary positive codimension and ambient space. We decided to state it for hypersurfaces in $\mathbb{R}^{n+1}$for the sake of notational simplicity. Note also that Teorema~\ref{thm:main} certainly holds under weaker regularity asumptions.
-\end{remark}
+\section{Fundamentos de la mecanica cuantica para simulacion}
 
-\begin{remark}\label{remark:noncommutative}
-By construction (see Section \ref{section:perturbation}), each manifold $M_j$ coincides with $M$ in a neighborhood $\Omega_j$ of its prescribed boundary $\Sigma$.
-  Hence, the Dirichlet-to-Neumann maps $D_j\colon C^\infty(\Sigma)\rightarrow C^\infty(\Sigma)$ associated with $M_j$ all have the same full symbol~\cite{LeeUhlmann}.
-  The asymptotic behavior of $\sigma_k(M_j)$ as $k\to\infty$ is therefore independent of $j$. That is, for each $j_1, j_2\in\mathbb{N}$ the following holds:
-    $\sigma_k(M_{j_1})-\sigma_k(M_{j_2})=O(k^{-\infty})$; see~\cite[Lema~2.1]{GPPS}. In particular, the limits of $\sigma_k(M_j)$ as $j\to\infty$ and as $k\to\infty$ do not commute.
-\end{remark}
+\subsection{Espacio de Hilbert y estados cuanticos}
 
-\vspace*{-10pt}%
-\subsection{La Estrategia de la Demostración}
-For eigenvalues of the Laplace operator, it is well known that one can obtain arbitrarily small eigenvalues by constructing thin Cheeger dumbbells in the interior of the manifold; see \cite{Chavel,CoursColboisMtl}. This strategy does not work for Steklov eigenvalues. For Steklov eigenvalues, it is possible to obtain arbitrarily small eigenvalues by creating thin channels, but this involves deformation of the boundary or a perturbation of the Riemannian metric in the interior of $M$; see \cite{GP10,CESG17}. In order to prove Teorema~\ref{thm:main}, we have to use a more elaborate strategy.
+$\mathcal{H}$ es un espacio de Hilbert si es completo con respecto a su norma. Que queremos decir que sea completo,significa que cualquier sucesion de 
+Cauchy de elementos del espacio converge a un elemento en el mismo espacio, en tal sentido la norma de las diferencias tiende a cero.En cuanto a mecanica cuantica 
+un conjunto fisico es descrito por un espacio complejo de Hilbert que contenga las funciones de onda para los estados posibles del conjunto   
 
-Given a smooth function $\widetilde{u}\colon \mathbb{R}^{n+1}\rightarrow\mathbb{R}$, consider the restriction $u=\widetilde{u}\bigl|\bigr._{{M}}$.
-It is well known that if $\int_{\Sigma}u\,dA=0$,
+\subsection{Observables,valores esperados y operadores hermiticos}
+
+\subsection{Unitareidad y conservacion de probabilidad}
+
+
+
+
 \begin{gather}\label{ineq:variationalintro}
 \sigma_1(M)\int_{\Sigma}u^2\,dA\leq\int_M|\nabla u|^2\,dV;
 \end{gather}
