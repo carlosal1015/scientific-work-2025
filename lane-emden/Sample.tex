@@ -14,6 +14,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{mathrsfs}
 \usepackage{amsthm}
+\usepackage{diffcoeff}
 \usepackage{rotating}
 \usepackage{appendix}
 \usepackage[numbers]{natbib}
@@ -43,7 +44,7 @@
 
 \begin{Frontmatter}
 
-\title{Resolución Numérica de la ecuación de Lane-Emden}
+\title{Resolución numérica de una ecuación de tipo Lane-Emden}
 
 \author[1]{Matihus Alberth Molina Larios}\orcid{https://orcid.org/0000-0002-9582-9051}
 \author[2]{Carlos Alonso Aznarán Laos}\orcid{https://orcid.org/0000-0001-8314-2271}
@@ -94,7 +95,9 @@ no lineales.
 
 \subsection{Objetivos del trabajo}
 
-El objetivo principal de este trabajo es realizar un estudio matemático detallado de la ecuación de Lane--Emden, destacando sus propiedades estructurales y los métodos utilizados para describir el comportamiento cualitativo de sus soluciones.  
+El objetivo principal de este trabajo es realizar un estudio matemático detallado de la
+ecuación de Lane-Emden, destacando sus propiedades estructurales y los métodos
+utilizados para describir el comportamiento cualitativo de sus soluciones.  
 En particular, se busca:
 \begin{enumerate}
     \item Analizar la formulación del problema y su interpretación como una ecuación diferencial ordinaria singular.
@@ -111,7 +114,7 @@ En la Sección~2 se desarrolla el marco teórico necesario, abordando conceptos 
 En la Sección~3 se presenta el análisis cualitativo y cuantitativo de la ecuación de Lane--Emden, junto con la discusión de los casos particulares y métodos de resolución.  
 Finalmente, en la Sección~4 se exponen las conclusiones generales y posibles líneas de investigación futura relacionadas con el estudio matemático del modelo.
 
-\begin{theorem}[Picard--Lindelöf]
+\begin{theorem}[Picard--Lindelöf~\cite{Benazic2007}]
 Sea \( D \subset \mathbb{R}^2 \) un dominio abierto y sea \( f : D \to \mathbb{R} \) una función continua.  
 Supongamos que existe una constante \( L > 0 \) tal que para todo \( (x, y_1), (x, y_2) \in D \) se cumple la condición de Lipschitz en la segunda variable:
 \[
@@ -127,10 +130,10 @@ y(x_0) = y_0.
 En consecuencia, la ecuación diferencial ordinaria posee una \emph{solución local única} que depende continuamente de las condiciones iniciales.
 \end{theorem}
 
-La ecuación de Lane--Emden en su forma adimensional se expresa como
-\[
-\frac{1}{r^{2}} \frac{d}{dr} \left( r^{2} \frac{d\theta}{dr} \right) + \theta^{n} = 0,
-\]
+La ecuación de Lane-Emden en su forma adimensional se expresa como
+\begin{equation}\label{eq:lane-emden}
+\frac{1}{r^{2}}\diff*{\left(r^{2}\diff{\theta}{r}\right)}{r}+\theta^{n} = 0,
+\end{equation}
 donde \( \theta = \theta(r) \) es una función escalar dependiente de la variable radial \( r \geq 0 \), y \( n \) es el \emph{índice politrópico}, que determina el tipo de no linealidad del sistema.  
 El problema se complementa con las condiciones de frontera
 \[
@@ -147,20 +150,11 @@ El método de Adomiam es muy usado para aproximar ecuaciones diferenciales no li
 $$y(r)=\sum_{k=0}^{\infty}y_k(r)$$
 y descomponer la parte no lineal $N(y)$ en una serie de polinomios de Adomiam:
 $$N(y(r))=\sum_{k=0}^{\infty}A_k(r)$$
-En el paper de Adomian \cite{adomian1995} esta el método en general,procederemos a citar el método aplicado para la ecuación de lane-endem.
+En el paper de Adomian \cite{adomian1995} esta el método en general,procederemos a citar el método aplicado para la ecuación de Lane-endem.
 
 \section{Aplicación del método de descomposición (modificado) al problema de Lane--Emden}
 
-Consideremos la forma general (politrópica) de la ecuación de Lane--Emden escrita para la función \(T=T(r)\):
-\[
-\frac{1}{r^{2}}\frac{d}{dr}\!\left(r^{2}\frac{dT}{dr}\right) + T^{m} = 0,\qquad r\ge 0,
-\]
-con las condiciones iniciales regulares en el origen
-\[
-T(0)=1,\qquad T'(0)=0,
-\]
-donde \(m\in\mathbb{N}\) parametriza la no linealidad.
-
+Consideremos la forma general (politrópica) de la ecuación de Lane-Emden~\eqref{eq:lane-emden}.
 Se supone una solución en serie
 \[
 T(r)=\sum_{k=0}^{\infty} T_{k}(r),
