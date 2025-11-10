@@ -138,7 +138,141 @@ En la Sección~2 se desarrolla el marco teórico necesario, abordando conceptos 
 En la Sección~3 se presenta el análisis cualitativo y cuantitativo de la ecuación de Lane--Emden, junto con la discusión de los casos particulares y métodos de resolución.  
 Finalmente, en la Sección~4 se exponen las conclusiones generales y posibles líneas de investigación futura relacionadas con el estudio matemático del modelo.
 
+\begin{theorem}[Picard--Lindelöf]
+Sea \( D \subset \mathbb{R}^2 \) un dominio abierto y sea \( f : D \to \mathbb{R} \) una función continua.  
+Supongamos que existe una constante \( L > 0 \) tal que para todo \( (x, y_1), (x, y_2) \in D \) se cumple la condición de Lipschitz en la segunda variable:
+\[
+|f(x, y_1) - f(x, y_2)| \leq L |y_1 - y_2|.
+\]
+Entonces, para todo punto \( (x_0, y_0) \in D \), existe un intervalo \( I = (x_0 - h, x_0 + h) \) y una única función \( y : I \to \mathbb{R} \) de clase \( C^1 \) que satisface el problema de valor inicial
+\[
+\begin{cases}
+y'(x) = f(x, y(x)), \\[6pt]
+y(x_0) = y_0.
+\end{cases}
+\]
+En consecuencia, la ecuación diferencial ordinaria posee una \emph{solución local única} que depende continuamente de las condiciones iniciales.
+\end{theorem}
 
+
+% TODO: Mostrar algunas soluciones exactas dependen del índice.
+Existen una inmensidad de métodos para resolver estas EDP's,mencionaremos a las más importantes.
+\section{Método 0}
+\textbf{Daremos una explicación breve del metodo de Adominam y como es que funciona.\cite{adomian1995}.}
+
+El método de Adomiam es muy usado para aproximar ecuaciones diferenciales no lineales, mediante sumatorias y aproximaciones.Es decir, la solución $y(r)$ como una serie:
+$$y(r)=\sum_{k=0}^{\infty}y_k(r)$$
+y descomponer la parte no lineal $N(y)$ en una serie de polinomios de Adomiam:
+$$N(y(r))=\sum_{k=0}^{\infty}A_k(r)$$
+En el paper de Adomian \cite{adomian1995} esta el método en general,procederemos a citar el método aplicado para la ecuación de lane-endem.
+
+\section{Aplicación del método de descomposición (modificado) al problema de Lane--Emden}
+
+Consideremos la forma general (politrópica) de la ecuación de Lane--Emden escrita para la función \(T=T(r)\):
+\[
+\frac{1}{r^{2}}\frac{d}{dr}\!\left(r^{2}\frac{dT}{dr}\right) + T^{m} = 0,\qquad r\ge 0,
+\]
+con las condiciones iniciales regulares en el origen
+\[
+T(0)=1,\qquad T'(0)=0,
+\]
+donde \(m\in\mathbb{N}\) parametriza la no linealidad.
+
+Se supone una solución en serie
+\[
+T(r)=\sum_{k=0}^{\infty} T_{k}(r),
+\]
+y se descompone la parte no lineal en polinomios de Adomian \(A_k\):
+\[
+T(r)^{m} = \sum_{k=0}^{\infty} A_{k}(r).
+\]
+
+Con estas condiciones iniciales concluimos que $a_0=1 ,a_1=0$.
+
+Y que $r^{-2}\frac{d}{dr}r^2\frac{d}{dr}T=\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^n$
+Definimos al operador lineal $L=r^{-2}\frac{d}{dr}r^2\frac{d}{dr}$ y $N(T)=\lambda T^m$, donde $LT+NT=0$.Luego:
+$$\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^n+\lambda\sum_{n=0}^{\infty}A_n(r)r^n=0$$.
+$$(n+2)(n+3)a_{n+2}r^n+\lambda A_n(r)r^n=0$$
+
+Con ello ya podemos encontrar los terminos de $a$ y de $A$.
+
+
+
+
+
+
+
+
+
+
+Utilizaremos el metodo propuesto por wazwaz \cite{wazwaz} .
+En este paper generaliza el metodo de Adominam que ya es muy usado en la física,además dirrección el problema tratando con el punto singular x=0.
+\section{Método 1}
+Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
+En este aborda para $f(x)=e^{+-x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
+Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
+$$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
+$y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
+\section{Análisis de convergencia}
+Encontramos un Analisis de convergencia en el trabajo de Cardénas \cite{alzate2014}
+\begin{theorem}[Convergencia del método de descomposición]
+Sea $\mathcal{T}$ un operador no lineal definido en un espacio de Banach y sea $y(x)$ la solución exacta de la ecuación
+\begin{equation}\label{eq:42}
+\mathcal{T}(y) = y.
+\end{equation}
+La serie solución
+\begin{equation}\label{eq:14}
+y(x) = \sum_{k=0}^{\infty} y_k(x)
+\end{equation}
+converge a $y(x)$, si existe una constante $c$ tal que $0 \leq c < 1$ y
+\[
+\|y_{k+1}\| \leq c\,\|y_k\|, \qquad \forall\, k \in \mathbb{Z}_{\ge 0}.
+\]
+\end{theorem}
+
+\begin{proof}
+Demostremos que la sucesión $\{T_n\}_{n=0}^{\infty}$ es de Cauchy en el espacio de Banach considerado.  
+Por hipótesis se tiene:
+\[
+\|T_{n+1} - T_n\| = \|y_{n+1}\| \leq c\,\|y_n\| \leq c^2\,\|y_{n-1}\| \leq \dots \leq c^{n+1}\|y_0\|.
+\]
+Entonces, para cualesquiera $m,n \in \mathbb{N}$ con $m > n$, se cumple:
+\[
+\begin{aligned}
+\|T_m - T_n\| 
+&= \| (T_m - T_{m-1}) + (T_{m-1} - T_{m-2}) + \cdots + (T_{n+1} - T_n) \| \\[4pt]
+&\le \|T_m - T_{m-1}\| + \|T_{m-1} - T_{m-2}\| + \cdots + \|T_{n+1} - T_n\| \\[4pt]
+&\le c^{m}\|y_0\| + c^{m-1}\|y_0\| + \cdots + c^{n+1}\|y_0\| \\[4pt]
+&= c^{n+1}\|y_0\| \left(1 + c + c^2 + \cdots + c^{m-n-1}\right) \\[4pt]
+&= c^{n+1}\|y_0\|\,\frac{1 - c^{m-n}}{1-c} \\[4pt]
+&< \frac{c^{n+1}}{1-c}\,\|y_0\|.
+\end{aligned}
+\]
+Dado que $0 \le c < 1$, el término del lado derecho tiende a cero cuando $n \to \infty$.  
+Por tanto, $\{T_n\}$ es una sucesión de Cauchy, y como el espacio es completo, existe $T \in X$ tal que
+\[
+\lim_{n\to\infty} T_n = T.
+\]
+Así, la serie
+\[
+\sum_{n=0}^{\infty} y_n = T
+\]
+converge.
+
+Además, dado que la ecuación \eqref{eq:42} equivale a resolver $\mathcal{T}(T) = T$, si el operador $\mathcal{T}$ es continuo, se tiene
+\[
+\lim_{n\to\infty} T_{n+1} = \lim_{n\to\infty} \mathcal{T}(T_n) = \mathcal{T}\!\left( \lim_{n\to\infty} T_n \right) = \mathcal{T}(T).
+\]
+Por lo tanto, $T$ es una solución de
+\[
+y(x) = \mathcal{T}(y(x)),
+\]
+y el teorema queda demostrado.
+\end{proof}
+
+\section{Ejemplos numéricos}
+
+\section{Conclusiones}
 
 
 
