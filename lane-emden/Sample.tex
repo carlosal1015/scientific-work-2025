@@ -65,8 +65,8 @@
     describe la distribución de densidad en el equilibrio en una
     esfera de un gas isotérmico politrópico.
     En este trabajo se analizan sus principales propiedades
-    matemáticas, enfatizando los métodos empleados para estudiar la
-    existencia, unicidad y comportamiento de las soluciones.
+    matemáticas, enfatizando en los métodos empleados para estudiar la
+    existencia, unicidad y el comportamiento de las soluciones.
     Asimismo, se discuten las implicaciones del índice politrópico
     en la estructura del problema y se presentan resultados que
     evidencian la riqueza analítica del modelo.
@@ -91,33 +91,6 @@ existencia, unicidad, regularidad y comportamiento asintótico de
 soluciones en presencia de singularidades, lo cual la convierte en un
 caso paradigmático dentro del análisis de ecuaciones diferenciales
 no lineales.
-
-\subsection{Formulación general del problema}
-
-La ecuación de Lane--Emden en su forma adimensional se expresa como
-\[
-\frac{1}{r^{2}} \frac{d}{dr} \left( r^{2} \frac{d\theta}{dr} \right) + \theta^{n} = 0,
-\]
-donde \( \theta = \theta(r) \) es una función escalar dependiente de la variable radial \( r \geq 0 \), y \( n \) es el \emph{índice politrópico}, que determina el tipo de no linealidad del sistema.  
-El problema se complementa con las condiciones de frontera
-\[
-\theta(0) = 1, \quad \theta'(0) = 0,
-\]
-que garantizan la regularidad de la solución en el origen.
-
-El carácter no lineal y singular de esta ecuación en \( r = 0 \) plantea diversos desafíos analíticos. Su estudio involucra tanto métodos clásicos de ecuaciones diferenciales ordinarias como técnicas más avanzadas del análisis funcional y de la teoría cualitativa.
-
-\subsection{Importancia matemática del modelo}
-
-Desde el punto de vista matemático, la ecuación de Lane--Emden ofrece un marco ideal para analizar varios aspectos teóricos fundamentales.  
-Entre ellos destacan:
-\begin{itemize}
-    \item La aplicación del \emph{teorema de existencia y unicidad de Picard–Lindelöf} a ecuaciones con términos singulares.
-    \item El análisis del comportamiento local de las soluciones cerca del origen y su desarrollo en series de potencias.
-    \item La caracterización de las soluciones para diferentes regímenes del índice politrópico, incluyendo los casos \( n = 0, 1, 5 \), donde se obtienen soluciones analíticas explícitas.\cite{alzate2014}
-\end{itemize}
-
-Estos aspectos hacen de la ecuación de Lane--Emden un laboratorio natural para la aplicación de diversas herramientas analíticas y numéricas, tales como métodos de series, análisis asintótico y técnicas de integración numérica.
 
 \subsection{Objetivos del trabajo}
 
@@ -154,6 +127,16 @@ y(x_0) = y_0.
 En consecuencia, la ecuación diferencial ordinaria posee una \emph{solución local única} que depende continuamente de las condiciones iniciales.
 \end{theorem}
 
+La ecuación de Lane--Emden en su forma adimensional se expresa como
+\[
+\frac{1}{r^{2}} \frac{d}{dr} \left( r^{2} \frac{d\theta}{dr} \right) + \theta^{n} = 0,
+\]
+donde \( \theta = \theta(r) \) es una función escalar dependiente de la variable radial \( r \geq 0 \), y \( n \) es el \emph{índice politrópico}, que determina el tipo de no linealidad del sistema.  
+El problema se complementa con las condiciones de frontera
+\[
+\theta(0) = 1, \quad \theta'(0) = 0,
+\]
+que garantizan la regularidad de la solución en el origen.
 
 % TODO: Mostrar algunas soluciones exactas dependen del índice.
 Existen una inmensidad de métodos para resolver estas EDP's,mencionaremos a las más importantes.
@@ -275,15 +258,33 @@ y el teorema queda demostrado.
 \section{Conclusiones}
 
 
+\subsection{Importancia matemática del modelo}
 
+Desde el punto de vista matemático, la ecuación de Lane--Emden ofrece un marco ideal para analizar varios aspectos teóricos fundamentales.  
+Entre ellos destacan:
+\begin{itemize}
+	\item La aplicación del \emph{teorema de existencia y unicidad de Picard–Lindelöf} a ecuaciones con términos singulares.
+	\item El análisis del comportamiento local de las soluciones cerca del origen y su desarrollo en series de potencias.
+	\item La caracterización de las soluciones para diferentes regímenes del índice politrópico, incluyendo los casos \( n = 0, 1, 5 \), donde se obtienen soluciones analíticas explícitas.\cite{alzate2014}
+\end{itemize}
 
+Estos aspectos hacen de la ecuación de Lane--Emden un laboratorio natural para la aplicación de diversas herramientas analíticas y numéricas, tales como métodos de series, análisis asintótico y técnicas de integración numérica.
 
+\begin{theorem}[Picard–Lindelöf]
+	.
+\end{theorem}
 
+% TODO: Mostrar algunas soluciones exactas dependen del índice.
 
+\section{Método 0}
 
+\section{Método 1}
 
+\section{Análisis de convergencia}
 
+\section{Ejemplos numéricos}
 
+\section{Conclusiones}
 
 \bibliographystyle{plainnat}
 \bibliography{references}
