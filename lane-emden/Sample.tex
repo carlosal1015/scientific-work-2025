@@ -154,24 +154,59 @@ En el paper de Adomian \cite{adomian1995} esta el método en general,procederemo
 
 \section{Aplicación del método de descomposición (modificado) al problema de Lane--Emden}
 
-Consideremos la forma general (politrópica) de la ecuación de Lane-Emden~\eqref{eq:lane-emden}.
-Se supone una solución en serie
-\[
-T(r)=\sum_{k=0}^{\infty} T_{k}(r),
-\]
-y se descompone la parte no lineal en polinomios de Adomian \(A_k\):
-\[
-T(r)^{m} = \sum_{k=0}^{\infty} A_{k}(r).
-\]
+USING MODIFIED DECOMPOSITION FOR THE LANE-EMDEN EQUATION
 
-Con estas condiciones iniciales concluimos que $a_0=1 ,a_1=0$.
+The solution can also be obtained by the "modified decomposition" method [8] by writing
+\begin{equation}
+T=\sum_{n=0}^{\infty}a_{n}T^{n} \text{ , } T^{m}=\sum_{n=0}^{\infty}A_{n}r^{n},
+\end{equation}
+where $A_{n}=A_{n}(a_{0},\dots,a_{n}).$ The condition $T(0)=1$ implies $a_{0}=1$ since
+$$ \sum_{n=0}^{\infty}a_{n}r^{n}\big|_{r=0}=1 $$
+Also, $(dT/dr)|_{r=0}=0$ implies
+$$ \sum_{n=0}^{\infty}(n+1)a_{n+1}r^{n}\big|_{r=0}=0; $$
+thus $a_{1}=0$ Then
+$$ \frac{d}{dr}T=\sum_{n=1}^{\infty}na_{n}r^{n-1}=\sum_{n=1}^{\infty}(n+1)a_{n+1}r^{n} $$
+and
+$$ r^{2}\frac{d}{dr}T=\sum_{n=1}^{\infty}(n+1)a_{n+1}r^{n+2} $$
+$$ \frac{d}{dr}r^{2}\frac{d}{dr}T=\sum_{n=1}^{\infty}(n+1)(n+2)a_{n+1}r^{n+1} $$
+$$ =\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^{n+2} $$
+$$ r^{-2}\frac{d}{dr}r^{2}\frac{d}{dr}T=\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^{n} $$
+We let the operator $L=r^{-2}(d/dr)r^{2}(d/dr)$ and $NT=\lambda T^{m}$ to write $LT+NT=0$ as before. Hence
+\begin{align*}
+\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^{n}+\lambda\sum_{n=0}^{\infty}A_{n}r^{n}&=0, \\
+(n+2)(n+3)a_{n+2}+\lambda A_{n}&=0
+\end{align*}
+After determining the $A_{n},$ we can write
+\begin{align*}
+a_{0}&=1 \\
+a_{1}&=0 \\
+a_{n+2}&=-\frac{\lambda A_{n}}{(n+2)(n+3)},
+\end{align*}
+for $n\ge0$, determining the coefficients of the Maclaurin series for $T$. The $A_{n}$ for decimal power nonlinearities are given in [2,3,9] but are listed here for convenience. We generate the $A_{n}(T_{0},\dots,T_{1})|_{T_{j}=a_{j}}$ for $0\le j \le n$
+\begin{align*}
+A_{0}&=a_{0}^{m} \\
+A_{1}&=ma_{0}^{m-1}a_{1} \\
+A_{2}&=ma_{0}^{m-1}a_{2}+\frac{1}{2}m(m-1)a_{0}^{m-2}a_{1}^{2} \\
+A_{3}&=ma_{0}^{m-1}a_{3}+m(m-1)a_{0}^{m-3}a_{1}a_{2} \\
+&\quad+\frac{1}{6}m(m-1)(m-2)a_{0}^{m-3}a_{1}^{3} \\
+A_{4}&=ma_{0}^{m-1}a_{4}+m(m-1)a_{0}^{m-2}\left\{\frac{1}{2}a_{2}^{2}+a_{1}a_{3}\right\} \\
+&\quad+\frac{1}{2}m(m-1)(m-2)a_{0}^{m-3}a_{1}^{2}a_{2} \\
+&\quad+\frac{1}{24}m(m-1)(m-2)(m-3)a_{0}^{m-4}a_{1}^{4}
+\end{align*}
+which can be simplified (since $a_{1}=0$ and following components of odd index, $(a_{3},a_{5},a_{7},\dots)$ all vanish. Thus we have
+\begin{equation}
+T=1-\lambda\sum_{k=1}^{\infty}\frac{A_{2k-2}}{(2k)(2k+1)}r^{2k};
+\end{equation}
+where $A_{2k-2}\equiv A_{2k-2}(a_{0},a_{2},\dots,a_{2k-2}).$
+\begin{align*}
+A_{0}&=1 \\
+A_{1}&=0 \\
+A_{2}&=-\lambda/2\cdot3 \\
+A_{3}&=0 \\
+A_{4}&=-\lambda A_{2}/4\cdot5
+\end{align*}
+The modified decomposition also does not involve change of variables in the Lane-Emden equation.
 
-Y que $r^{-2}\frac{d}{dr}r^2\frac{d}{dr}T=\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^n$
-Definimos al operador lineal $L=r^{-2}\frac{d}{dr}r^2\frac{d}{dr}$ y $N(T)=\lambda T^m$, donde $LT+NT=0$.Luego:
-$$\sum_{n=0}^{\infty}(n+2)(n+3)a_{n+2}r^n+\lambda\sum_{n=0}^{\infty}A_n(r)r^n=0$$.
-$$(n+2)(n+3)a_{n+2}r^n+\lambda A_n(r)r^n=0$$
-
-Con ello ya podemos encontrar los terminos de $a$ y de $A$.
 
 
 
