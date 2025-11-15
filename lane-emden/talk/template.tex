@@ -1,0 +1,130 @@
+%------------------------------------------------------------------------
+%  Template    
+%------------------------------------------------------------------------
+
+% This file will be compiled by a computer program.
+% Please do not change preamble (before II. COMMANDS ENTERED BY THE AUTHOR  ).
+
+% Este archivo será procesado automaticamente por un programa.
+% Por favor no altere nada en el preamble (hasta II. COMMANDS ENTERED BY THE AUTHOR  ).
+
+
+%------------------------
+%  I. PREAMBLE        
+%-----------------------
+
+% I.1 Class of document
+\documentclass[11pt,a4paper]{article}
+
+% I.2 Language
+\usepackage[spanish, english]{babel}
+
+% I.3 Encodings
+\usepackage[T1]{fontenc} 
+\usepackage{newtxtext} 
+
+% I.4 AMS-LaTeX      
+\usepackage{amsmath} % it's include amsfonts amstext, amsgen, amsbsy, amsopn too.
+
+% I.5 Page layout
+\usepackage[margin=3cm]{geometry}
+
+% I.6 Title and Abstract customization
+\renewenvironment{abstract}{%
+	\section*{\abstractname}}
+	{} 
+\usepackage[affil-it]{authblk}
+
+\newcommand{\MVAt}{{\usefont{U}{mvs}{m}{n}\symbol{`@}}}
+% I.7 Title and author information
+\title{Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}
+\author[1]{Matihus Alberth Molina Larios~\thanks{matihus.molina\MVAt unmsm.edu.pe}}
+\author[2]{Carlos Alonso Aznarán Laos~\thanks{caznaranl\MVAt uni.pe}}
+\affil[1]{Universidad Nacional Mayor de San Marcos, Peru}
+\affil[2]{Universidad Nacional de Ingeniería, Peru}
+
+\date{} %Please, do not change -  POR FAVOR, NO MODIFICAR - .
+
+% Others
+
+\usepackage[backref=page]{hyperref}
+%--------------------------------------------------------------------------
+%  II. COMMANDS ENTERED BY THE AUTHOR        
+%--------------------------------------------------------------------------
+
+% Please, include ONLY the COMMANDS that will be used in the abstract, if necessary.
+
+% Por favor, incluya SOLO los COMANDOS que se utilizarán en el resumen, en caso sea necesario. 
+
+\usepackage{filecontents}
+
+\begin{filecontents}{\jobname.bib}
+@article{Adomian1995,
+  author    = {Adomian, G. and Rach, R. and Shawagfeh, N. T.},
+  title     = {On the analytic solution of the Lane-Emden equation},
+  journal   = {Foundations of Physics Letters},
+  volume    = {8},
+  pages     = {161--181},
+  year      = {1995},
+  doi       = {10.1007/BF02187585}
+}
+@article{Alzate2014,
+  author    = {Alzate, P.},
+  title     = {An {I}terative {M}ethod for {S}olving {T}wo {S}pecial {C}ases of {L}ane-{E}mden {T}ype {E}quation},
+  journal   = {American Journal of Computational Mathematics},
+  volume    = {4},
+  pages     = {242--253},
+  year      = {2014},
+  doi       = {10.4236/ajcm.2014.43021}
+}
+@article{Lane1870,
+  author       = {Lane, J. H.},
+  title        = {On the {T}heoretical {T}emperature of the {S}un under the {H}ypothesis of a {G}aseous {M}ass {M}aintaining {I}ts {V}olume by {I}ts {I}nternal {H}eat and {D}epending on the {L}aws of {G}ases {K}nown to {T}errestrial {E}xperiment},
+  journal      = {The American Journal of Science and Arts},
+  volume       = {50},
+  year         = {1870},
+  pages        = {57--74},
+}
+\end{filecontents}
+\bibliographystyle{plain}
+%--------------------------------------------------------------------------
+%  III. DOCUMENT       
+%--------------------------------------------------------------------------                                     
+\pagenumbering{gobble}
+
+\begin{document}
+
+%The main language of the text is English. If the abstract will be written in Spanish, please uncomment the following command:
+
+% El idioma principal del texto es English. Si el resumen será escrito en español, por favor, descomentar el siguiente comando:
+
+%---------
+%\selectlanguage{spanish}
+%---------
+
+\begin{flushleft}
+	\bfseries\footnotesize VII International Meeting in Mathematical Sciences\\
+	Huaraz, Perú\\
+	December 15--17, 2025
+\end{flushleft}
+
+{\let\newpage\relax\maketitle}
+
+\begin{abstract}
+	The aim of this talk is to present a well-suited approximation of a
+	internal structure of a self-gravitating polytrophic body model which
+	consists of a type Lane-Emden equation~\cite{Lane1870}, a second
+	order nonlinear ODE.
+	First, we will discuss an efficient algorithm called Adomian
+	decomposition method~\cite{Adomian1995} which server as an
+	approximation in terms of generalized Taylor series for the
+	Lane-Emden equation.
+	Next, we follow the methodology given in~\cite{Alzate2014} to
+	guarantee the convergence to the solution.
+	Finally, we carry out several numerical experiments whose results
+	are in accordance with the theoretical analysis.
+\end{abstract}
+
+\bibliography{\jobname}
+
+\end{document}
