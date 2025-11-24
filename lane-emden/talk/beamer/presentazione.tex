@@ -1,40 +1,14 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Copyright 2022 by Isac Pasianotto
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%   DESCRIZIONE 
-
-% Non riuscendo a trovare un tema per la classe Beamer che mi soddisfacesse, 
-% ho provveduto alla creazione del seguente tema che ho utilizzato per la realizzazione 
-% della presentazione che ha accompagnato la discussione di tesi di laurea. 
-% Il tema è basato a partire dal colore blu del logo dell'università degli
-% studi di Trieste, dal quale è stata creata una palette di colori aggiungendo 
-% gradualmente del bianco. 
-% 
-%  Nota:  
-% Per il caso specifico (discussione di tesi) in cui mi è servito il tema, ho impostato ad hoc
-% una disposizione alternativa del primo frame rispetto a quello che si otterrebbe normalmente 
-% con il comando \maketitle. 
-% Per evitare questo basta commentare il comando \setTitlestyleDissertation immediatamente precedente. 
-%
-% Il layout proposto potrebbe essere leggermente rivisto, per es. nel caso in cui fosse 
-% presente anche un correlatore. In questo bisogna decommentare nel file:
-%		otherResources/presentazione_myThemeSetting.tex
-% le opportune linee di codice dove suggerito. 
-% Sempre agendo nel suddetto file è possibile anche impostare il layout utilizzando solamente 
-% il logo dell'università, omettendo quindi il logo del dipartimento. In generale da tale 
-% file è possibile apportare qualisasi modifica al tema. Consiglio di consultare la 
-% documentazione del paccehtto beamer all'indirizzo: 
-%	https://mirror.math.princeton.edu/pub/CTAN/macros/latex/contrib/beamer/doc/beameruserguide.pdf
-
-\documentclass{beamer}
+\documentclass[
+	8pt,
+	aspectratio=1610,
+	professionalfonts,
+	english,
+	intlimits,
+	% leqno,
+	handout,
+	% noamsthm,
+	c
+]{beamer}
 
 % Caricamento di tutti i pacchetti necessari 
 \usepackage{otherResources/presentazione_allPackages}
@@ -47,17 +21,17 @@
     pdftitle={Titolo presentazione},
     pdfsubject={Argomento presentazione}
 }
-\title[Titolo breve]{Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}
-\institute{Universidad Nacional de Ingeniería}
-\author[Nome Cognome]{Carlos Alonso Aznarán Laos}
-\year=2022
-\month=07
-\day=12
+\title[Numerical solution for Lane-Emden ODE by Adomian decomposition]{Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}
+\institute[Universidad Nacional Mayor de San Marcos]{Universidad Nacional de Ingeniería}
+\author[Matihus Molina\and Carlos Aznarán]{Carlos Alonso Aznarán Laos}
+\year=2025
+\month=12
+\day=15
 \def\relatore{Matihus Alberth Molina Larios}
-\def\relatoreLabel{Expositor}
+\def\relatoreLabel{Speaker}
 %\def\correlatore{Kathryn Janeway}
 %\def\correlatoreLabel{Correlatore}
-\def\candidatoLabel{Colaborador}
+\def\candidatoLabel{Collaborator}
 \def\LogoUniversita{otherResources/membretes-UNMSM-01.png}
 \def\LogoDipartimento{otherResources/FlyerE.png}
 \def\LogoFiligrana{otherResources/escudo2.png}
@@ -68,272 +42,226 @@
 % Inizio Presentazione
 
 \begin{document}
-	
-		%%%%%%%%%%%%%%%%%%%%%%%
-		%%  Slide 1: TITOLO  %%
-		%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%  Slide 1: TITOLO  %%
+%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\setTitlestyleDissertation
-\maketitle
+    \setTitlestyleDissertation
+    \maketitle
 \end{frame}
 
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%  Slide 2: <ArgomentoPrimaSlide> %%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Motivation}
+    In the theory of stellar structures, the Lane-Endem
+    equation has been used to describe the temperature variation
+    in a star with hydrostatic equilibrium under a polytropic
+    framework.
+    \begin{columns}[c] % [t] para alinear arriba
+        \begin{column}{0.38\textwidth}
+            \begin{figure}[ht!]
+                \centering
+                \includegraphics[width=.35\paperwidth]{pv_polytropic}
+            \end{figure}
+            %\cite{adomian1995} \cite{wazwaz}
+        \end{column}
+        \begin{column}{0.58\textwidth}
+            This equation is a consequence of hydrostatic equilibrium and pressure-density.
+            The models combines
+            \begin{align}
+                \diff{P\left(r\right)}{r} & =
+                -\frac{GM\left(r\right)\rho\left(r\right)}{r^{2}}.
+                \tag{Hydrostatic equilibrium condition} \\
+                \diff{M\left(r\right)}{r} & =
+                4\pi r^{2}\rho\left(r\right).
+                \tag{Mass equation}                     \\
+                P\left(r\right)           & =
+                K{\left[\rho\left(r\right)\right]}^{1+\frac{1}{n}}.
+                \tag{Polytropic equation of state}
+            \end{align}
+            %\cite{maciel2007stellar}
+            %\cite{alzate2014}
+            Where
+            \begin{itemize}
+                \item $P\left(r\right)$: pressure function.
+                \item $\rho\left(r\right)$: density function.
+                \item $M\left(r\right)$: mass function.
+                \item $n$: non-negative polytropic index.
+                \item $K$: positive pressure constant.
+                \item $G$: gravitational constant.
+            \end{itemize}
+            These set of equations leads to the Lane-Emden equation.
+        \end{column}
+    \end{columns}
+\end{frame}
 
-\section{Capitulo 1}
-% ----------------------- Motivación Física -------------------
+\begin{frame}
+    \frametitle{Initial value problem for Lane-Emden type ODE}
 
-\begin{frame}{Motivación}
+    \begin{equation*}
+        \begin{cases}
+            \diff[2]{\theta}{\xi}+
+            \frac{2}{\xi}
+            \diff{\theta}{\xi}+
+            N
+            \left(\theta\right)=
+            g
+            \left(\xi\right)
+             & \text { for }0\leq\xi\leq R. \\
+            \theta
+            \left(0\right)=
+            \theta_{0},\quad
+            \diff{\theta\left(0\right)}{\xi}=
+            \theta^{\prime}_{0}.
+             &
+        \end{cases}.
+    \end{equation*}
 
-\begin{columns}[t] % [t] para alinear arriba
-    \begin{column}{0.48\textwidth}
-       En la teoría de estructuras estelares, la ecuación de Lane-Endem(L-E) ha sido utilizada para describir la variación de temperatura en una estrella con equilibrio hidrostatico bajo un modelo politrópico(revisar).
-       %\cite{adomian1995} \cite{wazwaz}
-    \end{column}
+    \begin{alertblock}{Remarks}
+        \begin{description}
+            \item[$N\left(\theta\right)=\theta^{m}$]
+                  Surge en el modelamiento de la teoría de la
+                  estructura estelar.%\cite{umesh}
 
-    \begin{column}{0.48\textwidth}
-        La ecuación del L-E es esencialmente una consecuencia del equilibrio hidrostatico y de la Presión-Densidad 
-        $$P=K\rho^{1+\frac{1}{n}}$$
-        %\cite{maciel2007stellar}
-        %\cite{alzate2014}
-        \begin{itemize}
-            \item $P(r)$: Presión.
-            \item $\rho(r):$ Densidad.
-            \item $n:$ Índice politrópico.
-            \item $K:$ Constante
-        \end{itemize}
-    \end{column}
-\end{columns}
+            \item[$N\left(\theta\right)=\exp\left(\theta\right)$]
+
+                  Aparece en el modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
+
+                  Existe una demostración física en el paper de Alzate %\cite{alzate2014}
+
+            \item[$N\left(\theta\right)={\left(y^{2}-C\right)}^{\frac{3}{2}}$]
+
+                  Is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
+                  in his study of the gravitational potential of degenerate stars.
+        \end{description}
+    \end{alertblock}
+
+    La forma equivalente más usada es:
+    \[
+        \theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + \theta^n = 0.
+    \]
+
+    Con condiciones iniciales:
+    \[
+        \theta(0) = 1, \qquad \theta'(0)=0.
+    \]
+
+    \begin{itemize}
+        \item Garantizan regularidad en el origen.
+        \item Evitan la singularidad del término \(2/\xi\).
+    \end{itemize}
 
 \end{frame}
 
+\begin{frame}{Timeline}
+    \begin{tikzpicture}[x=1cm, y=1.2cm]
+        \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
+        \tikzstyle{texto}=[align=left]
+        \node[etapa] (p1) at (0,0) {};
+        \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
+        \node[etapa] (p2) at (0,-1.5) {};
+        \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
+        \node[etapa] (p3) at (0,-3) {};
+        \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
+        \node[etapa] (p4) at (0,-4.5) {};
+        \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
+        \draw[thick] (p1) -- (p4);
+    \end{tikzpicture}
+    La principal dificultad al resolver ecuaciones diferenciales singulares es el
+    comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
+    muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
+    Por ejemplo, Wazwaz (2005) propuso un nuevo esquema; Khan \textit{et al}. (2012)
+    aplicaron el método de transformación diferencial (DTM), y Chowdhury y Hashim
+    (2009) utilizaron el método de perturbación por homotopía (HPM) para obtener la
+    solución aproximada del problema (1).
 
+    Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido, y Parand \textit{et al}.
+    (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
+    racionales y la integración de Gauss--Radau para la solución de la ecuación de
+    Lane--Emden de tipo (1).
 
-
-
-% -------------------- Ecuaciones base ------------------------
-\begin{frame}{Ecuaciones fundamentales}
-El modelo combina:
-
-\begin{itemize}
-    \begin{equation}
-    \dv{P}{r} = -\frac{G M(r) \rho(r)}{r^2} \tag{Ecuación de equilibrio hidrostático}
-    \end{equation}
-    \begin{equation}
-    \dv{M}{r} = 4\pi r^2 \rho(r) \tag{Ecuación de masa}
-    \end{equation}
-    \begin{equation}
-     P = K \rho^{1+1/n} \tag{Ecuación de estado politrópica}
-    \end{equation}
-\end{itemize}
-
-Estas ecuaciones llevan, tras adimensionalización, a la Ecuación de Lane--Emden.
-\end{frame}	
-% --------------------- Lane-Emden ----------------------------
-\begin{frame}{Ecuación general tipo Lane--Emden}
-
-\begin{block}{Ecuación diferencial}
-\[
-w''(r) + \frac{P}{r}\, w'(r) + N\!\left(w(r)\right) = g(r),
-\qquad 0 < r \le R,0\le P
-\tag{1}
-\]
-\end{block}
-
-\begin{block}{Condiciones iniciales}
-\[
-w(0) = A, 
-\qquad 
-w'(0) = B.
-\tag{2}
-\]
-\end{block}
-
-\begin{block}{Interpretación de los términos}
-\[
-N = \text{nonlinear term},\qquad
-P = \text{shape factor},\qquad
-A,B = \text{constants}.
-\]
-\end{block}
+    Recientemente, Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018)
+    resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición
+    de Adomian ajustado y también describieron la formación de estas ecuaciones.
+    %\cite{umesh}
 \end{frame}
 
-\begin{frame}{\(N(w)=w^{m}\)}
-     Si \(N(w)=w^{m}\), entonces la ecuación (1) es la ecuación de Lane--Emden de 
-    (1), la cual surge en el modelamiento de la teoría de la 
-    estructura estelar.%\cite{umesh}
+\begin{frame}
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Adomian decomposition method}
+                .
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Differential transformation method}
+                Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
+                En este aborda para $f(x)=e^{\pm x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
+                Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
+                $$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
+                $y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
+            \end{block}
+        \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{\(N(w)=e^{w}\)}
-    si \(N(w)=e^{w}\), entonces la ecuación (1) es la 
-    ecuación de Lane--Emden de (1), que aparece en el 
-    modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
-
-    Existe una demostración física en el paper de Alzate %\cite{alzate2014}
-\end{frame}
-
-\begin{frame}{\(N(w)=(y^2-C)^{\frac{3}{2}}\)}
-     Now consider \( g(y) = (y^2-C)^{3/2} \), then Equation~(1) is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
-     in his study of the gravitational potential of degenerate stars.
-\end{frame}
-
-% ------------------ Nuestra ecuación tipo Lane-Endem ---------------------
-\begin{frame}{Nuestra ecuación tipo Lane-Endem}
-La forma equivalente más usada es:
-\[
-    \theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + \theta^n = 0.
-\]
-
-Con condiciones iniciales:
-\[
-    \theta(0) = 1, \qquad \theta'(0)=0.
-\]
-
-\begin{itemize}
-    \item Garantizan regularidad en el origen.
-    \item Evitan la singularidad del término \(2/\xi\).
-\end{itemize}
-
-\end{frame}
-          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%  Slide 3: <ArgomentoSecondaSlide>  %%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Capitulo 2.5 XD}
-
-\begin{frame}{Línea de tiempo}
-
-\begin{tikzpicture}[x=1cm, y=1.2cm]
-    \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
-    \tikzstyle{texto}=[align=left]
-
-    \node[etapa] (p1) at (0,0) {};
-    \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
-
-    \node[etapa] (p2) at (0,-1.5) {};
-    \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
-
-    \node[etapa] (p3) at (0,-3) {};
-    \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
-
-    \node[etapa] (p4) at (0,-4.5) {};
-    \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
-
-    \draw[thick] (p1) -- (p4);
-
-\end{tikzpicture}
-\end{frame}
-
-
-
-
-
-
-
-\begin{frame}{Métodos}
-    La principal dificultad al resolver ecuaciones diferenciales singulares es el 
-comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado 
-muchos métodos para resolver este tipo de ecuaciones diferenciales singulares. 
-Por ejemplo, Wazwaz (2005) propuso un nuevo esquema; Khan \textit{et al}. (2012) 
-aplicaron el método de transformación diferencial (DTM), y Chowdhury y Hashim 
-(2009) utilizaron el método de perturbación por homotopía (HPM) para obtener la 
-solución aproximada del problema (1). 
-
-Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido, y Parand \textit{et al}. 
-(2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre 
-racionales y la integración de Gauss--Radau para la solución de la ecuación de 
-Lane--Emden de tipo (1). 
-
-Recientemente, Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018) 
-resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición 
-de Adomian ajustado y también describieron la formación de estas ecuaciones.
-%\cite{umesh}
+\begin{frame}
+    \begin{columns}[t]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{ODE system}
+                .
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
-\begin{frame}{Método Adomiano}
-    
-\end{frame}
-
-\begin{frame}{Método del Colombiano Alzate}
-    Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
-    En este aborda para $f(x)=e^{\pm x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
-    Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
-    $$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
-    $y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
-\end{frame}
-
-
-
-
-
-
-
-
-
-
-\section{Capitulo 2}
-% ------------------ Soluciones conocidas ----------------------
 \begin{frame}{Soluciones conocidas}
-En general no hay soluciones analíticas a la ecuación de Lane-Endem para un índice m arbitrario.
-Pero para algunos casos específicos, es sencillo obtenerlos,por ejemplo: para n=0,1,5. 
-%\cite{maciel2007stellar}
-%Muestran las soluciones y además dan su interpretación.
-\begin{itemize}
-    \item \(n=0\): \(\displaystyle \theta = 1 - \frac{\xi^2}{6}\)
-    \item \(n=1\): \(\displaystyle \theta = \frac{\sin\xi}{\xi}\)
-    \item \(n=5\): \(\displaystyle \theta = \frac{1}{\sqrt{1 + \xi^2/3}}\)
-\end{itemize}
-\textbf{Hay demostración en la página q descargue uu xD}
+    En general no hay soluciones analíticas a la ecuación de Lane-Endem para un índice m arbitrario.
+    Pero para algunos casos específicos, es sencillo obtenerlos,por ejemplo: para n=0,1,5.
+    %\cite{maciel2007stellar}
+    %Muestran las soluciones y además dan su interpretación.
+    \begin{itemize}
+        \item \(n=0\): \(\displaystyle \theta = 1 - \frac{\xi^2}{6}\)
+        \item \(n=1\): \(\displaystyle \theta = \frac{\sin\xi}{\xi}\)
+        \item \(n=5\): \(\displaystyle \theta = \frac{1}{\sqrt{1 + \xi^2/3}}\)
+    \end{itemize}
+    \textbf{Hay demostración en la página q descargue uu xD}
 \end{frame}
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %% Slide 4: <ArgomentoTerzaSlide> %%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Capitulo 3}
-% ------------------ Tu aporte ------------------------------
 \begin{frame}{Resultados obtenidos}
-\begin{block}{Idea principal de mi trabajo}
-Mi objetivo es discutir los métodos y verificar la eficacia númerica en la que sirven.
-Discutiremos cuál es el mejor y en que contexto.
-\textbf{TODO: describir brevemente el aporte del estudiante.}
+    \begin{block}{Idea principal de mi trabajo}
+        Mi objetivo es discutir los métodos y verificar la eficacia númerica en la que sirven.
+        Discutiremos cuál es el mejor y en que contexto.
+        \textbf{TODO: describir brevemente el aporte del estudiante.}
 
-Ejemplos comunes:
-\begin{itemize}
-    \item Análisis de la regularidad en \(\xi=0\).
-    \item Aproximación numérica (Runge--Kutta / series).
-    \item Estudio del radio donde \(\theta\) se anula.
-\end{itemize}
-\end{block}
+        Ejemplos comunes:
+        \begin{itemize}
+            \item Análisis de la regularidad en \(\xi=0\).
+            \item Aproximación numérica (Runge--Kutta / series).
+            \item Estudio del radio donde \(\theta\) se anula.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Simulaciones}
-    
 \end{frame}
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %% Slide 4: <ArgomentoTerzaSlide> %%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusión}
-% -----------------------------------------------------
 \begin{frame}{Conclusiones}
-
-\begin{itemize}
-    \item La ecuación de Lane--Emden modela estrellas politrópicas.
-    \item Se deriva de equilibrio hidrostático + ecuación de masa + ley politrópica.
-    \item Existen soluciones exactas para algunos índices \(n\).
-    \item Mi análisis aporta información sobre el comportamiento/solución para el caso seleccionado.
-\end{itemize}
-
+    \begin{itemize}
+        \item La ecuación de Lane--Emden modela estrellas politrópicas.
+        \item Se deriva de equilibrio hidrostático + ecuación de masa + ley politrópica.
+        \item Existen soluciones exactas para algunos índices \(n\).
+        \item Mi análisis aporta información sobre el comportamiento/solución para el caso seleccionado.
+    \end{itemize}
 \end{frame}
 
-% -------------------- Final -----------------------------
 \begin{frame}
-\centering
-\Large Gracias por su atención.\\
-\vspace{0.4cm}
-\large Preguntas.
+    \centering
+    \Large Gracias por su atención.\\
+    \vspace{0.4cm}
+    \large Preguntas.
 \end{frame}
-
 
 \end{document}
