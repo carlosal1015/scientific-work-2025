@@ -1,0 +1,29 @@
+\documentclass[border=1cm]{standalone}
+\usepackage{chronos}
+\begin{document}
+		\begin{chronos}
+			[
+			date centric,
+			timeline={
+				start date=1965,
+				end date=2026,
+			},
+			]
+			\chronosevent {date={2000},
+				yshift=5pt,
+				special date={2000},
+				name=C,
+				name content=Theory C}
+			\chronosevent {date={1984},
+				as is,
+				name=B,
+				name content=Theory B,
+				yshift=30pt}
+			\chronosevent {date={1978},
+				as is,
+				name=A,
+				name content=Theory A,
+				yshift=5pt}
+			\chronosmaintitle {name=Theories of X, at=current bounding box.north west,yshift=30pt,anchor=north west}
+		\end{chronos}
+\end{document}

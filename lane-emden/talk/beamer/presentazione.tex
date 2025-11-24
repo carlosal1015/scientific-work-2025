@@ -153,36 +153,38 @@
 \end{frame}
 
 \begin{frame}{Timeline}
-    \begin{tikzpicture}[x=1cm, y=1.2cm]
-        \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
-        \tikzstyle{texto}=[align=left]
-        \node[etapa] (p1) at (0,0) {};
-        \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
-        \node[etapa] (p2) at (0,-1.5) {};
-        \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
-        \node[etapa] (p3) at (0,-3) {};
-        \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
-        \node[etapa] (p4) at (0,-4.5) {};
-        \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
-        \draw[thick] (p1) -- (p4);
-    \end{tikzpicture}
-    La principal dificultad al resolver ecuaciones diferenciales singulares es el
-    comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
-    muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
-    Por ejemplo, Wazwaz (2005) propuso un nuevo esquema; Khan \textit{et al}. (2012)
-    aplicaron el método de transformación diferencial (DTM), y Chowdhury y Hashim
-    (2009) utilizaron el método de perturbación por homotopía (HPM) para obtener la
-    solución aproximada del problema (1).
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=.7\paperwidth]{timeline}
+    \end{figure}
+    % \begin{tikzpicture}[x=1cm, y=1.2cm]
+    %     \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
+    %     \tikzstyle{texto}=[align=left]
+    %     \node[etapa] (p1) at (0,0) {};
+    %     \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
+    %     \node[etapa] (p2) at (0,-1.5) {};
+    %     \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
+    %     \node[etapa] (p3) at (0,-3) {};
+    %     \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
+    %     \node[etapa] (p4) at (0,-4.5) {};
+    %     \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
+    %     \draw[thick] (p1) -- (p4);
+    % \end{tikzpicture}
+    % La principal dificultad al resolver ecuaciones diferenciales singulares es el
+    % comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
+    % muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
+    % Wazwaz (2005)
+    % Khan (2012) aplicaron el método de transformación diferencial (DTM)
+    % Chowdhury y Hashim (2009) utilizaron el método de perturbación por homotopía (HPM).
+    % Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido
+    % Parand \textit{et al}. (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
+    % racionales y la integración de Gauss--Radau para la solución de la ecuación de
+    % Lane--Emden de tipo (1).
 
-    Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido, y Parand \textit{et al}.
-    (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
-    racionales y la integración de Gauss--Radau para la solución de la ecuación de
-    Lane--Emden de tipo (1).
-
-    Recientemente, Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018)
-    resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición
-    de Adomian ajustado y también describieron la formación de estas ecuaciones.
-    %\cite{umesh}
+    % Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018)
+    % resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición
+    % de Adomian ajustado y también describieron la formación de estas ecuaciones.
+    % %\cite{umesh}
 \end{frame}
 
 \begin{frame}
@@ -205,6 +207,7 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Numerical solution}
     \begin{columns}[t]
         \begin{column}{0.48\textwidth}
             \begin{block}{ODE system}
