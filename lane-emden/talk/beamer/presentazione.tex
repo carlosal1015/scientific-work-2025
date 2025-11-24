@@ -83,13 +83,33 @@
 
 \section{Capitulo 1}
 % ----------------------- Motivación Física -------------------
+
 \begin{frame}{Motivación}
-En la teoría de estructuras estelares, la ecuación de lane-endem ha sido utilizada para describir la variación de temperatura en una estrella con equilibrio hidrostatico bajo un modelo politrópico(revisar).
-La ecuación del L-E es esencialmente una consecuencia del equilibrio hidrostatico y de la Presión-Densidad 
-$$P=K\rho^{1+\frac{1}{n}}$$
-%\cite{maciel2007stellar}
-%\cite{alzate2014}
+
+\begin{columns}[t] % [t] para alinear arriba
+    \begin{column}{0.48\textwidth}
+       En la teoría de estructuras estelares, la ecuación de Lane-Endem(L-E) ha sido utilizada para describir la variación de temperatura en una estrella con equilibrio hidrostatico bajo un modelo politrópico(revisar).
+       %\cite{adomian1995} \cite{wazwaz}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+        La ecuación del L-E es esencialmente una consecuencia del equilibrio hidrostatico y de la Presión-Densidad 
+        $$P=K\rho^{1+\frac{1}{n}}$$
+        %\cite{maciel2007stellar}
+        %\cite{alzate2014}
+        \begin{itemize}
+            \item $P(r)$: Presión.
+            \item $\rho(r):$ Densidad.
+            \item $n:$ Índice politrópico.
+            \item $K:$ Constante
+        \end{itemize}
+    \end{column}
+\end{columns}
+
 \end{frame}
+
+
+
 
 
 % -------------------- Ecuaciones base ------------------------
@@ -97,18 +117,15 @@ $$P=K\rho^{1+\frac{1}{n}}$$
 El modelo combina:
 
 \begin{itemize}
-    \item Ecuación de equilibrio hidrostático:
-    \[
-        \dv{P}{r} = -\frac{G M(r) \rho(r)}{r^2}
-    \]
-    \item Ecuación de masa:
-    \[
-        \dv{M}{r} = 4\pi r^2 \rho(r)
-    \]
-    \item Ecuación de estado politrópica:
-    \(
-        P = K \rho^{1+1/n}
-    \)
+    \begin{equation}
+    \dv{P}{r} = -\frac{G M(r) \rho(r)}{r^2} \tag{Ecuación de equilibrio hidrostático}
+    \end{equation}
+    \begin{equation}
+    \dv{M}{r} = 4\pi r^2 \rho(r) \tag{Ecuación de masa}
+    \end{equation}
+    \begin{equation}
+     P = K \rho^{1+1/n} \tag{Ecuación de estado politrópica}
+    \end{equation}
 \end{itemize}
 
 Estas ecuaciones llevan, tras adimensionalización, a la Ecuación de Lane--Emden.
@@ -142,16 +159,23 @@ A,B = \text{constants}.
 \end{block}
 \end{frame}
 
-\begin{frame}{Frame Title}
-    Si \(N(w)=w^{m}\), entonces la ecuación (1) es la ecuación de Lane--Emden de 
+\begin{frame}{\(N(w)=w^{m}\)}
+     Si \(N(w)=w^{m}\), entonces la ecuación (1) es la ecuación de Lane--Emden de 
     (1), la cual surge en el modelamiento de la teoría de la 
-    estructura estelar; y si \(N(w)=e^{w}\), entonces la ecuación (1) es la 
+    estructura estelar.%\cite{umesh}
+\end{frame}
+
+\begin{frame}{\(N(w)=e^{w}\)}
+    si \(N(w)=e^{w}\), entonces la ecuación (1) es la 
     ecuación de Lane--Emden de (1), que aparece en el 
-    modelamiento de la difusión de densidad en una esfera de gas isotérmica. 
-    Las ecuaciones de Lane--Emden también surgen en el modelamiento de diversos 
-    fenómenos físicos, tales como la evolución de poblaciones, reacciones 
-    químicas, formación de patrones, etc.\ (Muatjetjeja y Khalique, 2010).
-%\cite{umesh}
+    modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
+
+    Existe una demostración física en el paper de Alzate %\cite{alzate2014}
+\end{frame}
+
+\begin{frame}{\(N(w)=(y^2-C)^{\frac{3}{2}}\)}
+     Now consider \( g(y) = (y^2-C)^{3/2} \), then Equation~(1) is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
+     in his study of the gravitational potential of degenerate stars.
 \end{frame}
 
 % ------------------ Nuestra ecuación tipo Lane-Endem ---------------------
@@ -176,6 +200,35 @@ Con condiciones iniciales:
 		%%  Slide 3: <ArgomentoSecondaSlide>  %%
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Capitulo 2.5 XD}
+
+\begin{frame}{Línea de tiempo}
+
+\begin{tikzpicture}[x=1cm, y=1.2cm]
+    \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
+    \tikzstyle{texto}=[align=left]
+
+    \node[etapa] (p1) at (0,0) {};
+    \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
+
+    \node[etapa] (p2) at (0,-1.5) {};
+    \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
+
+    \node[etapa] (p3) at (0,-3) {};
+    \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
+
+    \node[etapa] (p4) at (0,-4.5) {};
+    \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
+
+    \draw[thick] (p1) -- (p4);
+
+\end{tikzpicture}
+\end{frame}
+
+
+
+
+
+
 
 \begin{frame}{Métodos}
     La principal dificultad al resolver ecuaciones diferenciales singulares es el 
@@ -204,7 +257,7 @@ de Adomian ajustado y también describieron la formación de estas ecuaciones.
 
 \begin{frame}{Método del Colombiano Alzate}
     Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
-    En este aborda para $f(x)=e^{+-x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
+    En este aborda para $f(x)=e^{\pm x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
     Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
     $$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
     $y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
@@ -222,8 +275,9 @@ de Adomian ajustado y también describieron la formación de estas ecuaciones.
 \section{Capitulo 2}
 % ------------------ Soluciones conocidas ----------------------
 \begin{frame}{Soluciones conocidas}
-En libro de Introduction... menciona qué en general no hay soluciones analíticas a la ecuación de Lane-Endem para un índice m arbitrario.
+En general no hay soluciones analíticas a la ecuación de Lane-Endem para un índice m arbitrario.
 Pero para algunos casos específicos, es sencillo obtenerlos,por ejemplo: para n=0,1,5. 
+%\cite{maciel2007stellar}
 %Muestran las soluciones y además dan su interpretación.
 \begin{itemize}
     \item \(n=0\): \(\displaystyle \theta = 1 - \frac{\xi^2}{6}\)
