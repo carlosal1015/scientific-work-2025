@@ -5,24 +5,42 @@
 			[
 			date centric,
 			timeline={
-				start date=1965,
-				end date=2026,
+				start date=2005,
+				end date=2012,
 			},
-			]
-			\chronosevent {date={2000},
+			]% La principal dificultad al resolver ecuaciones diferenciales singulares es el
+    % comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
+    % muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
+    % Wazwaz (2005)
+    % Khan (2012) aplicaron el método de transformación diferencial (DTM)
+    % Chowdhury y Hashim (2009) utilizaron el método de perturbación por homotopía (HPM).
+    % Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido
+    % Parand \textit{et al}. (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
+    % racionales y la integración de Gauss--Radau para la solución de la ecuación de
+    % Lane--Emden de tipo (1).
+			\chronosevent {date={2005},
 				yshift=5pt,
 				special date={2000},
 				name=C,
-				name content=Theory C}
-			\chronosevent {date={1984},
+				name content=Wazwaz }
+			\chronosevent {date={2009},		
+				name=B,
+				name content=Chowdhury y Hashim,
+				yshift=5pt}
+            \chronosevent {date={2009},
 				as is,
 				name=B,
-				name content=Theory B,
+				name content=Parand \textit{et al},
 				yshift=30pt}
-			\chronosevent {date={1978},
+			\chronosevent {date={2012},
 				as is,
 				name=A,
-				name content=Theory A,
+				name content=Khan,
+				yshift=5pt}
+            \chronosevent {date={2012},
+				as is,
+				name=A,
+				name content=Baranwal \textit{et al},
 				yshift=5pt}
 			\chronosmaintitle {name=Theories of X, at=current bounding box.north west,yshift=30pt,anchor=north west}
 		\end{chronos}
