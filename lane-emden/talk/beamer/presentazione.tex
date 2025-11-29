@@ -209,6 +209,101 @@
     \end{columns}
 \end{frame}
 
+% --- Inicio de la Secuencia del Capítulo 2 ---
+
+% Frame 1: Planteamiento de la Serie de Potencias
+\begin{frame}{Descomposición Modificada: Planteamiento}
+    La solución puede obtenerse mediante el método de "descomposición modificada". Escribimos $T$ como una serie de potencias:
+    
+    \begin{equation}
+        T = \sum_{n=0}^{\infty} a_{n} r^{n}, \quad T^{m} = \sum_{n=0}^{\infty} A_{n} r^{n},
+    \end{equation}
+    
+    donde $A_{n} = A_{n}(a_{0}, \dots, a_{n})$.
+    
+    Las condiciones iniciales imponen restricciones sobre los coeficientes:
+    \begin{itemize}
+        \item La condición $T(0)=1$ implica $\sum_{n=0}^{\infty} a_{n} r^{n}|_{r=0} = 1 \implies a_{0} = 1$.
+        \item La condición $dT/dr|_{r=0} = 0$ implica $\sum_{n=0}^{\infty} (n+1)a_{n+1} r^{n}|_{r=0} = 0 \implies a_{1} = 0$.
+    \end{itemize}
+\end{frame}
+
+% Frame 2: Operador Diferencial y Derivadas
+\begin{frame}{Aplicación del Operador Diferencial}
+    Calculamos las derivadas término a término para sustituir en el operador $L = r^{-2}(d/dr)r^{2}(d/dr)$:
+    
+    \begin{align*}
+        \frac{dT}{dr} &= \sum_{n=1}^{\infty} n a_{n} r^{n-1} = \sum_{n=1}^{\infty} (n+1) a_{n+1} r^{n} \\
+        r^{2}\frac{dT}{dr} &= \sum_{n=1}^{\infty} (n+1) a_{n+1} r^{n+2} \\
+        \frac{d}{dr}\left(r^{2}\frac{dT}{dr}\right) &= \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n+1}
+    \end{align*}
+    
+    Por lo tanto:
+    \begin{equation}
+        L T = r^{-2}\frac{d}{dr}r^{2}\frac{dT}{dr} = \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n}.
+    \end{equation}
+\end{frame}
+
+% Frame 3: Relación de Recurrencia
+\begin{frame}{Relación de Recurrencia}
+    Sustituyendo en la ecuación original $LT + \lambda T^m = 0$:
+    
+    \begin{equation}
+        \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n} + \lambda \sum_{n=0}^{\infty} A_{n} r^{n} = 0.
+    \end{equation}
+    
+    Igualando coeficientes, obtenemos la relación:
+    \begin{equation}
+        (n+2)(n+3) a_{n+2} + \lambda A_{n} = 0.
+    \end{equation}
+    
+    Esto nos permite determinar los coeficientes de la serie de Maclaurin para $T$:
+    \begin{equation}
+        a_{n+2} = -\frac{\lambda A_{n}}{(n+2)(n+3)}, \quad n \ge 0.
+    \end{equation}
+    
+    Recordando que $a_{0}=1$ y $a_{1}=0$.
+\end{frame}
+
+% Frame 4: Polinomios de Adomian
+\begin{frame}{Cálculo de los Polinomios de Adomian $A_n$}
+    Los polinomios $A_n$ para no linealidades de potencia decimal se generan como:
+    
+    \begin{align*}
+        A_{0} &= a_{0}^{m} \\
+        A_{1} &= m a_{0}^{m-1} a_{1} \\
+        A_{2} &= m a_{0}^{m-1} a_{2} + \frac{1}{2}m(m-1) a_{0}^{m-2} a_{1}^{2} \\
+        A_{3} &= m a_{0}^{m-1} a_{3} + m(m-1) a_{0}^{m-3} a_{1} a_{2} + \dots \\
+        A_{4} &= m a_{0}^{m-1} a_{4} + m(m-1) a_{0}^{m-2} \left[ \frac{1}{2} a_{2}^{2} + a_{1} a_{3} \right] + \dots
+    \end{align*}
+    
+    Dado que $a_1 = 0$, todos los componentes de índice impar ($a_3, a_5, \dots$) y sus respectivos $A_n$ se anulan.
+\end{frame}
+
+% Frame 5: Solución Final
+\begin{frame}{Solución de la Ecuación Lane-Emden}
+    Simplificando con los términos nulos, la solución se expresa como:
+    
+    \begin{equation}
+        T = 1 - \lambda \sum_{k=1}^{\infty} \frac{A_{2k-2}}{(2k)(2k+1)} r^{2k},
+    \end{equation}
+    
+    donde los primeros coeficientes $A_n$ no nulos son:
+    \begin{align*}
+        A_{0} &= 1 \\
+        A_{2} &= -\frac{\lambda}{2 \cdot 3} \\
+        A_{4} &= -\frac{\lambda A_{2}}{4 \cdot 5}
+    \end{align*}
+    
+    Este método de descomposición modificada permite obtener la solución sin necesidad de cambios de variable.
+
+    NOTA:Hay un analogo para el MTD que es la tesis del alumno de pablo alzate.
+    En este verifica las soluciones tanto en los índices m=0,1,2,3,4,5;Solo para esos números enteros.
+    ¿Qué hago? Muestro el MTD así como mostré el Metodo de Adomiam?
+\end{frame}
+
+% --- Fin de la Secuencia ---
+
 \begin{frame}
     \frametitle{Numerical solution}
     \begin{columns}[t]
