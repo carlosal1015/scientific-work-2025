@@ -1,0 +1,94 @@
+\begin{frame}
+    \frametitle{Problem statement}
+
+    \begin{alertblock}{Initial value problem for Lane-Emden type ODE}
+        \begin{equation*}
+            \begin{cases}
+                \diff[2]{\theta}{\xi}+
+                \frac{2}{\xi}
+                \diff{\theta}{\xi}+
+                N
+                \left(\theta\right)=
+                g
+                \left(\xi\right)
+                 & \text { for }0\leq\xi\leq R. \\
+                \theta
+                \left(0\right)=
+                \theta_{0},\quad
+                \diff{\theta\left(0\right)}{\xi}=
+                \theta^{\prime}_{0}.
+                 &
+            \end{cases}.
+        \end{equation*}
+    \end{alertblock}
+
+    \begin{alertblock}{Remarks}
+        \begin{description}
+            \item[$N\left(\theta\right)=\theta^{m}$]
+                  Surge en el modelamiento de la teoría de la
+                  estructura estelar.%\cite{umesh}
+
+            \item[$N\left(\theta\right)=\exp\left(\theta\right)$]
+
+                  Aparece en el modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
+
+                  Existe una demostración física en el paper de Alzate %\cite{alzate2014}
+
+            \item[$N\left(\theta\right)={\left(y^{2}-C\right)}^{\frac{3}{2}}$]
+
+                  Is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
+                  in his study of the gravitational potential of degenerate stars.
+        \end{description}
+    \end{alertblock}
+
+    La forma equivalente más usada es:
+    \[
+        \theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + \theta^n = 0.
+    \]
+
+    Con condiciones iniciales:
+    \[
+        \theta(0) = 1, \qquad \theta'(0)=0.
+    \]
+
+    \begin{itemize}
+        \item Garantizan regularidad en el origen.
+        \item Evitan la singularidad del término \(2/\xi\).
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Timeline}
+    %\begin{figure}[ht!]
+    %   \centering
+    %  \includegraphics[width=.7\paperwidth]{timeline}
+    %\end{figure}
+    % \begin{tikzpicture}[x=1cm, y=1.2cm]
+    %     \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
+    %     \tikzstyle{texto}=[align=left]
+    %     \node[etapa] (p1) at (0,0) {};
+    %     \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
+    %     \node[etapa] (p2) at (0,-1.5) {};
+    %     \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
+    %     \node[etapa] (p3) at (0,-3) {};
+    %     \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
+    %     \node[etapa] (p4) at (0,-4.5) {};
+    %     \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
+    %     \draw[thick] (p1) -- (p4);
+    % \end{tikzpicture}
+    % La principal dificultad al resolver ecuaciones diferenciales singulares es el
+    % comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
+    % muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
+    % Wazwaz (2005)
+    % Khan (2012) aplicaron el método de transformación diferencial (DTM)
+    % Chowdhury y Hashim (2009) utilizaron el método de perturbación por homotopía (HPM).
+    % Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido
+    % Parand \textit{et al}. (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
+    % racionales y la integración de Gauss--Radau para la solución de la ecuación de
+    % Lane--Emden de tipo (1).
+
+    % Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018)
+    % resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición
+    % de Adomian ajustado y también describieron la formación de estas ecuaciones.
+    % %\cite{umesh}
+\end{frame}

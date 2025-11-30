@@ -1,3 +1,11 @@
+% !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
+% !TeX TXS-program:compile = txs:///lualatex | txs:///biber | txs:///lualatex | txs:///lualatex | txs:///view
+% arara: clean: { extensions: ['aux', 'blg', 'bbl', 'log', 'out', 'pdf', 'toc'] }
+% arara: lualatex
+% arara: biber
+% arara: lualatex
+% arara: lualatex
+% arara: clean: { extensions: ['aux', 'blg', 'bbl', 'log', 'out', 'toc'] }
 \documentclass[
 	8pt,
 	aspectratio=1610,
@@ -5,14 +13,20 @@
 	english,
 	intlimits,
 	% leqno,
-	handout,
+	% handout,
 	% noamsthm,
 	c
 ]{beamer}
-
+\setbeameroption{show notes on second screen=right}
 % Caricamento di tutti i pacchetti necessari 
 \usepackage{otherResources/presentazione_allPackages}
 
+\usepackage[
+	citestyle=numeric,
+	style=numeric,
+	backend=biber,
+]{biblatex}
+\addbibresource{references.bib}
 
 % Settaggi documento %%
         
@@ -51,265 +65,22 @@
     \maketitle
 \end{frame}
 
-\begin{frame}{Motivation}
-    In the theory of stellar structures, the Lane-Endem
-    equation has been used to describe the temperature variation
-    in a star with hydrostatic equilibrium under a polytropic
-    framework.
-    \begin{columns}[c] % [t] para alinear arriba
-        \begin{column}{0.38\textwidth}
-            \begin{figure}[ht!]
-                \centering
-                \includegraphics[width=.35\paperwidth]{pv_polytropic}
-            \end{figure}
-            %\cite{adomian1995} \cite{wazwaz}
-        \end{column}
-        \begin{column}{0.58\textwidth}
-            This equation is a consequence of hydrostatic equilibrium and pressure-density.
-            The models combines
-            \begin{align}
-                \diff{P\left(r\right)}{r} & =
-                -\frac{GM\left(r\right)\rho\left(r\right)}{r^{2}}.
-                \tag{Hydrostatic equilibrium condition} \\
-                \diff{M\left(r\right)}{r} & =
-                4\pi r^{2}\rho\left(r\right).
-                \tag{Mass equation}                     \\
-                P\left(r\right)           & =
-                K{\left[\rho\left(r\right)\right]}^{1+\frac{1}{n}}.
-                \tag{Polytropic equation of state}
-            \end{align}
-            %\cite{maciel2007stellar}
-            %\cite{alzate2014}
-            Where
-            \begin{itemize}
-                \item $P\left(r\right)$: pressure function.
-                \item $\rho\left(r\right)$: density function.
-                \item $M\left(r\right)$: mass function.
-                \item $n$: non-negative polytropic index.
-                \item $K$: positive pressure constant.
-                \item $G$: gravitational constant.
-            \end{itemize}
-            These set of equations leads to the Lane-Emden equation.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Initial value problem for Lane-Emden type ODE}
-
-    \begin{equation*}
-        \begin{cases}
-            \diff[2]{\theta}{\xi}+
-            \frac{2}{\xi}
-            \diff{\theta}{\xi}+
-            N
-            \left(\theta\right)=
-            g
-            \left(\xi\right)
-             & \text { for }0\leq\xi\leq R. \\
-            \theta
-            \left(0\right)=
-            \theta_{0},\quad
-            \diff{\theta\left(0\right)}{\xi}=
-            \theta^{\prime}_{0}.
-             &
-        \end{cases}.
-    \end{equation*}
-
-    \begin{alertblock}{Remarks}
-        \begin{description}
-            \item[$N\left(\theta\right)=\theta^{m}$]
-                  Surge en el modelamiento de la teoría de la
-                  estructura estelar.%\cite{umesh}
-
-            \item[$N\left(\theta\right)=\exp\left(\theta\right)$]
-
-                  Aparece en el modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
-
-                  Existe una demostración física en el paper de Alzate %\cite{alzate2014}
-
-            \item[$N\left(\theta\right)={\left(y^{2}-C\right)}^{\frac{3}{2}}$]
-
-                  Is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
-                  in his study of the gravitational potential of degenerate stars.
-        \end{description}
-    \end{alertblock}
-
-    La forma equivalente más usada es:
-    \[
-        \theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + \theta^n = 0.
-    \]
-
-    Con condiciones iniciales:
-    \[
-        \theta(0) = 1, \qquad \theta'(0)=0.
-    \]
-
-    \begin{itemize}
-        \item Garantizan regularidad en el origen.
-        \item Evitan la singularidad del término \(2/\xi\).
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}{Timeline}
-    %\begin{figure}[ht!]
-     %   \centering
-      %  \includegraphics[width=.7\paperwidth]{timeline}
-    %\end{figure}
-    % \begin{tikzpicture}[x=1cm, y=1.2cm]
-    %     \tikzstyle{etapa}=[circle, draw, fill=blue!20, minimum size=0.7cm]
-    %     \tikzstyle{texto}=[align=left]
-    %     \node[etapa] (p1) at (0,0) {};
-    %     \node[texto] at (2,0) {\textbf{1900}\\Primeros modelos};
-    %     \node[etapa] (p2) at (0,-1.5) {};
-    %     \node[texto] at (2,-1.5) {\textbf{1930}\\Chandrasekhar};
-    %     \node[etapa] (p3) at (0,-3) {};
-    %     \node[texto] at (2,-3) {\textbf{1967}\\Stellar Structure};
-    %     \node[etapa] (p4) at (0,-4.5) {};
-    %     \node[texto] at (2,-4.5) {\textbf{2025}\\Modelos actuales};
-    %     \draw[thick] (p1) -- (p4);
-    % \end{tikzpicture}
-    % La principal dificultad al resolver ecuaciones diferenciales singulares es el
-    % comportamiento singular que ocurre en \(r = 0\). Sin embargo, se han utilizado
-    % muchos métodos para resolver este tipo de ecuaciones diferenciales singulares.
-    % Wazwaz (2005)
-    % Khan (2012) aplicaron el método de transformación diferencial (DTM)
-    % Chowdhury y Hashim (2009) utilizaron el método de perturbación por homotopía (HPM).
-    % Baranwal \textit{et al}. (2012) aplicaron un enfoque híbrido
-    % Parand \textit{et al}. (2009) utilizaron una técnica seudoespectral basada en las funciones de Legendre
-    % racionales y la integración de Gauss--Radau para la solución de la ecuación de
-    % Lane--Emden de tipo (1).
-
-    % Saeed Mutaish y Hasan (2018), y Hasan y Saeed Mutaish (2018)
-    % resolvieron ecuaciones de tipo Lane--Emden mediante un método de descomposición
-    % de Adomian ajustado y también describieron la formación de estas ecuaciones.
-    % %\cite{umesh}
-\end{frame}
-
-\begin{frame}
-    \begin{columns}[t]
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Adomian decomposition method}
-                The Adomian decomposition method, which accurately computes the series solution, is of great interest in applied sciences. The method provides the solution in a rapidly convergent series whose components are elegantly computed. 
-
-                A more difficult question to address is how this method can be modified to handle the concept of singular points. It is well known that the Adomian decomposition method usually begins by defining the equation in an operator form, considering the highest–order derivative in the problem. However, a slight modification is necessary to overcome the singular behavior.
-
-            \end{block}
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Differential transformation method}
-                Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
-                En este aborda para $f(x)=e^{\pm x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
-                Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
-                $$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
-                $y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% --- Inicio de la Secuencia del Capítulo 2 ---
-
-% Frame 1: Planteamiento de la Serie de Potencias
-\begin{frame}{Descomposición Modificada: Planteamiento}
-    La solución puede obtenerse mediante el método de "descomposición modificada". Escribimos $T$ como una serie de potencias:
-    
-    \begin{equation}
-        T = \sum_{n=0}^{\infty} a_{n} r^{n}, \quad T^{m} = \sum_{n=0}^{\infty} A_{n} r^{n},
-    \end{equation}
-    
-    donde $A_{n} = A_{n}(a_{0}, \dots, a_{n})$.
-    
-    Las condiciones iniciales imponen restricciones sobre los coeficientes:
-    \begin{itemize}
-        \item La condición $T(0)=1$ implica $\sum_{n=0}^{\infty} a_{n} r^{n}|_{r=0} = 1 \implies a_{0} = 1$.
-        \item La condición $dT/dr|_{r=0} = 0$ implica $\sum_{n=0}^{\infty} (n+1)a_{n+1} r^{n}|_{r=0} = 0 \implies a_{1} = 0$.
-    \end{itemize}
-\end{frame}
-
-% Frame 2: Operador Diferencial y Derivadas
-\begin{frame}{Aplicación del Operador Diferencial}
-    Calculamos las derivadas término a término para sustituir en el operador $L = r^{-2}(d/dr)r^{2}(d/dr)$:
-    
-    \begin{align*}
-        \frac{dT}{dr} &= \sum_{n=1}^{\infty} n a_{n} r^{n-1} = \sum_{n=1}^{\infty} (n+1) a_{n+1} r^{n} \\
-        r^{2}\frac{dT}{dr} &= \sum_{n=1}^{\infty} (n+1) a_{n+1} r^{n+2} \\
-        \frac{d}{dr}\left(r^{2}\frac{dT}{dr}\right) &= \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n+1}
-    \end{align*}
-    
-    Por lo tanto:
-    \begin{equation}
-        L T = r^{-2}\frac{d}{dr}r^{2}\frac{dT}{dr} = \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n}.
-    \end{equation}
-\end{frame}
-
-% Frame 3: Relación de Recurrencia
-\begin{frame}{Relación de Recurrencia}
-    Sustituyendo en la ecuación original $LT + \lambda T^m = 0$:
-    
-    \begin{equation}
-        \sum_{n=0}^{\infty} (n+2)(n+3) a_{n+2} r^{n} + \lambda \sum_{n=0}^{\infty} A_{n} r^{n} = 0.
-    \end{equation}
-    
-    Igualando coeficientes, obtenemos la relación:
-    \begin{equation}
-        (n+2)(n+3) a_{n+2} + \lambda A_{n} = 0.
-    \end{equation}
-    
-    Esto nos permite determinar los coeficientes de la serie de Maclaurin para $T$:
-    \begin{equation}
-        a_{n+2} = -\frac{\lambda A_{n}}{(n+2)(n+3)}, \quad n \ge 0.
-    \end{equation}
-    
-    Recordando que $a_{0}=1$ y $a_{1}=0$.
-\end{frame}
-
-% Frame 4: Polinomios de Adomian
-\begin{frame}{Cálculo de los Polinomios de Adomian $A_n$}
-    Los polinomios $A_n$ para no linealidades de potencia decimal se generan como:
-    
-    \begin{align*}
-        A_{0} &= a_{0}^{m} \\
-        A_{1} &= m a_{0}^{m-1} a_{1} \\
-        A_{2} &= m a_{0}^{m-1} a_{2} + \frac{1}{2}m(m-1) a_{0}^{m-2} a_{1}^{2} \\
-        A_{3} &= m a_{0}^{m-1} a_{3} + m(m-1) a_{0}^{m-3} a_{1} a_{2} + \dots \\
-        A_{4} &= m a_{0}^{m-1} a_{4} + m(m-1) a_{0}^{m-2} \left[ \frac{1}{2} a_{2}^{2} + a_{1} a_{3} \right] + \dots
-    \end{align*}
-    
-    Dado que $a_1 = 0$, todos los componentes de índice impar ($a_3, a_5, \dots$) y sus respectivos $A_n$ se anulan.
-\end{frame}
-
-% Frame 5: Solución Final
-\begin{frame}{Solución de la Ecuación Lane-Emden}
-    Simplificando con los términos nulos, la solución se expresa como:
-    
-    \begin{equation}
-        T = 1 - \lambda \sum_{k=1}^{\infty} \frac{A_{2k-2}}{(2k)(2k+1)} r^{2k},
-    \end{equation}
-    
-    donde los primeros coeficientes $A_n$ no nulos son:
-    \begin{align*}
-        A_{0} &= 1 \\
-        A_{2} &= -\frac{\lambda}{2 \cdot 3} \\
-        A_{4} &= -\frac{\lambda A_{2}}{4 \cdot 5}
-    \end{align*}
-    
-    Este método de descomposición modificada permite obtener la solución sin necesidad de cambios de variable.
-
-    NOTA:Hay un analogo para el MTD que es la tesis del alumno de pablo alzate.
-    En este verifica las soluciones tanto en los índices m=0,1,2,3,4,5;Solo para esos números enteros.
-    ¿Qué hago? Muestro el MTD así como mostré el Metodo de Adomiam?
-\end{frame}
-
-% --- Fin de la Secuencia ---
+\input{motivation}
+\input{problem}
+\input{methodology}
 
 \begin{frame}
     \frametitle{Numerical solution}
+    We are interested for Lane-Emden solutions for $0\leq n\leq 5$.
     \begin{columns}[t]
         \begin{column}{0.48\textwidth}
             \begin{block}{ODE system}
-                .
+                \begin{align*}
+                    \diff{y}{x} & =
+                    z.              \\
+                    \diff{z}{x} & =
+                    -y^{n}-\frac{2}{x}z.
+                \end{align*}
             \end{block}
         \end{column}
         \begin{column}{0.48\textwidth}
@@ -346,16 +117,23 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Simulaciones}
+\begin{frame}{Simulations}
 \end{frame}
 
-\begin{frame}{Conclusiones}
+\begin{frame}{Conclusions}
     \begin{itemize}
         \item La ecuación de Lane--Emden modela estrellas politrópicas.
         \item Se deriva de equilibrio hidrostático + ecuación de masa + ley politrópica.
         \item Existen soluciones exactas para algunos índices \(n\).
         \item Mi análisis aporta información sobre el comportamiento/solución para el caso seleccionado.
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{References}
+
+    % \nocite{*}
+    \printbibliography[heading=none]
 \end{frame}
 
 \begin{frame}
