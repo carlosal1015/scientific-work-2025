@@ -1,0 +1,180 @@
+\documentclass[
+    8pt,
+    aspectratio=1610,
+    c,
+    english,
+    intlimits,
+    % handout,
+    % leqno,
+    % noamsthm,
+    professionalfonts,
+]{beamer}
+% \setbeameroption{show notes on second screen=right}
+\usepackage{tikz} % per le trasparenze 
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage{diffcoeff}
+%\usepackage{fontspec}
+%\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+%\setmainfont{Brandon Text} % sarebbe quello che dicono di usare come font primario qui https://www.units.it/sites/default/files/media/documenti/ateneo/immagine-coordinata/units_brand-manual_0.pdf
+% Oppure posso settare un font a piacere, per es:
+%\setmainfont{Oxygen}
+\usepackage[
+    citestyle=numeric,
+    style=numeric,
+    backend=biber,
+]{biblatex}
+\addbibresource{references.bib}
+\hypersetup{
+    pdfauthor={Nome Cognome},
+    pdftitle={Titolo presentazione},
+    pdfsubject={Argomento presentazione}
+}
+
+\author[\bfseries Matihus Molina\and \bfseries Carlos Aznarán]{
+    \bfseries Carlos Alonso Aznarán Laos
+}
+\title[Numerical solution for Lane-Emden ODE by Adomian decomposition]{
+    Numerical solution for differential equations of Lane-Emden type \\
+    by Adomian decomposition and integration methods
+}
+% \subtitle{VII International Meeting in Mathematical Sciences}
+\institute[UNMSM - Facultad de Ciencias Matemáticas]{}
+\date{Huaraz,~\today}
+\year=2025
+\month=12
+\day=15
+\def\relatore{\bfseries Matihus Alberth Molina Larios}
+\def\relatoreLabel{Speaker}
+\def\correlatore{Kathryn Janeway}
+\def\correlatoreLabel{Correlatore}
+\def\candidatoLabel{Collaborator}
+\def\LogoUniversita{otherResources/membretes-UNMSM-01.png}
+\def\LogoDipartimento{otherResources/FlyerE.png}
+\def\LogoFiligrana{otherResources/escudo2.png}
+
+% Copyright 2022 by Isac Pasianotto
+
+\definecolor{bluUnits100}{rgb}{0.16,0.22,0.36}
+\definecolor{bluUnits80}{rgb}{0.22,0.3,0.51}
+\definecolor{bluUnits70}{rgb}{0.25,0.35,0.58}
+\definecolor{bluUnits50}{rgb}{0.41,0.51,0.74}
+\definecolor{bluUnits40}{rgb}{0.56,0.63,0.81}
+\definecolor{bluUnits25}{rgb}{0.78,0.82,0.9}
+\definecolor{bluUnits10}{rgb}{0.93,0.94,0.96}
+\definecolor{grey}{rgb}{0.3686, 0.5255, 0.6235}
+
+\setbeamercolor{palette primary}{bg=bluUnits100,fg=white}
+\setbeamercolor{palette secondary}{bg=bluUnits80,fg=bluUnits25}
+\setbeamercolor{palette tertiary}{bg=bluUnits50,fg=bluUnits100}
+\setbeamercolor{palette quaternary}{bg=bluUnits40,fg=white}
+\setbeamercolor{palette light primary}{bg=bluUnits25,fg=bluUnits100}
+\setbeamercolor{palette titleframe}{bg=bluUnits10, fg=bluUnits80}
+
+\usebackgroundtemplate{\tikz\node[opacity=0.1]{\includegraphics[height=\textheight]{\LogoFiligrana}};}
+
+\usefonttheme[onlymath]{serif}
+\setbeamercolor{structure}{fg=bluUnits80}
+\setbeamercovered{transparent}
+\setbeamertemplate{enumerate item}[circle]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{itemize subitem}[ball]
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{alerted text}{fg=bluUnits50}
+\setbeamercolor{normal text}{fg=bluUnits100,bg=white}
+\setbeamertemplate{theorems}[ams style]
+\addtobeamertemplate{theorem begin}{\normalfont}{}
+% \setbeamertemplate{headline}{
+% 	\vskip1pt
+% 	\leavevmode	
+% 	\hbox{
+% 		\begin{beamercolorbox}[wd=.99\paperwidth,ht=2.5ex,dp=1.125ex]{palette light primary}
+% 			\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll}
+% 		\end{beamercolorbox}
+% 	}
+% }
+\setbeamertemplate{footline}{
+    \leavevmode
+    \hbox{
+        \begin{beamercolorbox}[wd=.2\textwidth,ht=2.6ex,dp=1ex,center]{palette tertiary}
+            \usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}
+
+        \begin{beamercolorbox}[wd=.27\textwidth,ht=2.6ex,dp=1ex,center]{palette quaternary}
+            \usebeamerfont{institute in head/foot}\insertshortinstitute
+        \end{beamercolorbox}
+
+        \begin{beamercolorbox}[wd=.40\textwidth,ht=2.6ex,dp=1ex,center]{palette primary}
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}
+
+        \begin{beamercolorbox}[wd=.1\textwidth,ht=2.6ex,dp=1ex,center]{palette light primary}
+            \insertframenumber{}/\inserttotalframenumber
+        \end{beamercolorbox}
+    }
+    \vskip2pt
+
+}
+\setbeamertemplate{frametitle}{
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.75ex,dp=1ex,left]{palette titleframe}
+        \centering\textbf{\insertframetitle}
+    \end{beamercolorbox}
+}
+\def\setTitlestyleDissertation{
+    \defbeamertemplate*{title page}{customized}[1][]{
+        \begin{center}
+            \begin{multicols}{2}
+                \includegraphics[width=0.45\textwidth]{\LogoDipartimento}
+                \columnbreak
+                \includegraphics[width=0.45\textwidth]{\LogoUniversita}
+            \end{multicols}
+        \end{center}
+        % \begin{flushright}
+        %     \includegraphics[width=0.45\textwidth]{\LogoUniversita}
+        % \end{flushright}
+
+        \smallskip
+
+        \begin{center}
+            \usebeamerfont{title}\textbf{\inserttitle}\par
+            \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+            \medskip
+            \begin{multicols}{2}
+                \begin{tabular}{c}
+                    \usebeamerfont{normal text}{\relatoreLabel}     \\
+                    \usebeamerfont{author}{\relatore}               \\
+                    \small Universidad Nacional Mayor de San Marcos \\
+                    \small Escuela Profesional de Matemática        \\
+                    \small Facultad de Ciencias Matemáticas
+                    % Decommentare in caso siano presenti dei correlatori
+                    % \\
+                    % \usebeamerfont{normal text}{\correlatoreLabel} \\
+                    % \usebeamerfont{author}{\correlatore}
+                \end{tabular}
+                \columnbreak
+                \begin{tabular}{c}
+                    \candidatoLabel                           \\
+                    \usebeamerfont{author}{\insertauthor}     \\
+                    \small Universidad Nacional de Ingeniería \\
+                    \small Escuela Profesional de Matemática  \\
+                    \small Facultad de Ciencias
+                \end{tabular}
+            \end{multicols}
+
+            \par
+
+            \bigskip  	% --> nel caso di relatore e basta
+            %\smallskip 	% --> nel caso di relatore + correlatore
+
+            % \insertinstitute\par
+
+            % \bigskip	% --> nel caso di relatore e basta
+            %\smallskip	% --> nel caso di relatore + correlatore
+
+            \usebeamerfont{date}\insertdate\par
+
+            \bigskip	% --> nel caso di relatore e basta
+            %\smallskip	% --> nel caso di relatore + correlatore
+        \end{center}
+    }
+}

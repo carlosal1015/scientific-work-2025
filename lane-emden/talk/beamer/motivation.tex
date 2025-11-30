@@ -4,11 +4,8 @@
     \alert{Lane-Endem equation}~(\cite{emden1907}~\Citeauthor{emden1907},~\citeyear{emden1907};
     \cite{lane1870}~\Citeauthor{lane1870},~\citeyear{lane1870}) has been used to describe the
     temperature variation in a star with hydrostatic equilibrium
-    under a polytropic framework.
-
-    \pause
-
-    \begin{columns}[c] % [t] para alinear arriba
+    under a polytropic framework.\pause
+    \begin{columns}[c]
         \begin{column}{0.38\textwidth}
             \begin{figure}[ht!]
                 \centering
@@ -21,14 +18,14 @@
             The stellar model~\cite[p.~83]{maciel2007stellar}
             combines
             \begin{align}
-                \diff{P\left(r\right)}{r} & =
-                -\frac{GM\left(r\right)\rho\left(r\right)}{r^{2}}.
+                \diff{P}{r} & =
+                -\frac{GM\rho}{r^{2}}.
                 \tag{Hydrostatic equilibrium condition} \\
-                \diff{M\left(r\right)}{r} & =
-                4\pi r^{2}\rho\left(r\right).
+                \diff{M}{r} & =
+                4\pi r^{2}\rho.
                 \tag{Mass equation}                     \\
-                P\left(r\right)           & =
-                K{\left[\rho\left(r\right)\right]}^{1+\frac{1}{n}}.
+                P           & =
+                K{\left(\rho\right)}^{1+\frac{1}{n}}.
                 \tag{Polytropic equation of state}
             \end{align}
             %\cite{maciel2007stellar}
@@ -56,8 +53,8 @@
             These set of equations leads to the \alert{Lane-Endem equation}:
             \begin{equation*}
                 \frac{1}{r^{2}}
-                \diff*{\left[\frac{r^{2}}{\rho}\diff{P\left(r\right)}{r}\right]}{r}=
-                -4\pi G\rho\left(r\right).
+                \diff*{\left(\frac{r^{2}}{\rho}\diff{P}{r}\right)}{r}=
+                -4\pi G\rho.
             \end{equation*}
         \end{column}
     \end{columns}

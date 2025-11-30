@@ -1,68 +1,17 @@
 % !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
 % !TeX TXS-program:compile = txs:///lualatex | txs:///biber | txs:///lualatex | txs:///lualatex | txs:///view
-% arara: clean: { extensions: ['aux', 'blg', 'bbl', 'log', 'out', 'pdf', 'toc'] }
+% arara: clean: { extensions: ['aux', 'bcf', 'blg', 'bbl', 'log', 'nav', 'out', 'pdf', 'run.xml', 'snm', 'toc'] }
 % arara: lualatex
 % arara: biber
 % arara: lualatex
 % arara: lualatex
-% arara: clean: { extensions: ['aux', 'blg', 'bbl', 'log', 'out', 'toc'] }
-\documentclass[
-	8pt,
-	aspectratio=1610,
-	professionalfonts,
-	english,
-	intlimits,
-	% leqno,
-	% handout,
-	% noamsthm,
-	c
-]{beamer}
-\setbeameroption{show notes on second screen=right}
-% Caricamento di tutti i pacchetti necessari 
-\usepackage{otherResources/presentazione_allPackages}
-
-\usepackage[
-	citestyle=numeric,
-	style=numeric,
-	backend=biber,
-]{biblatex}
-\addbibresource{references.bib}
-
-% Settaggi documento %%
-        
-\hypersetup{
-    pdfauthor={Nome Cognome},
-    pdftitle={Titolo presentazione},
-    pdfsubject={Argomento presentazione}
-}
-\title[Numerical solution for Lane-Emden ODE by Adomian decomposition]{Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}
-\institute[Universidad Nacional Mayor de San Marcos]{Universidad Nacional de Ingeniería}
-\author[Matihus Molina\and Carlos Aznarán]{Carlos Alonso Aznarán Laos}
-\year=2025
-\month=12
-\day=15
-\def\relatore{Matihus Alberth Molina Larios}
-\def\relatoreLabel{Speaker}
-%\def\correlatore{Kathryn Janeway}
-%\def\correlatoreLabel{Correlatore}
-\def\candidatoLabel{Collaborator}
-\def\LogoUniversita{otherResources/membretes-UNMSM-01.png}
-\def\LogoDipartimento{otherResources/FlyerE.png}
-\def\LogoFiligrana{otherResources/escudo2.png}
-
-%Applico tutte le personalizzazioni desiderate al tema: 
-\input{otherResources/presentazione_myThemeSetting.tex}
-
-% Inizio Presentazione
-
+% arara: clean: { extensions: ['aux', 'bcf', 'blg', 'bbl', 'log', 'nav', 'out', 'run.xml', 'snm', 'toc'] }
+\input{preamble}
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%%  Slide 1: TITOLO  %%
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}[plain]
     \setTitlestyleDissertation
-    \maketitle
+    \titlepage
 \end{frame}
 
 \input{motivation}
@@ -141,6 +90,7 @@
     \Large Gracias por su atención.\\
     \vspace{0.4cm}
     \large Preguntas.
+    \includegraphics[width=0.45\textwidth]{otherResources/membretes-UNMSM-01.png}
 \end{frame}
 
 \end{document}
