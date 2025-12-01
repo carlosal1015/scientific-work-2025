@@ -1,64 +1,69 @@
 \begin{frame}
     \frametitle{Problem statement}
-
-    \begin{alertblock}{Initial value problem for Lane-Emden type ODE}
-        \begin{equation*}
-            \begin{cases}
-                \diff[2]{\theta}{\xi}+
-                \frac{2}{\xi}
-                \diff{\theta}{\xi}+
-                N
-                \left(\theta\right)=
-                g
-                \left(\xi\right)
-                 & \text { for }0\leq\xi\leq R. \\
+    \begin{block}{Singular Cauchy problem of Lane-Emden type}
+        Let be $k\geq 0$ a shape factor.
+        \begin{equation}
+            \begin{cases}\displaystyle
+                \diff[2]{\theta\left(\xi\right)}{\xi}+
+                \frac{k}{\xi}
+                \diff{\theta\left(\xi\right)}{\xi}+
+                f\left(\xi\right)
+                g\left(\theta\right)=
+                h\left(\xi\right)
+                 & \text { for }0<\xi\leq R. \\\displaystyle
                 \theta
                 \left(0\right)=
                 \theta_{0},\quad
                 \diff{\theta\left(0\right)}{\xi}=
                 \theta^{\prime}_{0}.
                  &
-            \end{cases}.
-        \end{equation*}
-    \end{alertblock}
+            \end{cases}.\label{eq:CauchyProblem}
+        \end{equation}
+    \end{block}
 
-    \begin{alertblock}{Remarks}
-        \begin{description}
-            \item[$N\left(\theta\right)=\theta^{m}$]
-                  Surge en el modelamiento de la teoría de la
-                  estructura estelar.%\cite{umesh}
+    \pause
 
-            \item[$N\left(\theta\right)=\exp\left(\theta\right)$]
+    \begin{columns}[c]
+        \begin{column}{0.63\textwidth}
+            \begin{alertblock}{Common equations for $f\left(\xi\right)=1$ and $g\left(\theta\right)$~\cite{umesh}}
+                \begin{description}
+                    \item[$\theta^{m}$]
 
-                  Aparece en el modelamiento de la difusión de densidad en una esfera de gas isotérmica. %\cite{umesh}
+                          \eqref{eq:CauchyProblem} is called the first kind of Lane-Emden type equation.
 
-                  Existe una demostración física en el paper de Alzate %\cite{alzate2014}
+                    \item[$\exp\left(\theta\right)$]
 
-            \item[$N\left(\theta\right)={\left(y^{2}-C\right)}^{\frac{3}{2}}$]
+                          \eqref{eq:CauchyProblem} is called the second kind of Lane-Emden type equation.
+                          Arises in modeling density diffusion in an isothermal gas sphere.
+                          Analytical solution~\cite{alzate2014}.
 
-                  Is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
-                  in his study of the gravitational potential of degenerate stars.
-        \end{description}
-    \end{alertblock}
+                    \item[${\left(\theta^{2}-C\right)}^{\frac{3}{2}}$]
 
-    La forma equivalente más usada es:
-    \[
-        \theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + \theta^n = 0.
-    \]
-
-    Con condiciones iniciales:
-    \[
-        \theta(0) = 1, \qquad \theta'(0)=0.
-    \]
-
-    \begin{itemize}
-        \item Garantizan regularidad en el origen.
-        \item Evitan la singularidad del término \(2/\xi\).
-    \end{itemize}
-
+                          Is turned into the white-dwarf equation, which was introduced in %\cite{chandrasekhar1967} 
+                          in his study of the gravitational potential of degenerate stars.
+                \end{description}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.33\textwidth}
+            \begin{figure}[ht!]
+                \centering
+                \includegraphics[width=.3\paperwidth]{example-image}
+                \caption{Several.}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Timeline}
+
+    \begin{theorem}[Existence and uniqueness for~\eqref{eq:CauchyProblem}]
+    \end{theorem}
+    % The most common values are $s=2$, $\theta_{0}=1$ and $\theta^{\prime}_{0}=0$.
+    % \begin{itemize}
+    %     \item Garantizan regularidad en el origen.
+    %     \item Evitan la singularidad del término \(2/\xi\).
+    % \end{itemize}
+
     %\begin{figure}[ht!]
     %   \centering
     %  \includegraphics[width=.7\paperwidth]{timeline}
