@@ -1,6 +1,6 @@
 \begin{frame}
     \frametitle{Problem statement}
-    \begin{block}{Singular Cauchy problem of Lane-Emden type}
+    \begin{block}{Singular Cauchy problem of Lane-Emden type~\cite{Okunuga2012}}
         Let be $k\geq 0$ a shape factor.
         \begin{equation}
             \begin{cases}\displaystyle
@@ -24,7 +24,7 @@
     \pause
 
     \begin{columns}[c]
-        \begin{column}{0.63\textwidth}
+        \begin{column}{0.61\textwidth}
             \begin{alertblock}{Common equations for $f\left(\xi\right)=1$ and $g\left(\theta\right)$~\cite{umesh}}
                 \begin{description}
                     \item[$\theta^{m}$]
@@ -44,10 +44,10 @@
                 \end{description}
             \end{alertblock}
         \end{column}
-        \begin{column}{0.33\textwidth}
+        \begin{column}{0.35\textwidth}
             \begin{figure}[ht!]
                 \centering
-                \includegraphics[width=.3\paperwidth]{example-image}
+                \includegraphics[width=.35\paperwidth]{gplots}
                 \caption{Several.}
             \end{figure}
         \end{column}
@@ -55,9 +55,36 @@
 \end{frame}
 
 \begin{frame}{Timeline}
-
     \begin{theorem}[Existence and uniqueness for~\eqref{eq:CauchyProblem}]
     \end{theorem}
+
+    \begin{columns}[c]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Analytical solutions known}
+                In general, there no exists analytical solutions for polytropic indices $n\neq 0,1,5$.
+                % Pero para algunos casos específicos, es sencillo obtenerlos
+                \begin{table}[ht!]
+                    \centering
+                    \begin{tabular}{c|c|c|c|c}
+                        $n$ & Solution $\theta\left(\xi\right)$ & $P\left(r\right)$ & $\rho\left(r\right)$ & $M\left(r\right)$ \\
+                        \hline
+                        0   & $1 - \frac{\xi^2}{6}$             &                   &                      &                   \\
+                        1   & $\frac{\sin\xi}{\xi}$             &                   &                      &                   \\
+                        5   & $\frac{1}{\sqrt{1 + \xi^2/3}}$    &                   &                      &
+                    \end{tabular}
+                \end{table}
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{figure}[ht!]
+                \centering
+                \includegraphics[width=.35\paperwidth]{exacts}
+                \caption{Several.}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    %\cite{maciel2007stellar}
+    %Muestran las soluciones y además dan su interpretación.
     % The most common values are $s=2$, $\theta_{0}=1$ and $\theta^{\prime}_{0}=0$.
     % \begin{itemize}
     %     \item Garantizan regularidad en el origen.
