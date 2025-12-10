@@ -158,20 +158,76 @@
     \headerbox{\bf\color{ctitle}Adomian decomposition method}{name=method,column=1,row=0,span=1}{
         % \textbf{\color{blue}AMP: Adversarial Model Perturbation}\\
         \textbf{Definition (Power series)}
-
         \begin{equation*}
-            0.
+            Lu+Ru+Nu=g \quad\Longrightarrow\quad u=A+Bt+L^{-1}g-L^{-1}Ru-L^{-1}Nu,
+        \end{equation*}
+        where \(L\) is the highest order differential operator,
+        \(R\) is the remainder of linear operator,
+        \(N\) is the nonlinear operator,
+        and \(g\) is the source term.
+        The solution $u$ is decomposed into $\sum_{n=0}^{\infty}u_n$ with $u_0=A+Bt+L^{-1}g$. Then:
+        \begin{equation*}
+            \sum_{n=0}^{\infty}u_{n}=u_{0}-L^{-1}R\left(\sum_{n=0}^{\infty}u_{n}\right)-L^{-1}\left(\sum_{n=0}^{\infty}A_{n}\right).
+        \end{equation*}
+        Where $A_n$ are special Adomian polynomials.
+        We use:
+        \begin{equation*}
+            L=\xi^{-2}(\diff{}{r})\xi^2(\diff{}{r}) \longrightarrow L^{-1}=\int_{0}^{\xi}\xi^{-2}\left(\int_{0}^{\xi}\xi^{2}(\cdot)\dl\xi\right)\dl\xi.
         \end{equation*}
 
         \textbf{Definition (Transformation)}
 
         \begin{equation*}
-            0.
+            Y(k)=\frac{1}{k!}\left.\diff[k]{y(x)}{x}\right|_{x=x_0}
+            \quad\Longrightarrow\quad y(x)=\sum_{k=0}^{\infty}Y(k){(x-x_0)}^{k}.
         \end{equation*}
-
+        The following theorems can be deduced:
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=u(x)\pm v(x),\text{ then }Y(k)=U(k)\pm V(k).
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=c u(x),\text{ then }Y(k)=c U(k). \quad c \in \mathbb{R}.
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=u(x)v(x),\text{ then }Y(k)=\sum_{i=0}^{k}U(i)V(k-i).
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=\diff[n]{u(x)}{x},\text{ then }Y(k)=\frac{(k+n)!}{k!}U(k+n).
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=\frac{u(x)}{v(x)},\text{ then }Y(k)=\frac{1}{V(0)}\left(U(k)-\sum_{i=0}^{k-1}V(k-i)Y(i)\right).
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=x^{m},\text{ then }Y(k)=\delta(k-m)=
+                \begin{cases}
+                    1, & k=m; \\
+                    0, & k\neq m.
+                \end{cases}
+            \end{equation*}
+        \end{Theorem}
+        \begin{Theorem}
+            \begin{equation*}
+                \text{If }y(x)=x^n u(x),\text{ then }Y(k)=
+                \begin{cases}
+                    U(k-n), & k\geq n; \\
+                    0,      & k<n.
+                \end{cases}
+            \end{equation*}
+        \end{Theorem}
         \textbf{Interpretation}
 
-        .
+        
 
         \textbf{Illustration}
 
