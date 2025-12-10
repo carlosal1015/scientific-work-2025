@@ -7,7 +7,6 @@
 \usepackage{diffcoeff}
 \usepackage[intlimits]{mathtools}
 \usepackage{amsthm}
-\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{relsize}
 \usepackage{multirow}
@@ -64,6 +63,11 @@
     outer-Rdelim=\right|,
     sub-nudge=0mu
 }
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
 
 \begin{document}
 
@@ -156,169 +160,202 @@
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \headerbox{\bf\color{ctitle}Adomian decomposition method}{name=method,column=1,row=0,span=1}{
-        % \textbf{\color{blue}AMP: Adversarial Model Perturbation}\\
-        \textbf{Definition (Power series)}
+    % \textbf{\color{blue}AMP: Adversarial Model Perturbation}\\
+    \begin{definition}[Power series]
         \begin{equation*}
-            Lu+Ru+Nu=g \quad\Longrightarrow\quad u=A+Bt+L^{-1}g-L^{-1}Ru-L^{-1}Nu,
+            Lu+Ru+Nu=g\iff
+            u=A+Bt+L^{-1}g-L^{-1}Ru-L^{-1}Nu,
         \end{equation*}
-        where \(L\) is the highest order differential operator,
-        \(R\) is the remainder of linear operator,
-        \(N\) is the nonlinear operator,
-        and \(g\) is the source term.
-        The solution $u$ is decomposed into $\sum_{n=0}^{\infty}u_n$ with $u_0=A+Bt+L^{-1}g$. Then:
+    \end{definition}
+    where
+    \begin{itemize}
+        \item
+              \(L\) is the highest order differential operator,
+        \item
+              \(R\) is the remainder of linear operator,
+        \item
+              \(N\) is the nonlinear operator,
+        \item
+              \(g\) is the source term.
+    \end{itemize}
+    The solution $u$ is decomposed into
+    $\sum_{n=0}^{\infty}u_{n}$ with $u_{0}=A+Bt+L^{-1}g$.
+    Then,
+    \begin{equation*}
+        \sum_{n=0}^{\infty}
+        u_{n}=
+        u_{0}-
+        L^{-1}R\left(\sum_{n=0}^{\infty}u_{n}\right)-
+        L^{-1}\left(\sum_{n=0}^{\infty}A_{n}\right).
+    \end{equation*}
+    Where $A_{n}$ are special Adomian polynomials.
+    We use:
+    \begin{equation*}
+        L=
+        \xi^{-2}(\diff{}{r})\xi^2(\diff{}{r})\iff
+        L^{-1}=\int_{0}^{\xi}\xi^{-2}
+        \left(\int_{0}^{\xi}\xi^{2}(\cdot)\dl\xi\right)
+        \dl\xi.
+    \end{equation*}
+
+    \begin{definition}[Transformation]
         \begin{equation*}
-            \sum_{n=0}^{\infty}u_{n}=u_{0}-L^{-1}R\left(\sum_{n=0}^{\infty}u_{n}\right)-L^{-1}\left(\sum_{n=0}^{\infty}A_{n}\right).
+            Y\left(k\right)=
+            \frac{1}{k!}
+            \left.\diff[k]{y(x)}{x}\right|_{x=x_0}
+            \iff
+            y\left(x\right)=
+            \sum_{k=0}^{\infty}
+            Y(k){(x-x_0)}^{k}.
         \end{equation*}
-        Where $A_n$ are special Adomian polynomials.
-        We use:
+    \end{definition}
+    The following theorems can be deduced:
+    \begin{theorem}
         \begin{equation*}
-            L=\xi^{-2}(\diff{}{r})\xi^2(\diff{}{r}) \longrightarrow L^{-1}=\int_{0}^{\xi}\xi^{-2}\left(\int_{0}^{\xi}\xi^{2}(\cdot)\dl\xi\right)\dl\xi.
+            \text{If }y(x)=u(x)\pm v(x),\text{ then }Y(k)=U(k)\pm V(k).
         \end{equation*}
+    \end{theorem}
 
-        \textbf{Definition (Transformation)}
-
+    \begin{theorem}
         \begin{equation*}
-            Y(k)=\frac{1}{k!}\left.\diff[k]{y(x)}{x}\right|_{x=x_0}
-            \quad\Longrightarrow\quad y(x)=\sum_{k=0}^{\infty}Y(k){(x-x_0)}^{k}.
+            \text{If }y(x)=c u(x),\text{ then }Y(k)=c U(k). \quad c \in \mathbb{R}.
         \end{equation*}
-        The following theorems can be deduced:
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=u(x)\pm v(x),\text{ then }Y(k)=U(k)\pm V(k).
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=c u(x),\text{ then }Y(k)=c U(k). \quad c \in \mathbb{R}.
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=u(x)v(x),\text{ then }Y(k)=\sum_{i=0}^{k}U(i)V(k-i).
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=\diff[n]{u(x)}{x},\text{ then }Y(k)=\frac{(k+n)!}{k!}U(k+n).
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=\frac{u(x)}{v(x)},\text{ then }Y(k)=\frac{1}{V(0)}\left(U(k)-\sum_{i=0}^{k-1}V(k-i)Y(i)\right).
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=x^{m},\text{ then }Y(k)=\delta(k-m)=
-                \begin{cases}
-                    1, & k=m; \\
-                    0, & k\neq m.
-                \end{cases}
-            \end{equation*}
-        \end{Theorem}
-        \begin{Theorem}
-            \begin{equation*}
-                \text{If }y(x)=x^n u(x),\text{ then }Y(k)=
-                \begin{cases}
-                    U(k-n), & k\geq n; \\
-                    0,      & k<n.
-                \end{cases}
-            \end{equation*}
-        \end{Theorem}
-        \textbf{Interpretation}
+    \end{theorem}
 
-        
+    \begin{theorem}
+        \begin{equation*}
+            \text{If }y(x)=u(x)v(x),\text{ then }Y(k)=\sum_{i=0}^{k}U(i)V(k-i).
+        \end{equation*}
+    \end{theorem}
 
-        \textbf{Illustration}
+    \begin{theorem}
+        \begin{equation*}
+            \text{If }y(x)=\diff[n]{u(x)}{x},\text{ then }Y(k)=\frac{(k+n)!}{k!}U(k+n).
+        \end{equation*}
+    \end{theorem}
 
-        \begin{minipage}{0.99\linewidth}
-            \centering
-            \includegraphics[width=0.45\linewidth]{example-image}\quad
-            \includegraphics[width=0.45\linewidth]{example-image}
-        \end{minipage}
+    \begin{theorem}
+        \begin{equation*}
+            \text{If }y(x)=\frac{u(x)}{v(x)},\text{ then }Y(k)=\frac{1}{V(0)}\left(U(k)-\sum_{i=0}^{k-1}V(k-i)Y(i)\right).
+        \end{equation*}
+    \end{theorem}
+
+    \begin{theorem}
+        \begin{equation*}
+            \text{If }y(x)=x^{m},\text{ then }Y(k)=\delta(k-m)=
+            \begin{cases}
+                1, & k=m;     \\
+                0, & k\neq m.
+            \end{cases}
+        \end{equation*}
+    \end{theorem}
+
+    \begin{theorem}
+        \begin{equation*}
+            \text{If }y(x)=x^n u(x),\text{ then }Y(k)=
+            \begin{cases}
+                U(k-n), & k\geq n; \\
+                0,      & k<n.
+            \end{cases}
+        \end{equation*}
+    \end{theorem}
+
+    \textbf{Interpretation}
+
+
+
+    \textbf{Illustration}
+
+    \begin{minipage}{0.99\linewidth}
+        \centering
+        \includegraphics[width=0.45\linewidth]{example-image}\quad
+        \includegraphics[width=0.45\linewidth]{example-image}
+    \end{minipage}
     }
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \headerbox{\bf\color{ctitle}Differential Transformation method}{name=results,column=2,row=0,span=2}{
-        \textbf{Theorem.} (Existence and uniqueness of Cauchy problem of Lane-Emden)
-        Let $m\in\mathbb{N}$.
-        If
-        \begin{math}
-            f\in
-            C^{1}
-            \left(
-            \mathbb{R}\times\left[0,\infty\right),
-            \mathbb{R}
-            \right)
-        \end{math},
-        then $\forall d\in\mathbb{R}$:
-        $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that
-        \begin{equation}
-            \left\{
-            \begin{aligned}
-                \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & =
-                \xi^{m-1}
-                f\left(u,\xi\right).                                   \\
-                u\left(0\right)=d,\diff.|.{u}{\xi}[0]            & =0.
-            \end{aligned}
-            \right.\label{eq:1}
-        \end{equation}
+        \begin{theorem}[Existence and uniqueness of Cauchy problem of Lane-Emden]
+            Let $m\in\mathbb{N}$.
+            If
+            \begin{math}
+                f\in
+                C^{1}
+                \left(
+                \mathbb{R}\times\left[0,\infty\right),
+                \mathbb{R}
+                \right)
+            \end{math},
+            then $\forall d\in\mathbb{R}$:
+            $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that
+            \begin{equation}
+                \left\{
+                \begin{aligned}
+                    \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & =
+                    \xi^{m-1}
+                    f\left(u,\xi\right).                                   \\
+                    u\left(0\right)=d,\diff.|.{u}{\xi}[0]            & =0.
+                \end{aligned}
+                \right.\label{eq:1}
+            \end{equation}
+        \end{theorem}
 
-        \textbf{Proof.}
-        Let $v\coloneqq\diff{u}{\xi}$.
-        The problem~\eqref{eq:1}
-        \begin{math}
-            \left\{
-            \begin{aligned}
-                \diff{u}{\xi}                        & =
-                v.                                         \\
-                \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
-                \xi^{m-1}
-                f\left(u,\xi\right).                       \\
-                u\left(0\right)=d,v\left(0\right)    & =0.
-            \end{aligned}
-            \right.\implies
-            \left\{
-            \begin{aligned}
-                u\left(\xi\right) & =
-                d+
-                \int_{0}^{\xi}v\left(t\right)\dl t. \\
-                v\left(\xi\right) & =
+        \begin{proof}
+            Let $v\coloneqq\diff{u}{\xi}$.
+            The problem~\eqref{eq:1}
+            \begin{math}
+                \left\{
+                \begin{aligned}
+                    \diff{u}{\xi}                        & =
+                    v.                                         \\
+                    \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
+                    \xi^{m-1}
+                    f\left(u,\xi\right).                       \\
+                    u\left(0\right)=d,v\left(0\right)    & =0.
+                \end{aligned}
+                \right.\implies
+                \left\{
+                \begin{aligned}
+                    u\left(\xi\right) & =
+                    d+
+                    \int_{0}^{\xi}v\left(t\right)\dl t. \\
+                    v\left(\xi\right) & =
+                    \frac{1}{\xi^{m-1}}
+                    \int_{0}^{\xi}
+                    t^{m-1}f\left(u,t\right)\dl t.
+                \end{aligned}
+                \right.
+            \end{math}.
+            Let $\varepsilon>0$,
+            \begin{math}
+                X_{\varepsilon}=
+                C\left(\left[0,\varepsilon\right]\right)\times
+                C\left(\left[0,\varepsilon\right]\right)
+            \end{math}
+            and $\forall\left(u,v\right)\in X_{\varepsilon}$:
+            \begin{math}
+                {\left\|\left(u,v\right)\right\|}_{\varepsilon}=
+                \max
+                \left\{
+                \max\limits_{0\leq t\leq\varepsilon}\left|u\left(t\right)\right|,
+                \max\limits_{0\leq t\leq\varepsilon}\left|v\left(t\right)\right|
+                \right\}
+            \end{math}.
+            \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.
+
+            Define the operator $T$ over closed set $K\subset X$ to itself and apply the Banach Contraction Principle
+            \begin{align*}
+                T\colon K        & \longrightarrow K \\
+                \left(u,v\right) & \longmapsto
+                \left(
+                d+\int_{0}^{\xi}v\left(t\right)\dl t,
                 \frac{1}{\xi^{m-1}}
                 \int_{0}^{\xi}
-                t^{m-1}f\left(u,t\right)\dl t.
-            \end{aligned}
-            \right.
-        \end{math}.
-        Let $\varepsilon>0$,
-        \begin{math}
-            X_{\varepsilon}=
-            C\left(\left[0,\varepsilon\right]\right)\times
-            C\left(\left[0,\varepsilon\right]\right)
-        \end{math}
-        and $\forall\left(u,v\right)\in X_{\varepsilon}$:
-        \begin{math}
-            {\left\|\left(u,v\right)\right\|}_{\varepsilon}=
-            \max
-            \left\{
-            \max\limits_{0\leq t\leq\varepsilon}\left|u\left(t\right)\right|,
-            \max\limits_{0\leq t\leq\varepsilon}\left|v\left(t\right)\right|
-            \right\}
-        \end{math}.
+                t^{m-1}f\left(u,t\right)\dl t
+                \right)
+            \end{align*}
+        \end{proof}
 
-        \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.
-
-        Define the operator $T$ over closed set $K\subset X$ to itself and apply the Banach Contraction Principle
-        \begin{align*}
-            T\colon K        & \longrightarrow K \\
-            \left(u,v\right) & \longmapsto
-            \left(
-            d+\int_{0}^{\xi}v\left(t\right)\dl t,
-            \frac{1}{\xi^{m-1}}
-            \int_{0}^{\xi}
-            t^{m-1}f\left(u,t\right)\dl t
-            \right)
-        \end{align*}
         % \begin{minipage}{0.9\linewidth}
         %     \textbf{\color{blue}Results on Video Restoration Tasks:}
         %     \vspace{0.5em}
