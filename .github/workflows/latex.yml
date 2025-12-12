@@ -37,9 +37,9 @@ jobs:
           run: |
             sudo chown -R gitpod:gitpod /work
             sudo pacman -Syu --needed --noconfirm python-matplotlib python-scipy python-sympy
-            pushd /work/neural-networks
-            arara Sample
-            popd
+            # pushd /work/neural-networks
+            # arara Sample
+            # popd
             pushd /work/lane-emden
             arara Sample
             pushd talk/proposal
@@ -54,11 +54,14 @@ jobs:
             arara presentazione
             popd
             popd
-            pushd /work/einführung
-            arara main
-            popd
+            # pushd /work/einführung
+            # arara main
+            # popd
             mkdir -p /work/public
-            mv /work/lane-emden/**/*.pdf /work/public
+            mv /work/lane-emden/Sample.pdf /work/public
+            mv /work/lane-emden/talk/proposal/template.pdf /work/public
+            mv /work/lane-emden/talk/beamer/presentazione.pdf /work/public
+            mv /work/lane-emden/talk/poster/main.pdf /work/public
             # mv /work/quizes/entrance*.pdf /work/public
 
       - name: "Tar files"
