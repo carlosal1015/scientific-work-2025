@@ -2,17 +2,22 @@
     \begin{columns}[t]
         \begin{column}{0.48\textwidth}
             \begin{block}{Adomian decomposition method}
-                The Adomian decomposition method, which accurately computes the series solution, is of great interest in applied sciences. The method provides the solution in a rapidly convergent series whose components are elegantly computed.
+                The Adomian decomposition method, which accurately computes the series solution, is of great interest in applied sciences.
+                The method provides the solution in a rapidly convergent series whose components are elegantly computed.
 
-                A more difficult question to address is how this method can be modified to handle the concept of singular points. It is well known that the Adomian decomposition method usually begins by defining the equation in an operator form, considering the highest–order derivative in the problem. However, a slight modification is necessary to overcome the singular behavior.
+                A more difficult question to address is how this method can be modified to handle the concept of singular points.
+                It is well known that the Adomian decomposition method usually begins by defining the equation in an operator form,
+                considering the highest–order derivative in the problem.
+                However, a slight modification is necessary to overcome the singular behavior.
 
             \end{block}
         \end{column}
         \begin{column}{0.48\textwidth}
             \begin{block}{Differential transformation method}
-                Aquí nos centraremos en el metodo propuesto por el colombiano Cardenas.
+                Aquí nos centraremos en el método propuesto por el colombiano Cárdenas.
                 En este aborda para $f(x)=e^{\pm x}$ y $f(x)=(x^2-C)^{\frac{3}{2}}$.
-                Este método se basa en la misma lógica que la Transformadas de Laplace.Definimos. el operador:
+                Este método se basa en la misma lógica que la Transformadas de Laplace.
+                Definimos el operador:
                 $$Y(k)=\frac{1}{k!}[\frac{d^ky(x)}{dx^k}]_{x=x_0}$$
                 $y(x)=\sum_{k=0}^{\infty}Y(k)x^k$,junto con otros teoremas.
             \end{block}
