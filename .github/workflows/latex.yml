@@ -49,9 +49,9 @@ jobs:
             arara main
             popd
             pushd talk/beamer
+            ./gplots.py
             arara presentazione
             popd
-            # ./figure1.py
             popd
             pushd /work/einführung
             arara main
