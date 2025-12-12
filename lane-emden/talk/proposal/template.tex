@@ -1,3 +1,9 @@
+% arara: clean: { extensions: ['aux', 'bib', 'log', 'out', 'pdf'] }
+% arara: lualatex
+% arara: bibtex
+% arara: lualatex
+% arara: lualatex
+% arara: clean: { extensions: ['aux', 'bib', 'log', 'out'] }
 % !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
 % !TeX TXS-program:compile = txs:///lualatex | txs:///bibtex | txs:///lualatex | txs:///lualatex | txs:///view
 %------------------------------------------------------------------------
@@ -10,23 +16,11 @@
 % Este archivo será procesado automaticamente por un programa.
 % Por favor no altere nada en el preamble (hasta II. COMMANDS ENTERED BY THE AUTHOR  ).
 
-
-%------------------------
-%  I. PREAMBLE        
-%-----------------------
-
-% I.1 Class of document
 \documentclass[11pt,a4paper]{article}
-
-% I.2 Language
-\usepackage[spanish, english]{babel}
-
-% I.3 Encodings
+\usepackage[spanish,english]{babel}
 \usepackage[T1]{fontenc} 
 \usepackage{newtxtext} 
-
-% I.4 AMS-LaTeX      
-\usepackage{amsmath} % it's include amsfonts amstext, amsgen, amsbsy, amsopn too.
+\usepackage{amsmath}
 
 % I.5 Page layout
 \usepackage[margin=3cm]{geometry}
@@ -37,19 +31,24 @@
 	{} 
 \usepackage[affil-it]{authblk}
 
+\usepackage[
+  backref=page,
+	colorlinks=true,
+	urlcolor=blue,
+	linkcolor=blue,
+	anchorcolor=black,
+	citecolor=blue
+]{hyperref}
+
 \newcommand{\MVAt}{{\usefont{U}{mvs}{m}{n}\symbol{`@}}}
 % I.7 Title and author information
 \title{Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}
-\author[1]{Matihus Alberth Molina Larios~\thanks{matihus.molina\MVAt unmsm.edu.pe}}
-\author[2]{Carlos Alonso Aznarán Laos~\thanks{caznaranl\MVAt uni.pe}}
-\affil[1]{Universidad Nacional Mayor de San Marcos, Peru}
-\affil[2]{Universidad Nacional de Ingeniería, Peru}
+\author[1]{Matihus Alberth Molina Larios~\thanks{\href{mailto:matihus.molina@unmsm.edu.pe}{\texttt{matihus.molina\MVAt unmsm.edu.pe}}}}
+\author[2]{Carlos Alonso Aznarán Laos~\thanks{\href{mailto:caznaranl@uni.pe}{\texttt{caznaranl\MVAt uni.pe}}}}
+\affil[1]{Facultad de Ciencias Matemáticas, Universidad Nacional Mayor de San Marcos, Peru}
+\affil[2]{Facultad de Ciencias, Universidad Nacional de Ingeniería, Peru}
 
 \date{} %Please, do not change -  POR FAVOR, NO MODIFICAR - .
-
-% Others
-
-\usepackage[backref=page]{hyperref}
 %--------------------------------------------------------------------------
 %  II. COMMANDS ENTERED BY THE AUTHOR        
 %--------------------------------------------------------------------------
@@ -63,12 +62,13 @@
 \begin{filecontents}{\jobname.bib}
 @article{Adomian1995,
   author    = {Adomian, G. and Rach, R. and Shawagfeh, N. T.},
-  title     = {On the analytic solution of the Lane-Emden equation},
+  title     = {On the analytic solution of the {L}ane-{E}mden {e}quation},
   journal   = {Foundations of Physics Letters},
   volume    = {8},
   pages     = {161--181},
   year      = {1995},
-  doi       = {10.1007/BF02187585}
+  doi       = {10.1007/BF02187585},
+  url       = {https://doi.org/10.1007/BF02187585}
 }
 @article{Alzate2014,
   author    = {Alzate, P.},
@@ -77,7 +77,8 @@
   volume    = {4},
   pages     = {242--253},
   year      = {2014},
-  doi       = {10.4236/ajcm.2014.43021}
+  doi       = {10.4236/ajcm.2014.43021},
+  url       = {https://doi.org/10.4236/ajcm.2014.43021}
 }
 @article{Lane1870,
   author       = {Lane, J. H.},
@@ -86,9 +87,10 @@
   volume       = {50},
   year         = {1870},
   pages        = {57--74},
+  url          = {https://doi.org/10.2475/ajs.s2-50.148.57}
 }
 \end{filecontents}
-\bibliographystyle{plain}
+\bibliographystyle{IEEEtran}
 %--------------------------------------------------------------------------
 %  III. DOCUMENT       
 %--------------------------------------------------------------------------                                     
@@ -105,26 +107,26 @@
 %---------
 
 \begin{flushleft}
-	\bfseries\footnotesize VII International Meeting in Mathematical Sciences\\
-	Huaraz, Perú\\
-	December 15--17, 2025
+  \bfseries\footnotesize VII International Meeting in Mathematical Sciences\\
+  Huaraz, Perú\\
+  December 15--17, 2025
 \end{flushleft}
 
 {\let\newpage\relax\maketitle}
 
 \begin{abstract}
-	The aim of this talk is to present a well-suited approximation of a
-	internal structure of a self-gravitating polytrophic body model which
-	consists of a type Lane-Emden equation~\cite{Lane1870}, a second
-	order nonlinear ODE.
-	First, we will discuss an efficient algorithm called Adomian
-	decomposition method~\cite{Adomian1995} which server as an
-	approximation in terms of generalized Taylor series for the
-	Lane-Emden equation.
-	Next, we follow the methodology given in~\cite{Alzate2014} to
-	guarantee the convergence to the solution.
-	Finally, we carry out several numerical experiments whose results
-	are in accordance with the theoretical analysis.
+  The aim of this talk is to present a well-suited approximation of a
+  internal structure of a self-gravitating polytrophic body model which
+  consists of a type Lane-Emden equation~\cite{Lane1870}, a second
+  order nonlinear ODE.
+  First, we will discuss an efficient algorithm called Adomian
+  decomposition method~\cite{Adomian1995} which server as an
+  approximation in terms of generalized Taylor series for the
+  Lane-Emden equation.
+  Next, we follow the methodology given in~\cite{Alzate2014} to
+  guarantee the convergence to the solution.
+  Finally, we carry out several numerical experiments whose results
+  are in accordance with the theoretical analysis.
 \end{abstract}
 
 \bibliography{\jobname}
