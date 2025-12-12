@@ -50,6 +50,7 @@ jobs:
             popd
             pushd talk/beamer
             ./gplots.py
+            ./exacts.py
             arara presentazione
             popd
             popd
