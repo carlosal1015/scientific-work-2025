@@ -42,13 +42,13 @@ jobs:
             popd
             pushd /work/lane-emden
             arara Sample
-            pushd proposal
+            pushd talk/proposal
             arara template
             popd
-            pushd poster
+            pushd talk/poster
             arara main
             popd
-            pushd beamer
+            pushd talk/beamer
             arara presentazione
             popd
             # ./figure1.py
