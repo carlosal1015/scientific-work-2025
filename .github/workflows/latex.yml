@@ -57,8 +57,8 @@ jobs:
             arara main
             popd
             mkdir -p /work/public
-            mv /work/exercises/exercises.pdf /work/public
-            mv /work/quizes/entrance*.pdf /work/public
+            mv /work/lane-emden/**/.pdf /work/public
+            # mv /work/quizes/entrance*.pdf /work/public
 
       - name: "Tar files"
         run: |
