@@ -12,8 +12,6 @@ qr = QRCode(
     border=1,
     image_factory=SvgPathFillImage,
 )
-qr.add_data(
-    "https://docs.google.com/document/d/1t8QjnHjA6Dj1atmErGQ_0C71qGGAhu_u4OMdjG1XPm0"
-)
+qr.add_data("https://maticus-7.github.io/lane-emden")
 img = qr.make_image(module_drawer=SvgPathSquareDrawer())
 img.save(stream="qrcode.svg")

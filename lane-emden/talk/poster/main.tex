@@ -1,7 +1,7 @@
 % !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
 % !TeX TXS-program:compile = txs:///lualatex | txs:///biber | txs:///lualatex | txs:///lualatex | txs:///view
 %! arara: clean: { extensions: ['aux', 'bcf', 'blg', 'bbl', 'log', 'nav', 'out', 'pdf', 'run.xml', 'snm', 'toc'] }
-% arara: lualatex
+% arara: lualatex: {shell: yes}
 %! arara: biber
 %! arara: lualatex
 %! arara: lualatex
@@ -21,6 +21,7 @@
 \usepackage{multicol}
 \usepackage{booktabs}
 \usepackage{microtype}
+\usepackage{svg}
 \usepackage{graphicx}
 
 \usepackage[T1]{fontenc}
@@ -125,7 +126,7 @@
     % }
     \headerbox{\bf\color{ctitle}Introduction}{name=summary,column=0,row=0,span=1}{
         \begin{minipage}[c]{\textwidth}\centering
-            \includegraphics[width=0.4\linewidth]{example-image}
+            \includegraphics[width=0.4\linewidth]{radius.pdf}
         \end{minipage}
         \textbf{Given:}
         \begin{equation*}
@@ -363,6 +364,15 @@
                 \right)
             \end{align*}
         \end{proof}
+        \begin{minipage}{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{lane_emden}
+        \end{minipage}
+        \begin{minipage}{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{emden_chandrasekhar}
+            \includegraphics[width=\linewidth]{white_dwarf}
+        \end{minipage}
 
         % \begin{minipage}{0.9\linewidth}
         %     \textbf{\color{blue}Results on Video Restoration Tasks:}
@@ -540,43 +550,44 @@
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \headerbox{\bf\color{ctitle}Causal History Model (\textsf{CHM})}{name=algorithm,column=0,row=0.4,span=1}{
-        \begin{itemize}
-            \item Causal History Model \textcolor{imptext}{extends the state-space modeling paradigm to video processing.} CHM processes videos online and in streaming fashion.
-            \item \textbf{\textsf{CHM} models the evolving state and compensates the history for motion} relative to the input and learns to re-weight information in the history.
-            \item The \textbf{causal design in \textsc{Turtle} enables recurrence in inference} through state-memorized historical features (stateful configuration); \textbf{while allowing parallel training} by sampling short video clips (stateless configuration).
-            \item \textbf{\textsc{TURTLE}'s encoder processes each frame individually}, while its decoder reuses features from previously restored frames, based on the proposed Causal History Model (CHM).
-        \end{itemize}
-        \begin{align}
-            \label{eq:chm}
-            \vec{\hat{H}}_{t}^{[l]} & = \highlight[mathcolor]{\phi_{t}(\vec{H}_{t}^{[l]}, \vec{F}_{t}^{[l]})} \oplus \mathcal{B}_{t}(\vec{F}_{t}^{[l]}),   \\
-            \label{eq:chm2}
-            \vec{y}_t^{[l]}         & = \highlight[mathcolor2]{\psi_{t}(\vec{\hat{H}}_{t}^{[l]}, \vec{F}_{t}^{[l]})} + \mathcal{D}_{t}(\vec{F}_{t}^{[l]}).
-        \end{align}
-        \begin{itemize}
-            \item \textbf{\(\highlight[mathcolor]{\text{State Align Block}~\phi}\)}: implicitly tracks and aligns the \textit{topk} most relevant regions in the history with the input frame. Therefore, \(\phi\) compensates for motion the input with respect to the trajectory and establishes \textit{one-to-topk} correspondence.
-            \item \textbf{\(\highlight[mathcolor2]{\text{Frame History Router }~\psi}\)}: re-weights the motion compensated history along with the input, thereby encouraging \& accentuating relevant information.
-        \end{itemize}
+        % \begin{itemize}
+        %     \item Causal History Model \textcolor{imptext}{extends the state-space modeling paradigm to video processing.} CHM processes videos online and in streaming fashion.
+        %     \item \textbf{\textsf{CHM} models the evolving state and compensates the history for motion} relative to the input and learns to re-weight information in the history.
+        %     \item The \textbf{causal design in \textsc{Turtle} enables recurrence in inference} through state-memorized historical features (stateful configuration); \textbf{while allowing parallel training} by sampling short video clips (stateless configuration).
+        %     \item \textbf{\textsc{TURTLE}'s encoder processes each frame individually}, while its decoder reuses features from previously restored frames, based on the proposed Causal History Model (CHM).
+        % \end{itemize}
+        % \begin{align}
+        %     \label{eq:chm}
+        %     \vec{\hat{H}}_{t}^{[l]} & = \highlight[mathcolor]{\phi_{t}(\vec{H}_{t}^{[l]}, \vec{F}_{t}^{[l]})} \oplus \mathcal{B}_{t}(\vec{F}_{t}^{[l]}),   \\
+        %     \label{eq:chm2}
+        %     \vec{y}_t^{[l]}         & = \highlight[mathcolor2]{\psi_{t}(\vec{\hat{H}}_{t}^{[l]}, \vec{F}_{t}^{[l]})} + \mathcal{D}_{t}(\vec{F}_{t}^{[l]}).
+        % \end{align}
+        % \begin{itemize}
+        %     \item \textbf{\(\highlight[mathcolor]{\text{State Align Block}~\phi}\)}: implicitly tracks and aligns the \textit{topk} most relevant regions in the history with the input frame. Therefore, \(\phi\) compensates for motion the input with respect to the trajectory and establishes \textit{one-to-topk} correspondence.
+        %     \item \textbf{\(\highlight[mathcolor2]{\text{Frame History Router }~\psi}\)}: re-weights the motion compensated history along with the input, thereby encouraging \& accentuating relevant information.
+        % \end{itemize}
     }
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \headerbox{\bf\color{ctitle}Is \textsc{CHM} Necessary?}{name=method,column=1,row=0.4,span=1,boxpadding=0.45em}{
-        \textbf{\color{blue}\textsf{CHM} Procedure:}
+        % \textbf{\color{blue}\textsf{CHM} Procedure:}
         % \textsf{CHM} utilizes attention mechanism to compute region-wise correspondences in the history, and to re-weight the entire trajectory. However, in the first case, CHM limits the lookback window to \textit{topk} most similar regions to avoid spurious correlations hampering the flow of useful information.
-        \begin{itemize}
-            \item \textsf{CHM} utilizes an attention mechanism to compute region-wise correspondences in the history and to re-weight the entire trajectory.
-            \item However, \textsf{CHM} limits the lookback window to the \textit{top-k} most similar regions to avoid spurious correlations that may hamper the flow of useful information.
-        \end{itemize}
+        % \begin{itemize}
+        %     \item \textsf{CHM} utilizes an attention mechanism to compute region-wise correspondences in the history and to re-weight the entire trajectory.
+        %     \item However, \textsf{CHM} limits the lookback window to the \textit{top-k} most similar regions to avoid spurious correlations that may hamper the flow of useful information.
+        % \end{itemize}
 
-        \begin{minipage}{\linewidth}
-            \centering
-            \includegraphics[width=.99\linewidth]{new_imgs/chm.pdf}
-        \end{minipage}
-        \vspace{0.4em}
-        \textbf{\color{blue}\textsf{CHM}'s Motivation:}
-        \begin{itemize}
-            \item We ablate the necessity of \textsf{CHM} for achieving high perceptual quality in restoration results.
-            \item In cases where specific regions in the current frame (input) are occluded, \textsf{CHM} retrieves similar information from past frames to restore the occluded areas.
-        \end{itemize}
-        \includegraphics[width=.99\linewidth]{new_imgs/nochm_diag.pdf}
+        % \begin{minipage}{\linewidth}
+        %     \centering
+        %     \includegraphics[width=.99\linewidth]{new_imgs/chm.pdf}
+        % \end{minipage}
+        % \vspace{0.4em}
+        % \textbf{\color{blue}\textsf{CHM}'s Motivation:}
+        % \begin{itemize}
+        %     \item We ablate the necessity of \textsf{CHM} for achieving high perceptual quality in restoration results.
+        %     \item In cases where specific regions in the current frame (input) are occluded, \textsf{CHM} retrieves similar information from past frames to restore the occluded areas.
+        % \end{itemize}
+        % \includegraphics[width=.99\linewidth]{new_imgs/nochm_diag.pdf}
+        \includesvg[width=0.4\linewidth]{qrcode.svg}
 
     }
 \end{poster}
