@@ -794,24 +794,10 @@
   \setlength{\baposter@@colspacing}{\baposter@colspacing}%
   \setlength{\colwidth}{\textwidth}%
   \addtolength{\colwidth}{\baposter@@colspacing*(1-\baposter@columns)}%
-  \ifcase\baposter@columns\relax
-    \error{You need to have at least one column!}
-  \or % 1
-    \setlength{\colwidth}{\colwidth}%
-  \or % 2
-    \setlength{\colwidth}{0.5\colwidth}%
-  \or % 3
-    \setlength{\colwidth}{0.3333333333333\colwidth}%
-  \or % 4
-    \setlength{\colwidth}{0.25\colwidth}%
-  \or % 5
-    \setlength{\colwidth}{0.2\colwidth}%
-  \or % 6
-    \setlength{\colwidth}{0.16666666666\colwidth}%
-  \else % >6
-    \error{You do not want so many columns}
-  \fi
-%
+  % --- INICIO DEL CAMBIO ---
+  % Reemplazamos el \ifcase antiguo por una división matemática
+  \divide\colwidth by \baposter@columns
+  % --- FIN DEL CAMBIO ---
   \newcommand{\baposter@reference}{north west}%
 %
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

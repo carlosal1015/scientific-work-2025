@@ -1,11 +1,5 @@
 % !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
 % !TeX TXS-program:compile = txs:///lualatex | txs:///biber | txs:///lualatex | txs:///lualatex | txs:///view
-%! arara: clean: { extensions: ['aux', 'bcf', 'blg', 'bbl', 'log', 'nav', 'out', 'pdf', 'run.xml', 'snm', 'toc'] }
-% arara: lualatex: {shell: yes}
-%! arara: biber
-%! arara: lualatex
-%! arara: lualatex
-%! arara: clean: { extensions: ['aux', 'bcf', 'blg', 'bbl', 'log', 'nav', 'out', 'run.xml', 'snm', 'toc'] }
 \documentclass[landscape,paperwidth=48in,paperheight=36in,fontscale=0.3]{baposter}
 
 \usepackage{times}
@@ -22,7 +16,6 @@
 \usepackage{booktabs}
 \usepackage{microtype}
 \usepackage{svg}
-\usepackage{graphicx}
 
 \usepackage[T1]{fontenc}
 \usepackage{ae}
@@ -31,7 +24,6 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage[vlined]{algorithm2e}
-\usepackage{minted}
 \let\vec\mathbf
 \setlength{\algomargin}{0pt}
 
@@ -43,16 +35,9 @@
 \setlength{\columnsep}{0.5em}
 \setlength{\columnseprule}{0mm}
 
-% \setlength{\paperwidth}{60in} % A0 width: 46.8in
-% \setlength{\paperheight}{36in} % A0 height: 33.1in
-
-% \renewcommand{\rmdefault}{ptm} % Arial
-% \renewcommand{\sfdefault}{ptm} % Arial
 \renewcommand{\familydefault}{\sfdefault}
 
 % define colors
-\usepackage{colortbl}
-\usepackage{xcolor}
 \newcommand{\highlight}[2][yellow]{\mathchoice%
   {\colorbox{#1}{$\displaystyle#2$}}%
   {\colorbox{#1}{$\textstyle#2$}}%
@@ -61,7 +46,7 @@
   
 \definecolor{ctitle}{HTML}{000000}
 \definecolor{mypurple}{RGB}{223, 204, 251}
-\definecolor{imptext}{RGB}{103, 65, 136} %116, 9, 56
+\definecolor{imptext}{RGB}{103, 65, 136} 
 \definecolor{rowcolor}{RGB}{209, 233, 246}
 \definecolor{subtitlecolor}{RGB}{11, 47, 159}
 \definecolor{mathcolor}{RGB}{209, 233, 246}
@@ -81,17 +66,12 @@
 \begin{document}
 
 \begin{poster}{
-    % Show grid to help with alignment
     grid=false,
-    columns=4,
-    % Column spacing
+    columns=100,
     colspacing=0.7em,
-    % Color style
     headerColorOne=mypurple,
     borderColor=mypurple,
-    % Format of textbox
     textborder=faded,
-    % Format of text header
     headerborder=open,
     headershape=roundedright,
     headershade=plain,
@@ -118,25 +98,73 @@
     \makebox[0.01\textwidth]{}
     \includegraphics[width=0.22\linewidth]{logo/FlyerE}
     }
-    % {
-    %     \begin{tabular}{c}
-    %         \raisebox{-0.9\height}{\includegraphics[width=0.14\linewidth]{logo/FlyerE}}\\[0.5em]
-    %         \raisebox{-0.5\height}{\includegraphics[width=0.12\linewidth]{logo/link.pdf}\hspace{0.002\linewidth}\includegraphics[height=0.05\linewidth]{logo/turtle_qr_code.png}}
-    %     \end{tabular}
-    % }
-    \headerbox{\bf\color{ctitle}Introduction}{name=summary,column=0,row=0,span=1}{
-        \begin{minipage}[c]{\textwidth}\centering
-            \includegraphics[width=0.4\linewidth]{radius.pdf}
-        \end{minipage}
+
+    % BOX 1: Adomian decomposition method
+    \headerbox{\bf\color{ctitle}Adomian decomposition method}{name=summary,column=0,row=0,span=30}{
+
+        \small 
+        \setlength{\abovedisplayskip}{3pt}
+        \setlength{\belowdisplayskip}{3pt}
+        \setlength{\parskip}{2pt}
+
+        The general operator equation is $Lu+Ru+Nu=g$. Applying $L^{-1}$:
+        \begin{equation*}
+            u = \phi + L^{-1}g - L^{-1}Ru - L^{-1}Nu
+        \end{equation*}
+        
+        \vspace{-0.3cm} 
+        \begin{multicols}{2}
+            \begin{itemize}
+                \setlength\itemsep{0em} 
+                \item $L$: Highest order derivative.
+                \item $R$: Linear remainder.
+                \item $N$: Nonlinear operator.
+                \item $g$: Source term.
+            \end{itemize}
+        \end{multicols}
+        \vspace{-0.2cm}
+
+        We define the Adomian Polynomials $A_n$ and the operator $L^{-1}$ for Lane-Emden as:
+            \begin{align*}
+                A_n &= \frac{1}{n!} \frac{d^n}{d\lambda^n} \left[ N\left(\sum_{i=0}^\infty \lambda^i u_i\right) \right]_{\lambda=0}, \\
+                L^{-1}(\cdot) &= \int_{0}^{\xi} s^{-2} \left( \int_{0}^{s} t^{2}(\cdot) \dl t \right) \dl s.
+            \end{align*}
+        Decomposing $u = \sum_{n=0}^\infty u_n$, the recursive scheme is:
+        \begin{equation}\label{eq:adm_system}
+            \left\{
+            \begin{aligned}
+                u_0     &= \phi + L^{-1}g \\
+                u_1     &= -L^{-1}Ru_0 - L^{-1}A_0 \\
+                u_2     &= -L^{-1}Ru_1 - L^{-1}A_1 \\
+                        &\vdots \\
+                u_{n+1} &= -L^{-1}Ru_n - L^{-1}A_n 
+            \end{aligned}
+            \right.
+        \end{equation}
+
+
+    }
+
+    % BOX 2: AMP
+    \headerbox{\bf\color{ctitle}EDO Integration}{name=method,column=30,row=0,span=25}{
+    
+    \textbf{Illustration}
+    \begin{minipage}{0.99\linewidth}
+        \centering
+        \includegraphics[width=0.45\linewidth]{example-image}\quad
+        \includegraphics[width=0.45\linewidth]{example-image}
+    \end{minipage}
+    }
+
+    % BOX 3: Introduction 
+    \headerbox{\bf\color{ctitle}Introduction }{name=results,column=55,row=0,span=45}{
+        
         \textbf{Given:}
         \begin{equation*}
             \left.\begin{aligned}
-                \diff{P}{r} & =
-                -\frac{GM\rho}{r^{2}}. \\
-                \diff{M}{r} & =
-                4\pi r^{2}\rho.        \\
-                P           & =
-                K{\left(\rho\right)}^{1+\frac{1}{n}}.
+                \diff{P}{r} & = -\frac{GM\rho}{r^{2}}. \\
+                \diff{M}{r} & = 4\pi r^{2}\rho.        \\
+                P           & = K{\left(\rho\right)}^{1+\frac{1}{n}}.
             \end{aligned}\right\}
             \implies
             \begin{aligned}
@@ -146,8 +174,7 @@
                     \frac{r^{2}}{\rho}\diff{P}{r}
                     \right)
                 }{r}=
-                -4\pi G
-                \rho. \\
+                -4\pi G \rho. \\
                 \text{See the model derivation.}
             \end{aligned}
         \end{equation*}
@@ -157,438 +184,91 @@
         \end{equation*}
 
         \textbf{Existing methods:}
-
         \begin{enumerate}
             \item Transform 2nd ODE to 1st ODE system.
             \item Adomian decomposition method.
             \item Differential transform method.
         \end{enumerate}
-
         \textbf{Contributions:}
     }
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \headerbox{\bf\color{ctitle}Adomian decomposition method}{name=method,column=1,row=0,span=1}{
-    % \textbf{\color{blue}AMP: Adversarial Model Perturbation}\\
-    \begin{definition}[Power series]
-        \begin{equation*}
-            Lu+Ru+Nu=g\iff
-            u=A+Bt+L^{-1}g-L^{-1}Ru-L^{-1}Nu,
-        \end{equation*}
-    \end{definition}
-    where
-    \begin{itemize}
-        \item
-              \(L\) is the highest order differential operator,
-        \item
-              \(R\) is the remainder of linear operator,
-        \item
-              \(N\) is the nonlinear operator,
-        \item
-              \(g\) is the source term.
-    \end{itemize}
-    The solution $u$ is decomposed into
-    $\sum_{n=0}^{\infty}u_{n}$ with $u_{0}=A+Bt+L^{-1}g$.
-    Then,
-    \begin{equation*}
-        \sum_{n=0}^{\infty}
-        u_{n}=
-        u_{0}-
-        L^{-1}R\left(\sum_{n=0}^{\infty}u_{n}\right)-
-        L^{-1}\left(\sum_{n=0}^{\infty}A_{n}\right).
-    \end{equation*}
-    Where $A_{n}$ are special Adomian polynomials.
-    We use:
-    \begin{equation*}
-        L=
-        \xi^{-2}(\diff{}{r})\xi^2(\diff{}{r})\iff
-        L^{-1}=\int_{0}^{\xi}\xi^{-2}
-        \left(\int_{0}^{\xi}\xi^{2}(\cdot)\dl\xi\right)
-        \dl\xi.
-    \end{equation*}
+    % % BOX 4: EXISTENCE AND UNIQUENESS
+    \headerbox{\bf\color{ctitle}Existence, Uniqueness and Error}{name=algorithm,column=0,row=0.43,span=30}{
+        \small 
+        \setlength{\abovedisplayskip}{3pt}
+        \setlength{\belowdisplayskip}{3pt}
+        \setlength{\abovedisplayshortskip}{1pt}
+        \setlength{\belowdisplayshortskip}{1pt}
 
-    \begin{definition}[Transformation]
-        \begin{equation*}
-            Y\left(k\right)=
-            \frac{1}{k!}
-            \left.\diff[k]{y(x)}{x}\right|_{x=x_0}
-            \iff
-            y\left(x\right)=
-            \sum_{k=0}^{\infty}
-            Y(k){(x-x_0)}^{k}.
-        \end{equation*}
-    \end{definition}
-    The following theorems can be deduced:
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=u(x)\pm v(x),\text{ then }Y(k)=U(k)\pm V(k).
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=c u(x),\text{ then }Y(k)=c U(k). \quad c \in \mathbb{R}.
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=u(x)v(x),\text{ then }Y(k)=\sum_{i=0}^{k}U(i)V(k-i).
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=\diff[n]{u(x)}{x},\text{ then }Y(k)=\frac{(k+n)!}{k!}U(k+n).
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=\frac{u(x)}{v(x)},\text{ then }Y(k)=\frac{1}{V(0)}\left(U(k)-\sum_{i=0}^{k-1}V(k-i)Y(i)\right).
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=x^{m},\text{ then }Y(k)=\delta(k-m)=
-            \begin{cases}
-                1, & k=m;     \\
-                0, & k\neq m.
-            \end{cases}
-        \end{equation*}
-    \end{theorem}
-
-    \begin{theorem}
-        \begin{equation*}
-            \text{If }y(x)=x^n u(x),\text{ then }Y(k)=
-            \begin{cases}
-                U(k-n), & k\geq n; \\
-                0,      & k<n.
-            \end{cases}
-        \end{equation*}
-    \end{theorem}
-
-    \textbf{Interpretation}
-
-
-
-    \textbf{Illustration}
-
-    \begin{minipage}{0.99\linewidth}
-        \centering
-        \includegraphics[width=0.45\linewidth]{example-image}\quad
-        \includegraphics[width=0.45\linewidth]{example-image}
-    \end{minipage}
-    }
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \headerbox{\bf\color{ctitle}Differential Transformation method}{name=results,column=2,row=0,span=2}{
-        \begin{theorem}[Existence and uniqueness of Cauchy problem of Lane-Emden]
-            Let $m\in\mathbb{N}$.
-            If
-            \begin{math}
-                f\in
-                C^{1}
-                \left(
-                \mathbb{R}\times\left[0,\infty\right),
-                \mathbb{R}
-                \right)
-            \end{math},
-            then $\forall d\in\mathbb{R}$:
-            $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that
+        \begin{theorem}[\textbf{\(\highlight[mathcolor]{\text{Existence and uniqueness}}\)}]
+            Let $m\in\mathbb{N}$. If $g\in C^{1}\left(\mathbb{R}\times\left[0,\infty\right), \mathbb{R}\right)$, then $\forall d\in\mathbb{R}$, $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that:
+            \vspace{-0.05cm} 
             \begin{equation}
                 \left\{
                 \begin{aligned}
-                    \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & =
-                    \xi^{m-1}
-                    f\left(u,\xi\right).                                   \\
-                    u\left(0\right)=d,\diff.|.{u}{\xi}[0]            & =0.
+                    \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & = \xi^{m-1} g\left(u,\xi\right). \\
+                    u\left(0\right)=d,\quad \diff.|.{u}{\xi}[0] & =0.
                 \end{aligned}
                 \right.\label{eq:1}
             \end{equation}
         \end{theorem}
+        \vspace{-0.3cm} 
 
         \begin{proof}
-            Let $v\coloneqq\diff{u}{\xi}$.
-            The problem~\eqref{eq:1}
-            \begin{math}
+            Let $v\coloneqq\diff{u}{\xi}$. The problem~\eqref{eq:1} implies:
+            \begin{equation*} 
                 \left\{
                 \begin{aligned}
-                    \diff{u}{\xi}                        & =
-                    v.                                         \\
-                    \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
-                    \xi^{m-1}
-                    f\left(u,\xi\right).                       \\
-                    u\left(0\right)=d,v\left(0\right)    & =0.
+                    \diff{u}{\xi} &= v. \\
+                    \diff*{\left(\xi^{m-1}v\right)}{\xi} &= \xi^{m-1} g\left(u,\xi\right). \\
+                    u(0)=d, v(0) &=0.
                 \end{aligned}
                 \right.\implies
                 \left\{
                 \begin{aligned}
-                    u\left(\xi\right) & =
-                    d+
-                    \int_{0}^{\xi}v\left(t\right)\dl t. \\
-                    v\left(\xi\right) & =
-                    \frac{1}{\xi^{m-1}}
-                    \int_{0}^{\xi}
-                    t^{m-1}f\left(u,t\right)\dl t.
+                    u(\xi) &= d+ \int_{0}^{\xi}v(t)\dl t. \\
+                    v(\xi) &= \frac{1}{\xi^{m-1}} \int_{0}^{\xi} t^{m-1}g(u,t)\dl t.
                 \end{aligned}
                 \right.
-            \end{math}.
-            Let $\varepsilon>0$,
-            \begin{math}
-                X_{\varepsilon}=
-                C\left(\left[0,\varepsilon\right]\right)\times
-                C\left(\left[0,\varepsilon\right]\right)
-            \end{math}
-            and $\forall\left(u,v\right)\in X_{\varepsilon}$:
-            \begin{math}
-                {\left\|\left(u,v\right)\right\|}_{\varepsilon}=
-                \max
-                \left\{
-                \max\limits_{0\leq t\leq\varepsilon}\left|u\left(t\right)\right|,
-                \max\limits_{0\leq t\leq\varepsilon}\left|v\left(t\right)\right|
-                \right\}
-            \end{math}.
-            \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.
-
-            Define the operator $T$ over closed set $K\subset X$ to itself and apply the Banach Contraction Principle
+            \end{equation*}
+            Let $\varepsilon>0$, $X_{\varepsilon}= C([0,\varepsilon])\times C([0,\varepsilon])$.\newline
+            For $(u,v)\in X_{\varepsilon}$:
+            ${\|(u,v)\|}_{\varepsilon}= \max \left\{ \max_{0\leq t\leq\varepsilon}|u(t)|, \max_{0\leq t\leq\varepsilon}|v(t)| \right\}$.\newline
+            \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.\newline
+            Define $T\colon K \longrightarrow K$ over closed set $K\subset X$:
+            \vspace{-0.05cm}
             \begin{align*}
-                T\colon K        & \longrightarrow K \\
-                \left(u,v\right) & \longmapsto
-                \left(
-                d+\int_{0}^{\xi}v\left(t\right)\dl t,
-                \frac{1}{\xi^{m-1}}
-                \int_{0}^{\xi}
-                t^{m-1}f\left(u,t\right)\dl t
-                \right)
+                (u,v) \longmapsto \left( d+\int_{0}^{\xi}v(t)\dl t, \quad \frac{1}{\xi^{m-1}} \int_{0}^{\xi} t^{m-1}g(u,t)\dl t \right)
             \end{align*}
+            \vspace{-0.4cm} 
         \end{proof}
-        \begin{minipage}{0.5\linewidth}
-            \centering
-            \includegraphics[width=\linewidth]{lane_emden}
-        \end{minipage}
-        \begin{minipage}{0.5\linewidth}
-            \centering
-            \includegraphics[width=\linewidth]{emden_chandrasekhar}
-            \includegraphics[width=\linewidth]{white_dwarf}
-        \end{minipage}
+        \vspace{-0.2cm} 
 
-        % \begin{minipage}{0.9\linewidth}
-        %     \textbf{\color{blue}Results on Video Restoration Tasks:}
-        %     \vspace{0.5em}
-        % \end{minipage}
-
-        % \begin{minipage}{0.33\linewidth}
-        %     \centering
-        %     \resizebox{.95\linewidth}{!}{%
-        %         \begin{tabular}{lcc}
-        %             \toprule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             HRIR                                         & 16.83                        & 0.6402                       \\
-        %             WeatherDiff                                  & 20.98                        & 0.6697                       \\
-        %             FDM                                          & 23.49                        & 0.7657                       \\
-        %             MetaRain (Scrt)                              & 22.21                        & 0.6723                       \\
-        %             MetaRain (Meta)                              & 23.49                        & 0.7171                       \\
-        %             NightRain                                    & \underline{26.73}            & \underline{0.8647}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{29.26}               & \textbf{0.9250}              \\
-        %             \midrule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             EDVR                                         & 17.93                        & 0.5790                       \\
-        %             BasicVSR                                     & 22.46                        & 0.8473                       \\
-        %             RDDNet                                       & 22.97                        & 0.8742                       \\
-        %             BasicVSR\(++\)                               & 22.64                        & 0.8618                       \\
-        %             RVRT                                         & 20.90                        & 0.7974                       \\
-        %             SVDNet                                       & \underline{25.06}            & \underline{0.9210}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{26.02}               & \textbf{0.9230}              \\
-        %             \bottomrule
-        %         \end{tabular}
-        %     }
-
-        %     \vspace{0.5em}
-        %     (a) Night Deraining \& Desnowing
-        %     \vspace{0.5em}
-        % \end{minipage}
-        % \begin{minipage}{0.33\linewidth}
-        %     \centering
-        %     \resizebox{.87\linewidth}{!}{%
-        %         \begin{tabular}{lcc}
-        %             \toprule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             STRCNN                                       & 29.42                        & 0.8930                       \\
-        %             DBN                                          & 31.21                        & 0.9220                       \\
-        %             IFI-RNN                                      & 30.89                        & 0.8820                       \\
-        %             CDVD-TSP                                     & \underline{31.58}            & \underline{0.9260}           \\
-        %             PVDNet                                       & 31.35                        & 0.9230                       \\
-        %             ESTRNN                                       & 31.39                        & \underline{0.9260}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{33.58}               & \textbf{0.9540}              \\
-        %             \midrule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             ESTRNN                                       & 31.07                        & 0.9023                       \\
-        %             EDVR                                         & 31.54                        & 0.9260                       \\
-        %             FGST                                         & 32.90                        & 0.9610                       \\
-        %             BasicVSR\(++\)                               & 34.01                        & 0.9520                       \\
-        %             GSTA                                         & 32.10                        & 0.9600                       \\
-        %             DSTNet                                       & \underline{34.16}            & \underline{0.9679}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{34.50}               & \textbf{0.9720}              \\
-        %             \bottomrule
-        %         \end{tabular}
-        %     }
-
-        %     \vspace{0.5em}
-        %     (b) Real \& Synthetic Deblurring
-        %     \vspace{0.5em}
-        % \end{minipage}
-        % \begin{minipage}{0.33\linewidth}
-        %     \centering
-        %     \resizebox{.87\linewidth}{!}{%
-        %         \begin{tabular}{lcc}
-        %             \toprule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             VRT                                          & 27.77                        & 0.8856                       \\
-        %             TTVSR                                        & 28.05                        & 0.8998                       \\
-        %             RVRT                                         & 28.24                        & 0.8857                       \\
-        %             BasicVSR\(++\)                               & 29.75                        & 0.9171                       \\
-        %             RDDNet                                       & 28.38                        & 0.9096                       \\
-        %             ViMPNet                                      & \underline{31.02}            & \underline{0.9283}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{32.01}               & \textbf{0.9590}              \\
-        %             \midrule
-        %             \textbf{Methods}                             & \textbf{PSNR} (\(\uparrow\)) & \textbf{SSIM} (\(\uparrow\)) \\
-        %             \midrule
-        %             EDVR                                         & 23.51                        & 0.7492                       \\
-        %             MANA                                         & 23.15                        & 0.7513                       \\
-        %             TTVSR                                        & 23.60                        & 0.7686                       \\
-        %             BasicVSR\(++\)                               & 23.70                        & 0.7713                       \\
-        %             EAVSR                                        & 23.61                        & 0.7618                       \\
-        %             EAVSR\(+\)                                   & \underline{23.94}            & \underline{0.7726}           \\
-        %             \rowcolor{rowcolor} \textbf{\textsc{TURTLE}} & \textbf{25.30}               & \textbf{0.8272}              \\
-        %             \bottomrule
-        %         \end{tabular}
-        %     }
-
-        %     \vspace{0.5em}
-        %     (c) Raindrop Removal \& SR
-        %     \vspace{0.5em}
-        % \end{minipage}
-
-        % \begin{minipage}{0.34\linewidth}
-        %     \textbf{\color{blue}Ablation Studies:}
-        %     \vspace{0.5em}
-        % \end{minipage}
-        % \begin{minipage}{0.65\linewidth}
-        %     \textbf{{\color{blue}Profiling \textsc{TURTLE}:}}
-        %     \vspace{0.5em}
-        % \end{minipage}
-
-        % \begin{minipage}{0.34\linewidth}
-        %     \centering
-        %     \resizebox{.9\linewidth}{!}{%
-        %         \begin{tabular}{@{}lll@{}}
-        %             \toprule
-        %             \textbf{Ablation Studies}                                                             & \textbf{Configurations} & \textbf{PSNR} (\(\uparrow\)) \\ \midrule
-        %             \multirow{3}{*}{State Align Block}                                                    & No \textsf{CHM}         & 31.84                        \\
-        %                                                                                                   & No \(\phi\)             & 32.07                        \\
-        %                                                                                                   & \textsc{TURTLE}         & 32.36                        \\ \midrule
-        %             \multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Truncation\\ Factor \(\tau\)\end{tabular}} & 1                       & 32.15                        \\
-        %                                                                                                   & 5                       & 32.26                        \\
-        %                                                                                                   & 3 (\textsc{TURTLE})     & 32.26                        \\ \midrule
-        %             \multirow{3}{*}{k in \textit{topk}}                                                   & 1                       & 32.18                        \\
-        %                                                                                                   & 20                      & 32.10                        \\
-        %                                                                                                   & 5 (\textsc{TURTLE})     & 32.26                        \\ \bottomrule
-        %         \end{tabular}
-        %     }
-        % \end{minipage}
-        % \begin{minipage}{0.65\linewidth}
-        %     \centering
-        %     \includegraphics[width=\linewidth]{new_imgs/memory_inf_comp1.pdf}
-        % \end{minipage}
-
-        % \begin{minipage}[t]{.7\linewidth}
-        %     \begin{minipage}{\linewidth}
-        %         \vspace{0.5em}
-        %         \textbf{\color{blue}Video Deblurring, Raindrop, \& Desnowing Results:}
-        %         \vspace{0.5em}
-        %     \end{minipage}
-        %     \begin{minipage}{0.99\linewidth}
-        %         \begin{minipage}{\linewidth}
-        %             \centering
-        %             \includegraphics[width=.99\linewidth]{new_imgs/main_fig_01.pdf}
-        %         \end{minipage}
-        %     \end{minipage}
-        %     \\
-        %     \begin{minipage}{\linewidth}
-        %         \vspace{0.5em}
-        %         \textbf{\color{blue}Real-World Restoration Results:}
-        %         \vspace{0.5em}
-        %     \end{minipage}
-        %     \begin{minipage}{0.99\linewidth}
-        %         \begin{minipage}{\linewidth}
-        %             \centering
-        %             \includegraphics[width=.99\linewidth]{new_imgs/main_fig_02.pdf}
-        %         \end{minipage}
-        %     \end{minipage}
-        % \end{minipage}
-        % \begin{minipage}[t]{.24\linewidth}
-        %     \small
-        %     \textbf{\color{blue}Denoising Results:}\\
-        %     \includegraphics[width=1.2\linewidth]{new_imgs/turtle_denoise.pdf}
-        %     \vspace{2em}
-        %     \textbf{\color{blue}References:}\\
-        %     \vspace{-2em}
-        %     \begin{enumerate}[label={[\arabic*]}]
-        %         \item Liang \textit{et al}. Recurrent video restoration transformer with guided deformable attention. NeurIPS 22.
-        %         \item Li \textit{et al}. A simple baseline for video restoration with grouped spatial-temporal shift. CVPR 23.
-        %         \item Liang \textit{et al}. Vrt: A video restoration transformer. TIP 24.
-        %     \end{enumerate}
-        % \end{minipage}
+        \begin{theorem}[\textbf{\(\highlight[mathcolor2]{\text{Error bound:}}\)}]
+            Let $X(t)\in \mathcal{C}^{n+1}[0,1]$, and $X_n=\sum_{i=0}^{n}c_it^i$ be the exact and $n$-th order approx. solution of problem~\eqref{eq:1}. An upper bound of the absolute error is:
+            \vspace{-0.1cm}
+            $$\|X(t)-X_n(t)\|_\infty \leq \frac{M}{(n+1)!}+ \max\limits_{0\leq i\leq n}{|a_i|}$$
+            where $M=\max_{0\leq t \leq 1}{|X^{(n+1)}(t)|}$ and $a_i=\sum_{i=0}^n(\frac{X^{(i)}(0)}{i!}-c_i)$.
+        \end{theorem}
     }
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \headerbox{\bf\color{ctitle}Causal History Model (\textsf{CHM})}{name=algorithm,column=0,row=0.4,span=1}{
-        % \begin{itemize}
-        %     \item Causal History Model \textcolor{imptext}{extends the state-space modeling paradigm to video processing.} CHM processes videos online and in streaming fashion.
-        %     \item \textbf{\textsf{CHM} models the evolving state and compensates the history for motion} relative to the input and learns to re-weight information in the history.
-        %     \item The \textbf{causal design in \textsc{Turtle} enables recurrence in inference} through state-memorized historical features (stateful configuration); \textbf{while allowing parallel training} by sampling short video clips (stateless configuration).
-        %     \item \textbf{\textsc{TURTLE}'s encoder processes each frame individually}, while its decoder reuses features from previously restored frames, based on the proposed Causal History Model (CHM).
-        % \end{itemize}
-        % \begin{align}
-        %     \label{eq:chm}
-        %     \vec{\hat{H}}_{t}^{[l]} & = \highlight[mathcolor]{\phi_{t}(\vec{H}_{t}^{[l]}, \vec{F}_{t}^{[l]})} \oplus \mathcal{B}_{t}(\vec{F}_{t}^{[l]}),   \\
-        %     \label{eq:chm2}
-        %     \vec{y}_t^{[l]}         & = \highlight[mathcolor2]{\psi_{t}(\vec{\hat{H}}_{t}^{[l]}, \vec{F}_{t}^{[l]})} + \mathcal{D}_{t}(\vec{F}_{t}^{[l]}).
-        % \end{align}
-        % \begin{itemize}
-        %     \item \textbf{\(\highlight[mathcolor]{\text{State Align Block}~\phi}\)}: implicitly tracks and aligns the \textit{topk} most relevant regions in the history with the input frame. Therefore, \(\phi\) compensates for motion the input with respect to the trajectory and establishes \textit{one-to-topk} correspondence.
-        %     \item \textbf{\(\highlight[mathcolor2]{\text{Frame History Router }~\psi}\)}: re-weights the motion compensated history along with the input, thereby encouraging \& accentuating relevant information.
-        % \end{itemize}
-    }
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \headerbox{\bf\color{ctitle}Is \textsc{CHM} Necessary?}{name=method,column=1,row=0.4,span=1,boxpadding=0.45em}{
-        % \textbf{\color{blue}\textsf{CHM} Procedure:}
-        % \textsf{CHM} utilizes attention mechanism to compute region-wise correspondences in the history, and to re-weight the entire trajectory. However, in the first case, CHM limits the lookback window to \textit{topk} most similar regions to avoid spurious correlations hampering the flow of useful information.
-        % \begin{itemize}
-        %     \item \textsf{CHM} utilizes an attention mechanism to compute region-wise correspondences in the history and to re-weight the entire trajectory.
-        %     \item However, \textsf{CHM} limits the lookback window to the \textit{top-k} most similar regions to avoid spurious correlations that may hamper the flow of useful information.
-        % \end{itemize}
+    % % BOX 5: IS CHM NECESSARY?
+    % \headerbox{\bf\color{ctitle}Is \textsc{CHM} Necessary?}{name=method,column=1,row=0.4,span=2,boxpadding=0.45em}{
+    %     \includesvg[width=0.4\linewidth]{qrcode.svg}
+    % }
 
-        % \begin{minipage}{\linewidth}
-        %     \centering
-        %     \includegraphics[width=.99\linewidth]{new_imgs/chm.pdf}
-        % \end{minipage}
-        % \vspace{0.4em}
-        % \textbf{\color{blue}\textsf{CHM}'s Motivation:}
-        % \begin{itemize}
-        %     \item We ablate the necessity of \textsf{CHM} for achieving high perceptual quality in restoration results.
-        %     \item In cases where specific regions in the current frame (input) are occluded, \textsf{CHM} retrieves similar information from past frames to restore the occluded areas.
-        % \end{itemize}
-        % \includegraphics[width=.99\linewidth]{new_imgs/nochm_diag.pdf}
-        \includesvg[width=0.4\linewidth]{qrcode.svg}
-
+     % % BOX 6: RESULTS
+    \headerbox{\bf\color{ctitle}RESULTS}{name=method,column=55,row=0.45,span=45,boxpadding=0.45em}{
+         \begin{minipage}{0.5\linewidth}
+         	\centering
+         	\includegraphics[width=\linewidth]{lane_emden}
+         \end{minipage}
+         \begin{minipage}{0.5\linewidth}
+         	\centering
+         	\includegraphics[width=\linewidth]{emden_chandrasekhar}
+         	\includegraphics[width=\linewidth]{white_dwarf}
+         \end{minipage}
     }
+
 \end{poster}
 \end{document}
