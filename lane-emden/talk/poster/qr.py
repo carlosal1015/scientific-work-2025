@@ -2,8 +2,8 @@
 
 from qrcode import QRCode
 from qrcode.constants import ERROR_CORRECT_Q
-from qrcode.image.svg import SvgPathFillImage
 from qrcode.image.styles.moduledrawers.svg import SvgPathSquareDrawer
+from qrcode.image.svg import SvgPathFillImage
 
 qr = QRCode(
     version=1,

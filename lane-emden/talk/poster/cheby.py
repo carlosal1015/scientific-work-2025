@@ -1,7 +1,8 @@
 # mpmath.chebyfit(ctx, f, interval, N, error=False)
 
-from mpmath import mp, chebyfit, polyval
-from math import sin, pi
+from math import pi, sin
+
+from mpmath import chebyfit, mp, polyval
 
 mp.pretty = True  # this will make "mpf('42.0')" display as "42.0"
 poly, err = chebyfit(sin, [0, pi / 4], 10, error=True)
