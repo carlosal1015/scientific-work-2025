@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{diffcoeff}
 \usepackage[intlimits]{mathtools}
+\usepackage{nicematrix}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{relsize}
@@ -15,7 +16,6 @@
 \usepackage{multicol}
 \usepackage{booktabs}
 \usepackage{microtype}
-\usepackage{svg}
 
 \usepackage[T1]{fontenc}
 \usepackage{ae}
@@ -85,7 +85,8 @@
     }
     % Title
     {
-    \\[0.2em]\sc\huge\bf Numerical solution for differential equations of Lane-Emden type \\[0.1em] by Adomian decomposition and integration methods
+    \\[0.2em]\sc\huge\bf Numerical solution for differential equations of Lane-Emden type \\[0.1em]
+    by Adomian decomposition and integration methods
     }
     % Authors
     {
@@ -99,71 +100,134 @@
     \includegraphics[width=0.22\linewidth]{logo/FlyerE}
     }
 
-    % BOX 1: Adomian decomposition method
-    \headerbox{\bf\color{ctitle}Adomian decomposition method}{name=summary,column=0,row=0,span=30}{
+    \headerbox{\bf\color{ctitle}Adomian Decomposition Method}{name=summary,column=0,row=0,span=30}{
+    \small
+    \setlength{\abovedisplayskip}{3pt}
+    \setlength{\belowdisplayskip}{3pt}
+    \setlength{\parskip}{2pt}
 
-        \small 
-        \setlength{\abovedisplayskip}{3pt}
-        \setlength{\belowdisplayskip}{3pt}
-        \setlength{\parskip}{2pt}
+    The general operator equation is written as
+    \begin{equation}\label{eq:generaloperator}
+        Lu+Ru+Nu=g.
+    \end{equation}
+    Where the operators represent
+    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    \begin{multicols}{2}
+        \begin{itemize}
+            \setlength\itemsep{0em}
+            \item $L$: Highest order derivative term.
 
-        The general operator equation is $Lu+Ru+Nu=g$. Applying $L^{-1}$:
-        \begin{equation*}
-            u = \phi + L^{-1}g - L^{-1}Ru - L^{-1}Nu
+            \item $R$: Lower order derivative terms.
+
+            \item $N$: Nonlinear terms.
+
+            \item $g$: Source term.
+        \end{itemize}
+    \end{multicols}
+    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    Applying $L^{-1}$ to~\eqref{eq:generaloperator}, we obtain
+    \begin{equation*}
+        u=
+        \phi+
+        L^{-1}g-
+        L^{-1}Ru-
+        L^{-1}Nu.
+    \end{equation*}
+    \begin{definition}[\bfseries Adomian polynomials $A_{n}$ and $L^{-1}$ for Lane-Emden type]
+        \begin{align*}
+            \forall n\in\mathbb{N}\cup\left\{0\right\}:
+            A_{n}                    & \coloneqq
+            \frac{1}{n!}
+            \diff*[n]{
+                \left[
+                    N\left(
+                    \sum_{i=0}^{\infty}
+                    \lambda^{i}
+                    u_{i}
+                    \right)
+            \right]_{\lambda=0}}{\lambda}.       \\
+            L^{-1}\left(\cdot\right) & \coloneqq
+            \int_{0}^{\xi}
+            s^{-2}
+            \left(
+            \int_{0}^{s}
+            t^{2}\left(\cdot\right)
+            \dl t
+            \right)
+            \dl s.
+        \end{align*}
+    \end{definition}
+    Decomposing $u=\sum\limits_{n=0}^{\infty}u_{n}$,
+    the recursive scheme is
+    \begin{equation}\label{eq:adm_system}
+        \left\{
+        \begin{aligned}
+            \forall n\in\mathbb{N}\cup\left\{0\right\}:
+            u_{n+1} & =
+            -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
+            u_{0}   & =
+            \phi+L^{-1}g.
+        \end{aligned}
+        \right.
+    \end{equation}
+    }
+
+    \headerbox{\bf\color{ctitle}ODE Integration for a Singular IVP}{name=method,column=30,row=0,span=25}{
+        % Consider the problem of find the numerical solution of the system non-stiff singular initial value problem
+        % \begin{equation*}
+        %     \diff{u}{\xi}=
+        %     f\left(\xi, u\right),\quad
+        %     u\left(\xi_{0}\right)=u_{0}\in\mathbb{R}^{d},\quad
+        %     \xi\in\left(t_{\text{initial}},t_{\text{final}}\right).
+        % \end{equation*}
+        % It is an explicit seventh-order Runge-Kutta method
+        % (integrated only at orders 4 and 5), with local error estimation and step size control
+        \begin{center}
+            \scshape\bfseries
+            Butcher table for Dormand-Prince RK5(4)7M
+        \end{center}
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}\NiceMatrixOptions{cell-space-limits=1pt}
+            \begin{NiceArray}[t]{c|cccccc}
+                \toprule
+                c_{i}         & a_{ij}                                                                                                                            \\
+                \midrule
+                0                                                                                                                                                 \\
+                \dfrac{1}{5}  & \dfrac{1}{5}                                                                                                                      \\
+                \dfrac{3}{10} & \dfrac{3}{40}          & \dfrac{9}{40}                                                                                            \\
+                \dfrac{4}{5}  & \dfrac{44}{45}         & -\dfrac{56}{15}        & \dfrac{32}{9}                                                                   \\
+                \dfrac{8}{9}  & \dfrac{19372}{6561}    & -\dfrac{25360}{2187}   & \dfrac{64448}{6561} & -\dfrac{212}{729}                                         \\
+                1             & \dfrac{9017}{3168}     & -\dfrac{355}{33}       & \dfrac{46732}{5247} & \dfrac{49}{176}   & -\dfrac{5103}{18656}                  \\
+                1             & \dfrac{35}{384}        & 0                      & \dfrac{500}{1113}   & \dfrac{125}{192}  & -\dfrac{2187}{6784}  & \dfrac{11}{84} \\
+                \bottomrule
+                              & b^{\left(5\right)}_{i} & b^{\left(4\right)}_{i} &                     &                   &                      &
+            \end{NiceArray}
         \end{equation*}
-        
-        \vspace{-0.3cm} 
-        \begin{multicols}{2}
-            \begin{itemize}
-                \setlength\itemsep{0em} 
-                \item $L$: Highest order derivative.
-                \item $R$: Linear remainder.
-                \item $N$: Nonlinear operator.
-                \item $g$: Source term.
-            \end{itemize}
-        \end{multicols}
-        \vspace{-0.2cm}
-
-        We define the Adomian Polynomials $A_n$ and the operator $L^{-1}$ for Lane-Emden as:
-            \begin{align*}
-                A_n &= \frac{1}{n!} \frac{d^n}{d\lambda^n} \left[ N\left(\sum_{i=0}^\infty \lambda^i u_i\right) \right]_{\lambda=0}, \\
-                L^{-1}(\cdot) &= \int_{0}^{\xi} s^{-2} \left( \int_{0}^{s} t^{2}(\cdot) \dl t \right) \dl s.
-            \end{align*}
-        Decomposing $u = \sum_{n=0}^\infty u_n$, the recursive scheme is:
-        \begin{equation}\label{eq:adm_system}
-            \left\{
-            \begin{aligned}
-                u_0     &= \phi + L^{-1}g \\
-                u_1     &= -L^{-1}Ru_0 - L^{-1}A_0 \\
-                u_2     &= -L^{-1}Ru_1 - L^{-1}A_1 \\
-                        &\vdots \\
-                u_{n+1} &= -L^{-1}Ru_n - L^{-1}A_n 
-            \end{aligned}
-            \right.
-        \end{equation}
-
-
+        \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{align*}
+            b^{\left(5\right)} & =
+            \begin{bNiceMatrix}[columns-width=1mm]
+                \dfrac{35}{384} & 0 & \dfrac{500}{1113} & \dfrac{125}{192} & -\dfrac{2187}{6784} & \dfrac{11}{84} & 0
+            \end{bNiceMatrix} . \\
+            b^{\left(4\right)} & =
+            \begin{bNiceMatrix}[columns-width=1mm]
+                \dfrac{5179}{57600} & 0 & \dfrac{7571}{16695} & \dfrac{393}{640} & -\dfrac{92097}{339200} & \dfrac{187}{2100} & \dfrac{1}{40}
+            \end{bNiceMatrix}.
+        \end{align*}
+        % \textbf{Illustration}
+        % \begin{minipage}{0.99\linewidth}
+        %     \centering
+        %     \includegraphics[width=0.45\linewidth]{example-image}
+        % \end{minipage}
     }
 
-    % BOX 2: AMP
-    \headerbox{\bf\color{ctitle}EDO Integration}{name=method,column=30,row=0,span=25}{
-    
-    \textbf{Illustration}
-    \begin{minipage}{0.99\linewidth}
-        \centering
-        \includegraphics[width=0.45\linewidth]{example-image}\quad
-        \includegraphics[width=0.45\linewidth]{example-image}
-    \end{minipage}
-    }
+    \headerbox{\bf\color{ctitle}Introduction}{name=results,column=55,row=0,span=45}{
 
-    % BOX 3: Introduction 
-    \headerbox{\bf\color{ctitle}Introduction }{name=results,column=55,row=0,span=45}{
-        
         \textbf{Given:}
         \begin{equation*}
             \left.\begin{aligned}
-                \diff{P}{r} & = -\frac{GM\rho}{r^{2}}. \\
-                \diff{M}{r} & = 4\pi r^{2}\rho.        \\
+                \diff{P}{r} & = -\frac{GM\rho}{r^{2}}.                \\
+                \diff{M}{r} & = 4\pi r^{2}\rho.                       \\
                 P           & = K{\left(\rho\right)}^{1+\frac{1}{n}}.
             \end{aligned}\right\}
             \implies
@@ -186,48 +250,67 @@
         \textbf{Existing methods:}
         \begin{enumerate}
             \item Transform 2nd ODE to 1st ODE system.
+
             \item Adomian decomposition method.
+
             \item Differential transform method.
         \end{enumerate}
         \textbf{Contributions:}
     }
 
     % % BOX 4: EXISTENCE AND UNIQUENESS
-    \headerbox{\bf\color{ctitle}Existence, Uniqueness and Error}{name=algorithm,column=0,row=0.43,span=30}{
-        \small 
+    \headerbox{\bf\color{ctitle}Existence, Uniqueness and Error Estimation}{name=algorithm,column=0,row=0.43,span=30}{
+        \small
         \setlength{\abovedisplayskip}{3pt}
         \setlength{\belowdisplayskip}{3pt}
         \setlength{\abovedisplayshortskip}{1pt}
         \setlength{\belowdisplayshortskip}{1pt}
 
-        \begin{theorem}[\textbf{\(\highlight[mathcolor]{\text{Existence and uniqueness}}\)}]
-            Let $m\in\mathbb{N}$. If $g\in C^{1}\left(\mathbb{R}\times\left[0,\infty\right), \mathbb{R}\right)$, then $\forall d\in\mathbb{R}$, $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that:
-            \vspace{-0.05cm} 
+        \begin{theorem}[\colorbox{mathcolor}{\bfseries Existence and Uniqueness}]
+            Let $m\in\mathbb{N}$.
+            If $g\in C^{1}$,
+            then $\forall\alpha\in\mathbb{R}$,
+            $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that
             \begin{equation}
                 \left\{
                 \begin{aligned}
-                    \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & = \xi^{m-1} g\left(u,\xi\right). \\
-                    u\left(0\right)=d,\quad \diff.|.{u}{\xi}[0] & =0.
+                    \diff*{\left(\xi^{m-1}\diff{u}{\xi}\right)}{\xi} & =
+                    \xi^{m-1} g\left(u,\xi\right).                       \\
+                    u\left(0\right)=\alpha,\quad \diff.|.{u}{\xi}[0] & =
+                    0.
                 \end{aligned}
                 \right.\label{eq:1}
             \end{equation}
         \end{theorem}
-        \vspace{-0.3cm} 
 
         \begin{proof}
-            Let $v\coloneqq\diff{u}{\xi}$. The problem~\eqref{eq:1} implies:
-            \begin{equation*} 
+            Let $v\coloneqq\diff{u}{\xi}$. The problem~\eqref{eq:1}
+            implies the integral equation
+            \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+            \begin{equation*}
                 \left\{
                 \begin{aligned}
-                    \diff{u}{\xi} &= v. \\
-                    \diff*{\left(\xi^{m-1}v\right)}{\xi} &= \xi^{m-1} g\left(u,\xi\right). \\
-                    u(0)=d, v(0) &=0.
+                    \diff{u}{\xi}                        & =
+                    v.                                       \\
+                    \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
+                    \xi^{m-1}
+                    g\left(u,\xi\right).                     \\
+                    u\left(0\right)=\alpha,
+                    v\left(0\right)                      & =
+                    0.
                 \end{aligned}
-                \right.\implies
+                \right.\iff
                 \left\{
                 \begin{aligned}
-                    u(\xi) &= d+ \int_{0}^{\xi}v(t)\dl t. \\
-                    v(\xi) &= \frac{1}{\xi^{m-1}} \int_{0}^{\xi} t^{m-1}g(u,t)\dl t.
+                    u\left(\xi\right) & =
+                    \alpha+
+                    \int_{0}^{\xi}
+                    v\left(t\right)\dl t. \\
+                    v\left(\xi\right) & =
+                    \frac{1}{\xi^{m-1}}
+                    \int_{0}^{\xi}
+                    t^{m-1}
+                    g\left(u,t\right)\dl t.
                 \end{aligned}
                 \right.
             \end{equation*}
@@ -236,19 +319,48 @@
             ${\|(u,v)\|}_{\varepsilon}= \max \left\{ \max_{0\leq t\leq\varepsilon}|u(t)|, \max_{0\leq t\leq\varepsilon}|v(t)| \right\}$.\newline
             \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.\newline
             Define $T\colon K \longrightarrow K$ over closed set $K\subset X$:
-            \vspace{-0.05cm}
             \begin{align*}
-                (u,v) \longmapsto \left( d+\int_{0}^{\xi}v(t)\dl t, \quad \frac{1}{\xi^{m-1}} \int_{0}^{\xi} t^{m-1}g(u,t)\dl t \right)
+                \left(u,v\right)
+                \longmapsto
+                \left(
+                \alpha+
+                \int_{0}^{\xi}
+                v\left(t\right)\dl t,
+                \frac{1}{\xi^{m-1}}
+                \int_{0}^{\xi}
+                t^{m-1}g\left(u,t\right)\dl t
+                \right).
             \end{align*}
-            \vspace{-0.4cm} 
         \end{proof}
-        \vspace{-0.2cm} 
 
-        \begin{theorem}[\textbf{\(\highlight[mathcolor2]{\text{Error bound:}}\)}]
-            Let $X(t)\in \mathcal{C}^{n+1}[0,1]$, and $X_n=\sum_{i=0}^{n}c_it^i$ be the exact and $n$-th order approx. solution of problem~\eqref{eq:1}. An upper bound of the absolute error is:
-            \vspace{-0.1cm}
-            $$\|X(t)-X_n(t)\|_\infty \leq \frac{M}{(n+1)!}+ \max\limits_{0\leq i\leq n}{|a_i|}$$
-            where $M=\max_{0\leq t \leq 1}{|X^{(n+1)}(t)|}$ and $a_i=\sum_{i=0}^n(\frac{X^{(i)}(0)}{i!}-c_i)$.
+        \begin{theorem}[\colorbox{mathcolor2}{\bfseries Error bound}]
+            Let $u\in C^{n+1}\left(\left[0,1\right]\right)$ the exact
+            solution of~\eqref{eq:1} and $u_{n}=\sum_{i=0}^{n}c_{i}t^{i}$
+            their $n$-th order approximation.
+            Then,
+            \begin{equation*}
+                \left\|u\left(t\right)-u_{n}\left(t\right)\right\|_{\infty}\leq
+                \frac{M}{\left(n+1\right)!}+
+                \max_{0\leq i\leq n}
+                \left|a_{i}\right|,
+            \end{equation*}
+            where
+            \begin{math}\displaystyle
+                M=
+                \max_{0\leq t\leq 1}
+                \left|
+                u^{\left(n+1\right)}\left(t\right)
+                \right|
+            \end{math}
+            and
+            \begin{math}\displaystyle
+                a_{i}=
+                \sum_{i=0}^{n}
+                \left[
+                    \frac{u^{\left(i\right)}\left(0\right)}{i!}-
+                    c_{i}
+                    \right]
+            \end{math}.
         \end{theorem}
     }
 
@@ -257,17 +369,20 @@
     %     \includesvg[width=0.4\linewidth]{qrcode.svg}
     % }
 
-     % % BOX 6: RESULTS
-    \headerbox{\bf\color{ctitle}RESULTS}{name=method,column=55,row=0.45,span=45,boxpadding=0.45em}{
-         \begin{minipage}{0.5\linewidth}
-         	\centering
-         	\includegraphics[width=\linewidth]{lane_emden}
-         \end{minipage}
-         \begin{minipage}{0.5\linewidth}
-         	\centering
-         	\includegraphics[width=\linewidth]{emden_chandrasekhar}
-         	\includegraphics[width=\linewidth]{white_dwarf}
-         \end{minipage}
+    % % BOX 6: RESULTS
+    \headerbox{\bf\color{ctitle}Numerical solutions for Lane-Emden type}{name=method,column=55,row=0.45,span=45,boxpadding=0.45em}{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{lane_emden}
+            \includegraphics[width=\linewidth]{emden_chandrasekhar}
+        \end{minipage}
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering\vspace{-5.87cm}
+            \includegraphics[width=\linewidth]{white_dwarf}
+            \includegraphics[width=.65\linewidth]{qrcode.pdf}
+
+            Explore
+        \end{minipage}
     }
 
 \end{poster}
