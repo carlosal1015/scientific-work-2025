@@ -70,7 +70,7 @@ ax.text(
     r"$\boxed{\frac{1}{\xi^{2}}\diff*{\left(\xi^{2}\diff{\theta}{\xi}\right)}{\xi}-e^{-\theta}=0, \theta\left(0\right)=0, \theta^{\prime}\left(0\right)=0}$",
     fontsize=12,
 )
-ax.legend(loc="best", shadow=True, fontsize=12, title="Legend")
+ax.legend(loc="best", shadow=True, fontsize=12, title="Numerical methods")
 ax.set_title(
     label="Emden-Chandrasekhar equation, ADM with 11 terms",
     loc="center",

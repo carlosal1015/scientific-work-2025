@@ -117,14 +117,14 @@
     }
 
     \headerbox{\bf\color{ctitle}Introduction}{name=introduction,column=0,row=0,span=20}{
-        \textbf{Given:}
+        \textbf{Given a set of Stellar Structure Equations}\footnotesize
         \begin{equation*}
             \left.\begin{aligned}
                 \diff{P}{r} & = -\frac{GM\rho}{r^{2}}.                \\
                 \diff{M}{r} & = 4\pi r^{2}\rho.                       \\
                 P           & = K{\left(\rho\right)}^{1+\frac{1}{n}}.
             \end{aligned}\right\}
-            \implies
+            \!\!\!\implies\!\!\!
             \begin{aligned}
                 \frac{1}{r^{2}}
                 \diff*{
@@ -132,24 +132,36 @@
                     \frac{r^{2}}{\rho}\diff{P}{r}
                     \right)
                 }{r}=
-                -4\pi G \rho. \\
-                \text{See the model derivation.}
+                -4\pi G \rho.
+                % \text{See the model derivation.}
             \end{aligned}
-        \end{equation*}
-        \textbf{Goal:}
-        \begin{equation*}
-            \text{Numerical solutions Lane-Emden ODE when }n\neq 0,1,5.
-        \end{equation*}
+        \end{equation*}\normalsize
 
-        \textbf{Existing methods:}
-        \begin{enumerate}
-            \item Transform 2nd ODE to 1st ODE system.
+        \
 
-            \item Adomian decomposition method.
+        \textbf{Goal}\small
 
-            \item Differential transform method.
-        \end{enumerate}
-        \textbf{Contributions:}
+        Obtain numerical solutions for Lane-Emden equations using efficient and accurate methods.\normalsize
+
+        \
+
+        \textbf{Existing methods}\small
+        \begin{itemize}
+            \item Transformation to 1st-order ODE system for obtain numerical solution with standard ODE solvers.
+
+            \item Adomian Decomposition Method to aproximate the analytical series solution.
+                  % \item Differential transform method $\implies$ Series-based, limited convergence for certain $n$.
+        \end{itemize}\normalsize
+
+        \textbf{Contributions}\small
+        \begin{itemize}
+            \item
+
+                  Theoretical analysis of existence, uniqueness, and error bounds for solutions.
+
+            \item Comparison across multiple polytropic indices $n$ between Adomian decomposition method
+                  with Dormand-Prince RK5(4)7M.
+        \end{itemize}
     }
 
     \headerbox{\bf\color{ctitle}Theoretical Analysis}{name=theorems,column=20,row=0,span=29}{
@@ -284,9 +296,9 @@
     \begin{multicols}{2}
         \begin{itemize}
             \setlength\itemsep{0em}
-            \item $L$: Highest order derivative term.
+            \item $L$: Highest order derivative.
 
-            \item $R$: Lower order derivative terms.
+            \item $R$: Lower order derivatives.
 
             \item $N$: Nonlinear terms.
 
@@ -328,15 +340,17 @@
     Decomposing $u=\sum\limits_{n=0}^{\infty}u_{n}$,
     the recursive scheme is
     \begin{equation}\label{eq:adm_system}
-        \left\{
-        \begin{aligned}
-            \forall n\in\mathbb{N}\cup\left\{0\right\}:
-            u_{n+1} & =
-            -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
-            u_{0}   & =
-            \phi+L^{-1}g.
-        \end{aligned}
-        \right.
+        \boxed{
+            \left\{
+            \begin{aligned}
+                \forall n\in\mathbb{N}\cup\left\{0\right\}:
+                u_{n+1} & =
+                -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
+                u_{0}   & =
+                \phi+L^{-1}g.
+            \end{aligned}
+            \right.
+        }
     \end{equation}
     }
 
@@ -352,7 +366,7 @@
         % (integrated only at orders 4 and 5), with local error estimation and step size control
         \begin{center}
             \scshape\bfseries
-            Butcher table for Dormand-Prince RK5(4)7M~\cite{Dormand1980}
+            Butcher table for Dormand-Prince RK5(4)7M
         \end{center}
         \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
         \begin{equation*}\NiceMatrixOptions{cell-space-limits=1pt}
@@ -398,7 +412,7 @@
         \end{minipage}
         \begin{minipage}[t]{0.32\paperwidth}
             \centering\vspace{-8.6cm}
-            \includegraphics[width=0.31\paperwidth]{emden_chandrasekhar}
+            \includegraphics[width=0.32\paperwidth]{emden_chandrasekhar}
         \end{minipage}
         \begin{minipage}[t]{0.32\paperwidth}
             \centering\vspace{-8.6cm}
