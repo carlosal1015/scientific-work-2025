@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import ArrayLike
@@ -30,7 +32,7 @@ for c in [0, 0.2, 0.4, 0.6, 0.8]:
     ax.plot(
         t,
         sol.sol(t)[0, :],
-        label=rf"RK45 / ${c}$",
+        label=rf"RK5(4) / ${c}$",
         linestyle="solid",  # solid dashed dashdot dotted
         linewidth=0.8,
     )
@@ -59,8 +61,8 @@ for c in [0, 0.2, 0.4, 0.6, 0.8]:
     )
 ax.set_xlim(t_0, t_final)
 ax.set_ylim(1 / 2, 1)
-ax.set_xlabel(xlabel=r"$\xi$", fontsize=12)
-ax.set_ylabel(ylabel=r"$\theta\left(\xi\right)$", fontsize=12)
+ax.set_xlabel(xlabel=r"$\xi$", fontsize=15)
+ax.set_ylabel(ylabel=r"$\theta\left(\xi\right)$", fontsize=15)
 ax.set_xticks(ticks=np.linspace(start=t_0, stop=t_final, num=2))
 ax.set_yticks(ticks=np.linspace(start=1 / 2, stop=1, num=2))
 ax.grid(c="gray", linewidth=0.1, linestyle="dashed")
@@ -77,7 +79,7 @@ ax.legend(
     title=r"Numerical Method / Constant $\left(C\right)$",
 )
 ax.set_title(
-    label="Numerical solution of the Chandrasekhar's white dwarf equation, ADM with 11 terms",
+    label="Chandrasekhar's white dwarf equation, ADM with 11 terms",
     loc="center",
     wrap=True,
     fontsize=15,

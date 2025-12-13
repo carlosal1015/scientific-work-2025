@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import ArrayLike
@@ -25,7 +27,7 @@ for n in [0, 1, 2, 3, 4, 5]:
     ax.plot(
         t,
         sol.sol(t)[0, :],
-        label=rf"RK45 / ${n}$",
+        label=rf"RK5(4) / ${n}$",
         linestyle="solid",
         linewidth=0.7,
     )
@@ -69,8 +71,8 @@ for n in [0, 1, 2, 3, 4, 5]:
     )
 ax.set_xlim(t_0, t_final)
 ax.set_ylim(0, 1)
-ax.set_xlabel(xlabel=r"$\xi$", fontsize=12)
-ax.set_ylabel(ylabel=r"$\theta\left(\xi\right)$", fontsize=12)
+ax.set_xlabel(xlabel=r"$\xi$", fontsize=15)
+ax.set_ylabel(ylabel=r"$\theta\left(\xi\right)$", fontsize=15)
 ax.set_xticks(ticks=np.linspace(start=t_0, stop=t_final, num=2))
 ax.set_yticks(ticks=np.linspace(start=0, stop=1, num=2))
 ax.grid(c="gray", linewidth=0.1, linestyle="dashed")
@@ -81,10 +83,13 @@ ax.text(
     fontsize=12,
 )
 ax.legend(
-    loc="best", shadow=True, fontsize=12, title=r"Numerical Method / Polytropic index $\left(n\right)$"
+    loc="best",
+    shadow=True,
+    fontsize=12,
+    title=r"Numerical Method / Polytropic index $\left(n\right)$",
 )
 ax.set_title(
-    label="Numerical solution of the Lane-Emden equation, ADM with 15 terms",
+    label="Lane-Emden equation, ADM with 15 terms",
     loc="center",
     wrap=True,
     fontsize=15,

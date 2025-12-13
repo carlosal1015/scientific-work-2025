@@ -1,6 +1,15 @@
 % !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
 % !TeX TXS-program:compile = txs:///lualatex | txs:///biber | txs:///lualatex | txs:///lualatex | txs:///view
-\documentclass[landscape,paperwidth=48in,paperheight=36in,fontscale=0.3]{baposter}
+% arara: lualatex
+% arara: biber
+% arara: lualatex
+% arara: lualatex
+\documentclass[
+    landscape,
+    paperwidth=48in,
+    paperheight=36in,
+    fontscale=0.3
+]{baposter}
 
 \usepackage{times}
 \usepackage{calc}
@@ -16,7 +25,6 @@
 \usepackage{multicol}
 \usepackage{booktabs}
 \usepackage{microtype}
-
 \usepackage[T1]{fontenc}
 \usepackage{ae}
 \usepackage{enumitem}
@@ -24,6 +32,14 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 \usepackage[vlined]{algorithm2e}
+
+\usepackage[
+	citestyle=numeric,
+	style=numeric,
+	backend=biber,
+]{biblatex}
+\addbibresource{references.bib}
+
 \let\vec\mathbf
 \setlength{\algomargin}{0pt}
 
@@ -100,129 +116,7 @@
     \includegraphics[width=0.22\linewidth]{logo/FlyerE}
     }
 
-    \headerbox{\bf\color{ctitle}Adomian Decomposition Method}{name=summary,column=0,row=0,span=30}{
-    \small
-    \setlength{\abovedisplayskip}{3pt}
-    \setlength{\belowdisplayskip}{3pt}
-    \setlength{\parskip}{2pt}
-
-    The general operator equation is written as
-    \begin{equation}\label{eq:generaloperator}
-        Lu+Ru+Nu=g.
-    \end{equation}
-    Where the operators represent
-    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
-    \begin{multicols}{2}
-        \begin{itemize}
-            \setlength\itemsep{0em}
-            \item $L$: Highest order derivative term.
-
-            \item $R$: Lower order derivative terms.
-
-            \item $N$: Nonlinear terms.
-
-            \item $g$: Source term.
-        \end{itemize}
-    \end{multicols}
-    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
-    Applying $L^{-1}$ to~\eqref{eq:generaloperator}, we obtain
-    \begin{equation*}
-        u=
-        \phi+
-        L^{-1}g-
-        L^{-1}Ru-
-        L^{-1}Nu.
-    \end{equation*}
-    \begin{definition}[\bfseries Adomian polynomials $A_{n}$ and $L^{-1}$ for Lane-Emden type]
-        \begin{align*}
-            \forall n\in\mathbb{N}\cup\left\{0\right\}:
-            A_{n}                    & \coloneqq
-            \frac{1}{n!}
-            \diff*[n]{
-                \left[
-                    N\left(
-                    \sum_{i=0}^{\infty}
-                    \lambda^{i}
-                    u_{i}
-                    \right)
-            \right]_{\lambda=0}}{\lambda}.       \\
-            L^{-1}\left(\cdot\right) & \coloneqq
-            \int_{0}^{\xi}
-            s^{-2}
-            \left(
-            \int_{0}^{s}
-            t^{2}\left(\cdot\right)
-            \dl t
-            \right)
-            \dl s.
-        \end{align*}
-    \end{definition}
-    Decomposing $u=\sum\limits_{n=0}^{\infty}u_{n}$,
-    the recursive scheme is
-    \begin{equation}\label{eq:adm_system}
-        \left\{
-        \begin{aligned}
-            \forall n\in\mathbb{N}\cup\left\{0\right\}:
-            u_{n+1} & =
-            -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
-            u_{0}   & =
-            \phi+L^{-1}g.
-        \end{aligned}
-        \right.
-    \end{equation}
-    }
-
-    \headerbox{\bf\color{ctitle}ODE Integration for a Singular IVP}{name=method,column=30,row=0,span=25}{
-        % Consider the problem of find the numerical solution of the system non-stiff singular initial value problem
-        % \begin{equation*}
-        %     \diff{u}{\xi}=
-        %     f\left(\xi, u\right),\quad
-        %     u\left(\xi_{0}\right)=u_{0}\in\mathbb{R}^{d},\quad
-        %     \xi\in\left(t_{\text{initial}},t_{\text{final}}\right).
-        % \end{equation*}
-        % It is an explicit seventh-order Runge-Kutta method
-        % (integrated only at orders 4 and 5), with local error estimation and step size control
-        \begin{center}
-            \scshape\bfseries
-            Butcher table for Dormand-Prince RK5(4)7M
-        \end{center}
-        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
-        \begin{equation*}\NiceMatrixOptions{cell-space-limits=1pt}
-            \begin{NiceArray}[t]{c|cccccc}
-                \toprule
-                c_{i}         & a_{ij}                                                                                                                            \\
-                \midrule
-                0                                                                                                                                                 \\
-                \dfrac{1}{5}  & \dfrac{1}{5}                                                                                                                      \\
-                \dfrac{3}{10} & \dfrac{3}{40}          & \dfrac{9}{40}                                                                                            \\
-                \dfrac{4}{5}  & \dfrac{44}{45}         & -\dfrac{56}{15}        & \dfrac{32}{9}                                                                   \\
-                \dfrac{8}{9}  & \dfrac{19372}{6561}    & -\dfrac{25360}{2187}   & \dfrac{64448}{6561} & -\dfrac{212}{729}                                         \\
-                1             & \dfrac{9017}{3168}     & -\dfrac{355}{33}       & \dfrac{46732}{5247} & \dfrac{49}{176}   & -\dfrac{5103}{18656}                  \\
-                1             & \dfrac{35}{384}        & 0                      & \dfrac{500}{1113}   & \dfrac{125}{192}  & -\dfrac{2187}{6784}  & \dfrac{11}{84} \\
-                \bottomrule
-                              & b^{\left(5\right)}_{i} & b^{\left(4\right)}_{i} &                     &                   &                      &
-            \end{NiceArray}
-        \end{equation*}
-        \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
-        \begin{align*}
-            b^{\left(5\right)} & =
-            \begin{bNiceMatrix}[columns-width=1mm]
-                \dfrac{35}{384} & 0 & \dfrac{500}{1113} & \dfrac{125}{192} & -\dfrac{2187}{6784} & \dfrac{11}{84} & 0
-            \end{bNiceMatrix} . \\
-            b^{\left(4\right)} & =
-            \begin{bNiceMatrix}[columns-width=1mm]
-                \dfrac{5179}{57600} & 0 & \dfrac{7571}{16695} & \dfrac{393}{640} & -\dfrac{92097}{339200} & \dfrac{187}{2100} & \dfrac{1}{40}
-            \end{bNiceMatrix}.
-        \end{align*}
-        % \textbf{Illustration}
-        % \begin{minipage}{0.99\linewidth}
-        %     \centering
-        %     \includegraphics[width=0.45\linewidth]{example-image}
-        % \end{minipage}
-    }
-
-    \headerbox{\bf\color{ctitle}Introduction}{name=results,column=55,row=0,span=45}{
-
+    \headerbox{\bf\color{ctitle}Introduction}{name=introduction,column=0,row=0,span=20}{
         \textbf{Given:}
         \begin{equation*}
             \left.\begin{aligned}
@@ -258,8 +152,7 @@
         \textbf{Contributions:}
     }
 
-    % % BOX 4: EXISTENCE AND UNIQUENESS
-    \headerbox{\bf\color{ctitle}Existence, Uniqueness and Error Estimation}{name=algorithm,column=0,row=0.43,span=30}{
+    \headerbox{\bf\color{ctitle}Theoretical Analysis}{name=theorems,column=20,row=0,span=29}{
         \small
         \setlength{\abovedisplayskip}{3pt}
         \setlength{\belowdisplayskip}{3pt}
@@ -284,44 +177,54 @@
         \end{theorem}
 
         \begin{proof}
-            Let $v\coloneqq\diff{u}{\xi}$. The problem~\eqref{eq:1}
-            implies the integral equation
-            \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
-            \begin{equation*}
+            Let $v\coloneqq\diff{u}{\xi}$.
+            % The problem~\eqref{eq:1}
+            % implies the integral equation
+            % \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+            % \begin{equation*}
+            %     \left\{
+            %     \begin{aligned}
+            %         \diff{u}{\xi}                        & =
+            %         v.                                       \\
+            %         \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
+            %         \xi^{m-1}
+            %         g\left(u,\xi\right).                     \\
+            %         u\left(0\right)=\alpha,
+            %         v\left(0\right)                      & =
+            %         0.
+            %     \end{aligned}
+            %     \right.\iff
+            %     \left\{
+            %     \begin{aligned}
+            %         u\left(\xi\right) & =
+            %         \alpha+
+            %         \int_{0}^{\xi}
+            %         v\left(t\right)\dl t. \\
+            %         v\left(\xi\right) & =
+            %         \frac{1}{\xi^{m-1}}
+            %         \int_{0}^{\xi}
+            %         t^{m-1}
+            %         g\left(u,t\right)\dl t.
+            %     \end{aligned}
+            %     \right.
+            % \end{equation*}
+            Let $T>0$, $X_{T}\coloneqq C\left(\left[0,T\right]\right)\times C\left(\left[0,T\right]\right)$.\newline
+            For $\left(u,v\right)\in X_{T}$:
+            \begin{math}
+                {\left\|\left(u,v\right)\right\|}_{T}\coloneqq
+                \max
                 \left\{
-                \begin{aligned}
-                    \diff{u}{\xi}                        & =
-                    v.                                       \\
-                    \diff*{\left(\xi^{m-1}v\right)}{\xi} & =
-                    \xi^{m-1}
-                    g\left(u,\xi\right).                     \\
-                    u\left(0\right)=\alpha,
-                    v\left(0\right)                      & =
-                    0.
-                \end{aligned}
-                \right.\iff
-                \left\{
-                \begin{aligned}
-                    u\left(\xi\right) & =
-                    \alpha+
-                    \int_{0}^{\xi}
-                    v\left(t\right)\dl t. \\
-                    v\left(\xi\right) & =
-                    \frac{1}{\xi^{m-1}}
-                    \int_{0}^{\xi}
-                    t^{m-1}
-                    g\left(u,t\right)\dl t.
-                \end{aligned}
-                \right.
-            \end{equation*}
-            Let $\varepsilon>0$, $X_{\varepsilon}= C([0,\varepsilon])\times C([0,\varepsilon])$.\newline
-            For $(u,v)\in X_{\varepsilon}$:
-            ${\|(u,v)\|}_{\varepsilon}= \max \left\{ \max_{0\leq t\leq\varepsilon}|u(t)|, \max_{0\leq t\leq\varepsilon}|v(t)| \right\}$.\newline
-            \textbf{Claim:} $\left(X_{\varepsilon},{\left\|\cdot\right\|}_{\varepsilon}\right)$ is a Banach space.\newline
-            Define $T\colon K \longrightarrow K$ over closed set $K\subset X$:
+                {\left\|u\right\|}_{\infty},
+                {\left\|v\right\|}_{\infty}
+                \right\}
+            \end{math}.\newline
+            \textbf{Claim:} $\left(X_{T},{\left\|\cdot\right\|}_{T}\right)$ is a Banach space.
+            Let be $B\subset X_{T}$ closed ball.
+            Define
             \begin{align*}
+                \Lambda\colon B & \longrightarrow B \\
                 \left(u,v\right)
-                \longmapsto
+                                & \longmapsto
                 \left(
                 \alpha+
                 \int_{0}^{\xi}
@@ -331,6 +234,8 @@
                 t^{m-1}g\left(u,t\right)\dl t
                 \right).
             \end{align*}
+            $\Lambda$ is a contraction, $\left|\operatorname{Fix}\left(\Lambda\right)\right|=1$
+            by the Banach fixed-point theorem.
         \end{proof}
 
         \begin{theorem}[\colorbox{mathcolor2}{\bfseries Error bound}]
@@ -345,7 +250,7 @@
                 \left|a_{i}\right|,
             \end{equation*}
             where
-            \begin{math}\displaystyle
+            \begin{math}
                 M=
                 \max_{0\leq t\leq 1}
                 \left|
@@ -353,7 +258,7 @@
                 \right|
             \end{math}
             and
-            \begin{math}\displaystyle
+            \begin{math}
                 a_{i}=
                 \sum_{i=0}^{n}
                 \left[
@@ -364,25 +269,157 @@
         \end{theorem}
     }
 
-    % % BOX 5: IS CHM NECESSARY?
-    % \headerbox{\bf\color{ctitle}Is \textsc{CHM} Necessary?}{name=method,column=1,row=0.4,span=2,boxpadding=0.45em}{
-    %     \includesvg[width=0.4\linewidth]{qrcode.svg}
-    % }
+    \headerbox{\bf\color{ctitle}Adomian Decomposition Method~\cite{Adomian1995,Wazwaz2001}}{name=adomian,column=49,row=0,span=27}{
+    \small
+    \setlength{\abovedisplayskip}{3pt}
+    \setlength{\belowdisplayskip}{3pt}
+    \setlength{\parskip}{2pt}
 
-    % % BOX 6: RESULTS
-    \headerbox{\bf\color{ctitle}Numerical solutions for Lane-Emden type}{name=method,column=55,row=0.45,span=45,boxpadding=0.45em}{
-        \begin{minipage}[t]{0.5\linewidth}
+    The general operator equation is written as
+    \begin{equation}\label{eq:generaloperator}
+        Lu+Ru+Nu=g.
+    \end{equation}
+    Where the operators represent
+    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    \begin{multicols}{2}
+        \begin{itemize}
+            \setlength\itemsep{0em}
+            \item $L$: Highest order derivative term.
+
+            \item $R$: Lower order derivative terms.
+
+            \item $N$: Nonlinear terms.
+
+            \item $g$: Source term.
+        \end{itemize}
+    \end{multicols}
+    \vspace*{-\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    Applying $L^{-1}$ to~\eqref{eq:generaloperator}, we obtain
+    \begin{equation*}
+        u=
+        \phi+
+        L^{-1}g-
+        L^{-1}Ru-
+        L^{-1}Nu.
+    \end{equation*}
+    \begin{definition}[\bfseries Adomian polynomials $A_{n}$ and $L^{-1}$ for Lane-Emden]
+        \begin{align*}
+            \forall n\in\mathbb{N}\cup\left\{0\right\}:
+            A_{n}  & \coloneqq
+            \frac{1}{n!}
+            \diff*[n]{
+                \left[
+                    N\left(
+                    \sum_{i=0}^{\infty}
+                    \lambda^{i}
+                    u_{i}
+                    \right)
+            \right]_{\lambda=0}}{\lambda}. \\
+            L^{-1} & \coloneqq
+            \int_{0}^{\xi}
+            \xi^{-2}
+            \int_{0}^{\xi}
+            \xi^{2}\left(\cdot\right)
+            \dl \xi
+            \dl \xi.
+        \end{align*}
+    \end{definition}
+    \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    Decomposing $u=\sum\limits_{n=0}^{\infty}u_{n}$,
+    the recursive scheme is
+    \begin{equation}\label{eq:adm_system}
+        \left\{
+        \begin{aligned}
+            \forall n\in\mathbb{N}\cup\left\{0\right\}:
+            u_{n+1} & =
+            -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
+            u_{0}   & =
+            \phi+L^{-1}g.
+        \end{aligned}
+        \right.
+    \end{equation}
+    }
+
+    \headerbox{\bf\color{ctitle}ODE Integration for a Singular IVP}{name=odeintegration,column=76,row=0,span=24}{
+        Consider the problem of find the numerical solution of the system non-stiff singular initial value problem
+        \begin{equation*}
+            \diff{u}{\xi}=
+            f\left(\xi, u\right),\quad
+            u\left(\xi_{0}\right)=u_{0}\in\mathbb{R}^{d},\quad
+            \xi\in\left(t_{\text{initial}},t_{\text{final}}\right).
+        \end{equation*}
+        % It is an explicit seventh-order Runge-Kutta method
+        % (integrated only at orders 4 and 5), with local error estimation and step size control
+        \begin{center}
+            \scshape\bfseries
+            Butcher table for Dormand-Prince RK5(4)7M~\cite{Dormand1980}
+        \end{center}
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{equation*}\NiceMatrixOptions{cell-space-limits=1pt}
+            \begin{NiceArray}[t]{c|cccccc}
+                \toprule
+                c_{i}        & a_{ij}                                                                                                                        \\
+                \midrule
+                0                                                                                                                                            \\
+                \frac{1}{5}  & \frac{1}{5}                                                                                                                   \\
+                \frac{3}{10} & \frac{3}{40}           & \frac{9}{40}                                                                                         \\
+                \frac{4}{5}  & \frac{44}{45}          & -\frac{56}{15}         & \frac{32}{9}                                                                \\
+                \frac{8}{9}  & \frac{19372}{6561}     & -\frac{25360}{2187}    & \frac{64448}{6561} & -\frac{212}{729}                                       \\
+                1            & \frac{9017}{3168}      & -\frac{355}{33}        & \frac{46732}{5247} & \frac{49}{176}   & -\frac{5103}{18656}                 \\
+                1            & \frac{35}{384}         & 0                      & \frac{500}{1113}   & \frac{125}{192}  & -\frac{2187}{6784}  & \frac{11}{84} \\
+                \bottomrule
+                             & b^{\left(5\right)}_{i} & b^{\left(4\right)}_{i} &                    &                  &                     &
+            \end{NiceArray}
+        \end{equation*}
+        \vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+        \begin{align*}\textstyle
+            b^{\left(5\right)} & =
+            \begin{bNiceMatrix}[columns-width=1mm]
+                \frac{35}{384} & 0 & \frac{500}{1113} & \frac{125}{192} & -\frac{2187}{6784} & \frac{11}{84} & 0
+            \end{bNiceMatrix} . \\
+            \textstyle
+            b^{\left(4\right)} & =
+            \begin{bNiceMatrix}[columns-width=1mm]
+                \frac{5179}{57600} & 0 & \frac{7571}{16695} & \frac{393}{640} & -\frac{92097}{339200} & \frac{187}{2100} & \frac{1}{40}
+            \end{bNiceMatrix}.
+        \end{align*}
+
+        % \textbf{Illustration}
+        % \begin{minipage}{0.99\linewidth}
+        %     \centering
+        %     \includegraphics[width=0.45\linewidth]{example-image}
+        % \end{minipage}
+    }
+
+    \headerbox{\bf\color{ctitle}Numerical solutions for Lane-Emden type equations}{name=results,column=0,row=0.46,span=100,boxpadding=0.45em}{
+        \begin{minipage}[t]{0.32\paperwidth}
             \centering
-            \includegraphics[width=\linewidth]{lane_emden}
-            \includegraphics[width=\linewidth]{emden_chandrasekhar}
+            \includegraphics[width=0.31\paperwidth]{lane_emden}
         \end{minipage}
-        \begin{minipage}[t]{0.5\linewidth}
-            \centering\vspace{-5.87cm}
-            \includegraphics[width=\linewidth]{white_dwarf}
-            \includegraphics[width=.65\linewidth]{qrcode.pdf}
+        \begin{minipage}[t]{0.32\paperwidth}
+            \centering\vspace{-8.6cm}
+            \includegraphics[width=0.31\paperwidth]{emden_chandrasekhar}
+        \end{minipage}
+        \begin{minipage}[t]{0.32\paperwidth}
+            \centering\vspace{-8.6cm}
+            \includegraphics[width=0.31\paperwidth]{white_dwarf}
+        \end{minipage}
 
-            Explore
-        \end{minipage}
+
+        \textbf{\Large References}
+        \nocite{*}
+        \printbibliography[heading=none]
+        % \begin{multicols}{3}
+        %     \begin{itemize}
+        %         \item 1.
+
+        %         \item 2.
+
+        %         \item 3.
+        %     \end{itemize}
+        % \end{multicols}
+        % \includegraphics[width=.65\linewidth]{qrcode.pdf}
+        % Explore
     }
 
 \end{poster}
