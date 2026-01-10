@@ -171,9 +171,13 @@
         \setlength{\abovedisplayshortskip}{1pt}
         \setlength{\belowdisplayshortskip}{1pt}
 
-        \begin{theorem}[\colorbox{mathcolor}{\bfseries Existence and Uniqueness}]
-            Let $m\in\mathbb{N}$.
-            If $g\in C^{1}$,
+        \begin{theorem}[\colorbox{mathcolor}{\bfseries Existence and Uniqueness of Lane-Emden}~\cite{diGiovanni2019}]
+            If $m\geq 1$ and
+            \begin{math}
+                g\in
+                C^{1}
+                \left(\mathbb{R}\times\left[0,\infty\right),\mathbb{R}\right)
+            \end{math},
             then $\forall\alpha\in\mathbb{R}$,
             $\exists! u\in C^{2}\left(\mathbb{R},\mathbb{R}\right)$ such that
             \begin{equation}
@@ -250,7 +254,7 @@
             by the Banach fixed-point theorem.
         \end{proof}
 
-        \begin{theorem}[\colorbox{mathcolor2}{\bfseries Error bound}]
+        \begin{theorem}[\colorbox{mathcolor2}{\bfseries Error bound}~\cite{Umesh2021}]
             Let $u\in C^{n+1}\left(\left[0,1\right]\right)$ the exact
             solution of~\eqref{eq:1} and $u_{n}=\sum_{i=0}^{n}c_{i}t^{i}$
             their $n$-th order approximation.
@@ -309,11 +313,12 @@
     Applying $L^{-1}$ to~\eqref{eq:generaloperator}, we obtain
     \begin{equation*}
         u=
-        \phi+
+        \Phi+
         L^{-1}g-
         L^{-1}Ru-
-        L^{-1}Nu.
+        L^{-1}Nu,
     \end{equation*}
+    where $\Phi$ is chosen so that the solution $u$ satisfies the initial conditions.
     \begin{definition}[\bfseries Adomian polynomials $A_{n}$ and $L^{-1}$ for Lane-Emden]
         \begin{align*}
             \forall n\in\mathbb{N}\cup\left\{0\right\}:
@@ -417,9 +422,8 @@
         \begin{minipage}[t]{0.32\paperwidth}
             \centering\vspace{-8.6cm}
             \includegraphics[width=0.31\paperwidth]{white_dwarf}
+            \put(0,18){\makebox(0,0)[rt]{\includegraphics[width=3.6cm]{qrcode.pdf}}}
         \end{minipage}
-
-
         \textbf{\Large References}
         \nocite{*}
         \printbibliography[heading=none]
