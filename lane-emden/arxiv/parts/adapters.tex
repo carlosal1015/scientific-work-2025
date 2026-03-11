@@ -1,0 +1,235 @@
+\section{Official adapters}
+\label{sec:adapters}
+
+A library such as preCICE can only live as part of an application (a solver) that calls it.
+To call preCICE, the solver needs to contain code that knows how to interact with the library.
+We saw in \autoref{sec:library} that this additional code is short, but the user should be able to start setting up
+a coupled simulation at the level of describing a scenario, not at the level writing code for each of the involved solvers. 
+
+To lower the entry barrier and to make sure that the majority of users can keep using popular solvers
+with the latest versions of preCICE, we have developed a set of official adapters, which we host and maintain in their
+own repositories under the preCICE GitHub organization\footnote{All preCICE repositories on GitHub: \url{https://github.com/precice/}}.
+This allows each project to follow a fitting development cycle and makes it easier for the community to contribute and to adopt projects upstream.
+As the collection of adapters grows, such community contributions
+are crucial, not only in fixes and features, but also in assuming maintainer roles.
+
+We present here all mature official adapters to date. All the solvers discussed in this section are free/open-source projects,
+a fundamental property that greatly facilitates the adapter development and distribution.
+For free/open-source solvers, adapters can have the form of (i) in-place source code modifications, of (ii) calls to an additional adapter class,
+or of (iii) runtime plugins, wherever supported. In contrast to adapters for open-source solvers, coupling of closed-source solvers usually entails
+interacting through a wrapper, API, or control files, architectures which potentially cancel fundamental features of preCICE.
+
+We begin with OpenFOAM and SU2, two solvers primarily used for simulating fluids.
+We continue with CalculiX and code\_aster, two solvers primarily used for simulating solids.
+We then discuss FEniCS, deal.II, and Nutils, general FEM frameworks for which we provide various coupled examples.
+At the end of the section, we list further adapters maintained by the community.
+  
+\subsection{OpenFOAM}
+
+OpenFOAM\footnote{OpenFOAM website (OpenCFD): \url{https://www.openfoam.com/}. Several alternative versions/forks exist.} is a finite volume toolbox and collection of solvers primarily for CFD simulations~\cite{Weller1998_OpenFOAM}.
+The OpenFOAM adapter\footnote{OpenFOAM adapter documentation: \url{https://www.precice.org/adapter-openfoam-overview.html}} is currently the most frequently used of the listed adapters and OpenFOAM represents the fluid solver in most of our tutorial cases.
+It is also the adapter with the highest number of contributions in the context of student and research projects~\cite{CheungYau2016, Chourdakis2017, Risseeuw2019, Chourdakis2019_OFW14}.
+The adapter is being actively developed and more features have been added in the past years by multiple contributors. A separate reference publication for the OpenFOAM-preCICE adapter is in preparation.
+
+On the technical side, the adapter is an OpenFOAM function object, to which OpenFOAM can link at runtime.
+Function objects are \emph{plug-ins} that OpenFOAM uses mainly for optional post-processing tools.
+Implementing the adapter in this way allows using the adapter with any standard or in-house OpenFOAM solver (each being a stand-alone application) that supports function objects, without modifying the code of the solver~\cite{Chourdakis2017}.
+The separation between the solver and the adapter has facilitated development and increased user adoption, such that we now aim for this model wherever possible. We support the latest versions of the major OpenFOAM variants,
+including v1706--v2106 (ESI/OpenCFD, main adapter branch) and 4.0--8 (The OpenFOAM Foundation, version-specific branches).
+The adapter can be built from source using the WMake build system of OpenFOAM and installed into the \incode{FOAM_USER_LIBBIN} directory.
+
+On the application side, the adapter supports conjugate heat transfer (CHT), fluid-structure interaction (FSI), and fluid-fluid coupling. 
+In terms of CHT, it can read and write temperature, heat flux, sink temperature, and heat transfer coefficient, 
+allowing not only for Dirichlet-Neumann, but also for Robin-Robin coupling.
+As each OpenFOAM boundary condition supports different operations, the user needs to set compatible boundary conditions for
+each interface: \incpp{fixedValue} for Dirichlet boundaries, \incpp{fixedGradient} for Neumann boundaries, or \incpp{mixed} for Robin boundaries.
+The adapter computes the heat flux in a similar way as the \incode{wallHeatFlux} function object distributed with OpenFOAM.
+This requires the adapter to distinguish solvers into types (compressible, incompressible, and basic),
+as the underlying classes do not share a common interface.
+The refactored transport models class hierarchy introduced in OpenFOAM 8\footnote{OpenFOAM 8 Release Notes: \url{https://openfoam.org/version/8/}}
+eliminates the need for a distinction between compressible and incompressible solvers,
+but, at the same time, such breaking changes in the public interfaces make supporting multiple OpenFOAM versions with the same code even more challenging.
+For this reason, we are planning to separate the functional from the application-specific components of the adapter even further
+and delegate part of the work to OpenFOAM in future work.
+
+In terms of FSI, the adapter can read absolute and relative displacements (defined on either face nodes or face centers), while it can write forces and stresses (on face centers).
+In order to read displacements, the reader needs to set a \incode{fixedValue} boundary condition for the displacement, as well as a \incode{movingWallVelocity}
+for the velocity. At least the mesh motion solver \incode{displacementLaplacian} is known to work.
+Again, a distinction between compressible and incompressible solvers is needed.
+
+The adapter also supports fluid-fluid coupling, reading and writing pressure, velocity, as well as their gradients.
+This is an area of active research and further development.
+
+In addition to providing face nodes/centers to preCICE, the adapter can also construct and provide face edges and triangles,
+thus supporting the nearest-projection mapping feature of preCICE.
+
+The coupling fields, patch names, participant name, path to the preCICE configuration file, and more are configured
+in the adapter configuration file \inbash{system/preciceDict}, an OpenFOAM dictionary. % (formerly a different, YAML-based format).
+In addition to that, the user needs to specify the adapter function object in the \inbash{system/controlDict} and set compatible boundary conditions for any fields to be read.
+Several tutorial cases are available, using the solvers pimpleFoam, buoyantPimpleFoam, buoyantSimpleFoam, and laplacianFoam.
+There are also several examples in which the preCICE community has used the adapter (as-is or modified)
+with further standard and in-house OpenFOAM solvers, including cases with compressible multiphase flow~\cite{Seufert2019_COUPLED}
+and cases with volume coupling~\cite{Rousset2020_preCICE2020, Arya2020_preCICE2020, scheiblhofer2019coupling}.
+
+The code is available on GitHub\footnote{OpenFOAM adapter on GitHub: \url{https://github.com/precice/openfoam-adapter}, GPLv3} under the GPLv3 license,
+the same license as OpenFOAM. The code contains also comments with instructions on extending it.
+%in usual directions.
+
+The OpenFOAM community is currently developing (and has already done so in the past) very important contributions in bringing multi-physics
+simulations to OpenFOAM. Prominent examples include the standard CHT solver chtMultiRegionFoam
+\footnote{OpenFOAM User Guide -- chtMultiRegionFoam: \url{https://www.openfoam.com/documentation/guides/latest/doc/guide-applications-solvers-heat-transfer-chtMultiRegionFoam.html}.}
+and the FSI solvers fsiFoam~\cite{Tukovic2018_fsiFoam} and solids4Foam~\cite{Cardiff2018_solids4Foam}.
+These projects solve the respective multi-physics problem monolithically, at least software-wise: they implement both single-physics domains inside OpenFOAM, compiled in the same executable.
+In contrast, the OpenFOAM-preCICE adapter provides additional flexibility to couple OpenFOAM with any other solver via preCICE.
+Other projects also apply the partitioned approach to extend OpenFOAM with the functionality of other codes, including
+OpenFPCI (ParaFEM)~\cite{Hewitt2019_OpenFPCI},
+EOF-Library (Elmer)~\cite{Vencels2019_EOF}, and ATHLET-OpenFOAM coupling~\cite{Herb2014_ATHLET}.
+OpenFOAM has previously also been coupled with preCICE using independent (unofficial) adapters in the theses of Kevin Rave~\cite{Rave2017_thesis} (CHT) and David Schneider~\cite{Schneider2018_thesis} (FSI),
+as well as in the project FOAM-FSI of David Blom for foam-extend\footnote{FOAM-FSI on GitHub: \url{https://github.com/davidsblom/FOAM-FSI}}.
+The official OpenFOAM-preCICE adapter differs in providing a general-purpose adapter for preCICE for a wide range of users and use cases.
+
+ 
+\subsection{SU2} 
+
+SU2\footnote{SU2 website: \url{https://su2code.github.io/}} (Stanford University Unstructured) is a finite volume solver which provides compressible and incompressible solver variants for CFD~\cite{SU2-paper}. The SU2 adapter~\cite{AlexRusch2016} supports SU2 v6.0 ``Falcon'' and contributions from the community are particularly welcome in this project\footnote{SU2 adapter on GitHub: \url{https://github.com/precice/su2-adapter}, LGPLv3}.
+
+As SU2 is written in C++, the adapter directly uses the C++ API of preCICE. The API calls are provided by an adapter class, which is utilized in the SU2 solver files (e.g., in \incode{SU2_CFD.cpp}). An installation script copies the modified, version-specific files to specific locations in the SU2 source code, which is then built normally.
+
+The adapter is designed for FSI applications and supports reading forces and writing absolute or relative displacements. The adapter is configured via additional options in the native configuration file of SU2 and the modified solver can be executed with or without enabling preCICE. The user can set the name of the marker which identifies the FSI interface in the geometry file of SU2 and can run simulations with multiple coupling interfaces.
+
+Similarly to the adapter, SU2 is also used as a solver in other coupling projects, for example CUPyDO~\cite{CUPyDO-THOMAS201969}, where the CUPyDO coupler calls SU2 via a Python wrapper. In addition to external coupling options, SU2 offers monolithic capabilities for multi-physics simulation such as FSI and CHT~\cite{SU2-multiphysics, SU2-FSI-monolithic}.
+%CUPyDO offers staggered strong coupling, block Gauss-Seidel synchronization with dynamic under-relaxation and non-matching mesh handling.
+% BU: these feature details about CUPyDO are not necessary here in my opinion
+
+\subsection{CalculiX} 
+
+CalculiX\footnote{CalculiX website: \url{http://www.calculix.de/}} is an open-source FEM code~\cite{Dhondt2004_CalculiX}. CalculiX offers a variety of solvers and the CalculiX adapter\footnote{CalculiX adapter on GitHub: \url{https://github.com/precice/calculix-adapter}, GPLv2} enables coupling some of these solvers via preCICE. The adapter supports the \emph{dynamic linear geometric} and the \emph{dynamic nonlinear geometric} solvers of CalculiX for coupled FSI problems, as well as \emph{static thermal} and \emph{dynamic thermal} solvers for CHT problems. The CalculiX adapter~\cite{CheungYau2016, Uekermann2017_Adapters} is compatible with CalculiX 2.16, it is regularly updated for new CalculiX releases, and maintains support for older versions in version-specific branches.
+
+The adapter directly modifies the source code of CalculiX and produces a stand-alone executable \inbash{ccx_preCICE}, which can be used both for coupled and for CalculiX-only simulations: the flag \inbash{-precice-participant <name>} enables the preCICE adapter. All preCICE-related functionality is provided in additional source files supplied with the adapter.
+
+The adapter is configured through a YAML file that specifies the coupling interface names, coupling data variable types, and type of interface (mesh nodes, or mesh nodes with connectivity).
+ It can be used with both linear and quadratic tetrahedral (C3D4 and C3D10) and hexahedral (C3D8 and C3D20) solid elements, as well as S3 and S6 tetrahedral shell elements. The adapter also supports nearest-projection mapping. The latter requires a second mesh file (\inbash{.sur}) defining the interface mesh connectivity. The configuration is described in the CalculiX adapter documentation\footnote{CalculiX adapter documentation: \url{https://precice.org/adapter-calculix-overview.html}}.
+
+CalculiX is written in C and Fortran. However, all preCICE functionality is incorporated using the C bindings of preCICE. To perform coupled simulations with CalculiX in parallel on shared-memory systems, the adapter treats CalculiX as a serial participant, while the CalculiX linear solver is executed in parallel. More details on how to run CalculiX in parallel is available in the CalculiX user manual~\cite{CalculiX_docs_217}.
+
+\subsection{code\_aster}
+
+code\_aster\footnote{code\_aster website: \url{https://www.code-aster.org/}} is an FEM code in Fortran (with a Python API) developed by EDF France,
+offering solvers for heat transfer, structural analysis, and more, with one of the main applications being nuclear power engineering.
+The code\_aster adapter~\cite{CheungYau2016}\footnote{code\_aster adapter documentation: \url{https://www.precice.org/adapter-code_aster.html}}
+is compatible code\_aster 14.4 and 14.6, while it is being maintained to work with the latest versions of preCICE.
+
+On the technical side, the adapter is a single \inbash{adapter.py} file providing methods that are used in an example
+\inbash{adapter.comm} command file for CHT simulations. As a Python code, the adapter depends on the preCICE Python bindings. It can be installed by copying the adapter file into the \inbash{ASTER_ROOT/14.4/lib/aster/Execution/} directory.
+
+On the application side, the adapter can currently read and write sink temperature and heat transfer coefficient, thus supporting Robin-Robin coupling for CHT.
+The preCICE tutorials include such a Robin-Robin CHT case with code\_aster and the steady-state fluid solver buoyantSimpleFoam.
+code\_aster can be programmed by the user using Python and code\_aster command files, \inbash{.comm}, which are included in predefined file unit numbers.
+The adapter is configured using a command file \inbash{config.comm}, included as \inpython{UNITE=90} by the \inbash{adapter.comm}.
+The case is defined in the command file \inbash{def.comm}, which is included as \inpython{UNITE=91}.
+
+The code is available on GitHub\footnote{code\_aster adapter on GitHub: \url{https://github.com/precice/code_aster-adapter}, GPLv2}
+under the GPLv2 license and can be easily extended by adding more coupling fields in \inbash{adapter.py}
+and providing their names as arguments to the method \inpython{adapter.writeCouplingData()}.
+
+\subsection{FEniCS}
+
+FEniCS is an open-source general-purpose FEM package with a high-level Python interface~\cite{AlnaesBlechta2015a}. FEniCS does not provide ready-to-use solvers, but instead provides a broad range of tools for solving partial differential equations with a high level of abstraction. A wide variety of examples is provided in the FEniCS project to illustrate its usage~\cite{Langtangen2016}. The FEniCS-preCICE adapter facilitates coupling of FEniCS-based solvers using preCICE. We give here a short overview of the adapter, for which you can read more details in the FEniCS-preCICE reference paper~\cite{rodenberg2021fenicsprecice}.
+
+The FEniCS adapter~\cite{Monge2018, Hertrich2019} provides high-level functionalities that the users can incorporate in their FEniCS-based solvers. For using the adapter, a user needs to understand partitioned coupling and the general approach of preCICE, but does not need to understand how to use the generic preCICE API with FEniCS data structures.
+
+The adapter is configured using a JSON file. Afterwards, the adapter is initialized by providing a FEniCS \inpython{Mesh} and a \inpython{SubDomain} to define the coupling boundary. Connectivity information is automatically obtained from the \inpython{Mesh} and nearest projection mapping is directly supported. The user needs to define FEniCS \inpython{FunctionSpace} objects to provide information on the data being coupled.
+
+For data exchange, the adapter offers a simple function \inpython{adapter.write_data(solution)}. This function samples a given solution on the previously defined coupling mesh and writes the samples to preCICE. The function \inpython{coupling_data = adapter.read_data()} returns the interface data provided by preCICE. The adapter provides two possibilities to transform this raw \inpython{coupling_data} to a boundary condition that can be used in FEM: (1) An \inpython{Expression} can be generated and used as a functional representation of provided \inpython{coupling_data} via interpolation or (2) a \inpython{PointSource} can be generated to apply point-wise loads. Both approaches have their respective use-cases for FEniCS users (see~\cite{rodenberg2021fenicsprecice}), but a user can also use the raw \inpython{coupling_data} to create boundary conditions depending on the individual requirements. Finally, the adapter also provides convenient tools for checkpointing and steering.
+
+The adapter supports the built-in parallelism of FEniCS and uses its domain decomposition. If the coupling interfaces are decomposed over multiple ranks, the adapter implements additional inter-process communication at the interface between two ranks.
+
+Many packages similar to FEniCS exist, such as firedrake~\cite{Rathgeber2016}, or the FEniCS successor \mbox{FEniCS-X}\footnote{DOLFINx (basis of FEniCS-X) on GitHub: \url{https://github.com/FEniCS/dolfinx}}. The adapter is not designed to work with these packages, but it can serve as a template for the development of specialized adapters. Possible contributions to the FEniCS adapter include the extension to other coupling physics, such as electromagnetic applications.
+
+The adapter is distributed under the LGPLv3.0 license on PyPI\footnote{Package \inpython{fenicsprecice} on PyPI: \url{https://pypi.org/project/fenicsprecice/}}. If preCICE is installed on the system, the latest version of the adapter can be installed via pip. With FEniCS being a Python-based package, the adapter depends on the preCICE Python bindings, which are automatically installed with the adapter. The source code of the adapter is available on GitHub\footnote{FEniCS adapter on GitHub: \url{https://github.com/precice/fenics-adapter}, LGPLv3.0} and user documentation can be found on the preCICE website\footnote{FEniCS adapter documentation: \url{https://www.precice.org/adapter-fenics.html}}.
+
+Related work to solve multi-physics problems with FEniCS includes, for example, the monolithic fluid-structure interaction solver turtleFSI~\cite{Bergersen2020} written in FEniCS, as well as \mbox{FENICS-HPC}~\cite{FENICS-HPC}. FEniCS extensions such as multiphenics\footnote{multiphenics website: \url{https://mathlab.sissa.it/multiphenics}} have also been developed to promote prototyping of multi-physics problems.
+
+\subsection{deal.II} 
+
+deal.II~\cite{dealII92,dealii2019design} is a general-purpose FEM library written in C++. Similar to FEniCS, deal.II does not include ready-to-use solvers, but allows users to write their own application codes by providing an easy-to-use interface to complex FEM-specific data structures and algorithms. The library
+provides state-of-the art numerical techniques and their implementations leverage distributed memory computations, vectorization, threading and matrix-free implementations, which have been proven to scale up to whole supercomputers~\cite{dealiiDistributed,kronbichler2018performance}.
+
+While deal.II is a general-purpose library, the deal.II adapter focuses on a subset of relevant applications and features. Instead of trying to provide a general-purpose deal.II adapter, we provide examples for users that want to develop their own preCICE-enabled solvers with deal.II.
+These examples\footnote{deal.II adapter on GitHub: \url{https://github.com/precice/dealii-adapter}, LGPLv3} show
+linear and non-linear elastic solid mechanics codes in a coupled FSI scenario. From a user perspective, these coupled codes are ready-to-use without detailed knowledge of deal.II itself, but can also provide a starting point for own application-specific adapter developments.
+Similarly to deal.II and preCICE, the examples are built using CMake and a parameter file controls solver-specific preCICE settings. Simple meshes can directly be defined in the source code, whereas external meshes can be loaded at runtime.
+
+In addition to these examples, we have created a very basic stand-alone one-way coupling example and contributed it to the deal.II code-gallery\footnote{preCICE example contributed to the deal.II code-gallery:\\ \url{https://dealii.org/developer/doxygen/deal.II/code\_gallery\_coupled\_laplace\_problem.html}}. In this example, a Laplace problem is coupled to a time-dependent C++ boundary condition code. The example is meant to serve as a first impression of how the preCICE API looks and how to use it along with deal.II.
+
+As the low-level design of deal.II offers a lot of freedom of implementation approaches, multi-physics simulations have also been implemented in other ways~\cite{ExaDG2020, wick2013}. 
+
+\subsection{Nutils} 
+
+Similar to FEniCS and deal.II, Nutils~\cite{Nutils} is also a general-purpose FEM library. 
+Missing capabilities for distributed computing and the fact that Nutils is purely written in Python, including matrix assembly, makes the library somehow less performant than alternatives. The powerful and intuitive API of Nutils, however, allows for radically-fast prototyping. These points make Nutils a perfect option for the \textit{cheaper}, but possibly more complex participant of a coupled simulation, or for testing new coupling approaches.
+A first partitioned heat conduction example coupling two Nutils participants was developed and validated within only a half day of work and is available as a preCICE tutorial (cf.~\autoref{sec:tutorials}). 
+In general, coupling a new Nutils application code is a rather simple task and can be realized best by copying and adapting existing examples.
+Defining coupling meshes and accessing coupling data is a particularly simple task  as illustrated in~\autoref{code:nutils}.
+Therefore, in contrast to (for example) FEniCS, developing a general stand-alone Nutils-preCICE adapter is not necessary. 
+
+\begin{listing}[h!]
+\caption{A simplified coupled Nutils code. Due to the rich and flexible API of Nutils, defining coupling meshes and accessing coupling data are simple tasks, rendering a stand-alone Nutils-preCICE adapter unnecessary.}
+\small
+\label{code:nutils}
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=0,frame=none,framesep=20mm,escapeinside=||,breaklines]{python}
+import precice, nutils
+
+domain = ... # define Nutils domain
+ns.u = ... # Nutils solution u in namespace ns 
+|{\color{my_orange}interface}| = precice.Interface("FluidSolver", "precice-config.xml", 0, 1)
+[...]
+# defining a coupling mesh
+coupling_boundary = domain.boundary['top']
+coupling_sample = coupling_boundary.sample('gauss', degree=2)
+vertices = coupling_sample.eval(ns.x)
+vertex_ids = |{\color{my_orange}interface}|.set_mesh_vertices(meshID, vertices)
+
+# instead of Gauss points, we can also couple at (sub-sampled) cell vertices
+coupling_sample = couplinginterface.sample('uniform', 4) # 4 sub samples per cell
+
+# or volume coupling
+coupling_sample = domain.sample('gauss', degree=2)
+ 
+# reading coupling data and applying as boundary condition
+read_data = |{\color{my_orange}interface}|.read_block_scalar_data(read_data_id, vertex_ids)
+read_function = coupling_sample.asfunction(read_data)
+sqr = coupling_sample.integral((ns.u - read_function)**2) 
+constraints = nutils.solver.optimize(sqr, ...) # for a Dirichlet BC
+
+# writing data
+write_data = coupling_sample.eval('u' @ ns, ...)
+|{\color{my_orange}interface}|.write_block_scalar_data(write_data_id, vertex_ids, write_data)
+\end{minted}
+\end{listing}
+
+In recent years, several examples have been realized. The preCICE documentation gives an up-to-date overview\footnote{Nutils adapter documentation: \url{https://precice.org/adapter-nutils.html}}. The preCICE tutorials (cf.~\autoref{sec:tutorials}) include a partitioned heat conduction case, Nutils as solid participant within a CHT scenario, and Nutils as fluid participant within an FSI scenario. The latter models the incompressible Navier-Stokes equations in an arbitrary-Lagrangian-Eulerian framework and uses a fully-second-order time integration~\cite{QNWI}. 
+Moreover, a 1D compressible fluid solver in Nutils is coupled to a 3D OpenFOAM solver in~\cite{Chourdakis2019_OFW14}. Lastly, current work focuses on coupling a fracture mechanics solver in Nutils to an electro-chemistry corrosion model in FEniCS. A first prototype of the Nutils participant is available on GitHub\footnote{Coupled fracture mechanics Nutils solver: \url{https://github.com/uekerman/Coupled-Brittle-Fracture}, MIT}. 
+
+\subsection{Further adapters} 
+
+The aforementioned are not the only adapters published in the preCICE GitHub organization.
+The organization also includes a few less-actively maintained projects, which mainly serve as
+starting points for anyone who wants to build a more complete solution.
+If this applies to you, we would appreciate your feedback and contributions, especially in tutorial
+cases and maintenance.
+
+\begin{itemize}
+  \item ANSYS Fluent: Intended for the fluid part in FSI
+  and implemented as a so-called \textit{user-defined function} plug-in.
+  This adapter~\cite{Gatzhammer2015,Hertrich2019} is currently experimental\footnote{Fluent adapter on GitHub: \url{https://github.com/precice/fluent-adapter}, GPLv3}.
+  \item COMSOL Multiphysics: Intended for the structure part in FSI. Similarly to Fluent,
+  this is one of the earliest adapters and it is currently not actively maintained.
+  \item MBDyn: Intended for the structure part in FSI. Contributed by the TU Delft Wind Energy group and irregularly extended by the community (e.g., in~\cite{Cocco2020}).
+  The adapter repository\footnote{MBDyn adapter on GitHub: \url{https://github.com/precice/mbdyn-adapter}, GPLv3} includes a tutorial case which simulates 3D cavity flow with a flexible bottom surface in which MBDyn is coupled to OpenFOAM.
+  \item LS-DYNA: Intended for the structure part of CHT. Not a ready-to-use adapter, but rather a detailed description on how to create an actual LS-DYNA adapter. Contributed by the LKR group at the Austrian Institute of Technology~\cite{scheiblhofer2019coupling}.
+  \item Elmer FEM: Intended for the structure part in FSI. Currently under development in a student project\footnote{Elmer adapter on GitHub: \url{https://github.com/HishamSaeed/elmer-adapter} (under development)}.
+\end{itemize}
+
+Apart from these codes, you can also find a list of community-developed projects in \autoref{sec:community}.
+
