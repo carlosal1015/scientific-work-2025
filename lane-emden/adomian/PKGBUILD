@@ -1,0 +1,29 @@
+# Maintainer: Carlos Aznarán <caznaranl@uni.pe>
+_base=odeSolu
+pkgname=python-${_base,,}-git
+pkgdesc="A Python package to get power series solution of a nonlinear ODE"
+pkgver=20250904
+pkgrel=1
+arch=(any)
+url="https://github.com/mithun218/${_base}"
+license=(MIT)
+depends=(python-scipy python-sympy)
+makedepends=(python-build python-installer python-setuptools python-wheel cython git)
+source=(${_base}::git+${url}.git)
+sha512sums=('SKIP')
+
+pkgver() {
+  cd ${_base}
+  git log --format="%cd" --date=short -1 | sed 's/-//g'
+}
+
+build() {
+  cd ${_base}
+  python -m build --wheel --skip-dependency-check --no-isolation
+}
+
+package() {
+  cd ${_base}
+  PYTHONPYCACHEPREFIX="${PWD}/.cache/cpython/" python -m installer --destdir="${pkgdir}" dist/*.whl
+  install -Dm 644 LICENSE.txt -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
