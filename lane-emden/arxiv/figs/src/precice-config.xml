@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<precice-configuration>
+
+<solver-interface dimensions="3">   
+  <data:vector name="Force"/>
+  <data:vector name="Displacement"/> 
+ 
+  <mesh name="Fluid-Mesh">
+    <use-data name="Displacement"/>
+    <use-data name="Force"/>
+  </mesh>
+  <mesh name="Solid-Mesh">
+    <use-data name="Displacement"/>
+    <use-data name="Force"/>
+  </mesh>
+
+  <participant name="Fluid">
+    <use-mesh name="Fluid-Mesh" provide="yes"/>
+    <use-mesh name="Solid-Mesh" from="Solid"/>
+    <write-data name="Force" mesh="Fluid-Mesh"/>
+    <read-data name="Displacement" mesh="Fluid-Mesh"/>
+    <mapping:rbf-compact-tps-c2 direction="write" from="Fluid-Mesh" to="Solid-Mesh" constraint="conservative"/>
+    <mapping:rbf-compact-tps-c2 direction="read" from="Solid-Mesh" to="Fluid-Mesh" constraint="consistent"/>
+  </participant>
+    
+  <participant name="Solid">
+    <use-mesh name="Solid-Mesh" provide="yes"/>
+    <read-data name="Force" mesh="Solid-Mesh"/>
+    <write-data name="Displacement" mesh="Solid-Mesh"/>
+  </participant>
+    
+  <m2n:sockets from="Fluid" to="Solid" />
+    
+  <coupling-scheme:serial-implicit>
+    <participants first="Fluid" second="Solid"/>
+    <time-window-size value="1e-3"/> 
+    <exchange data="Force" mesh="Solid-Mesh" from="Fluid" to="Solid"/> 
+    <exchange data="Displacement" mesh="Solid-Mesh" from="Solid" to="Fluid"/>
+    <max-time value="5"/>
+    <max-iterations value="50"/>
+    <absolute-convergence-measure limit="1e-6" data="Displacement" mesh="Solid-Mesh"/>
+    <relative-convergence-measure limit="1e-2" data="Force" mesh="Solid-Mesh"/>
+    <extrapolation-order value="2"/>
+    <acceleration:IQN-ILS>
+        <data name="Displacement" mesh="Solid-Mesh"/>
+        <preconditioner type="residual-sum"/>
+        <filter type="QR1" limit="1e-6"/>
+        <initial-relaxation value="0.01"/> 
+        <max-used-iterations value="50"/>
+        <time-windows-reused value="2"/> 
+    </acceleration:IQN-ILS>
+  </coupling-scheme:serial-implicit>
+</solver-interface>
+
+</precice-configuration>

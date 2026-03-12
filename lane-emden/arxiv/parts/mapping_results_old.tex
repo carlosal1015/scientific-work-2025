@@ -1,0 +1,105 @@
+\textbf{This is all stuff from the previous version, way to extensive here, all detailed analyes should be moved to a separate mapping paper:}
+
+Results for gaussian rbf:
+\begin{itemize}
+  \item separate better than integrated polynomial (expected)
+  \item n15 better than n10 better than n5 better than n3
+  \item n15 and n10 too memory intensive (plot needed)
+  \item onto coarser meshes is better than onto finer meshes (difference visible only mapping for very fine in meshes)
+  \item separate between 1st and 2nd order
+  \item integrated between 1st and 0th order
+\end{itemize}
+
+Results for thin plate splines rbf:
+\begin{itemize}
+  \item integrated and separate perform very similar 
+  \item separate performs consistently slightly better than integrated.
+\end{itemize}
+
+Plots we want to do:
+\begin{itemize}
+  \item about the best way to go (complete picture): for one target mesh compare best local-rbf (gaussian), global-rbf (tps), nn, np (For each geometry: 12 series)
+    Geometry: Turbine only (Aorta is too fine)
+    from: 0.01 (1.5k V) - 0.0075 (2.7k) -  (0.004 TODO ) - 0.0025 (25k, no tps)
+    to: 0.005 (6.2k)
+    Goal: show errors of best mappings including tps (user perspective) (small meshes only to show how tps performs for cases where it is available)
+
+  \item all geometries, pick one target mesh each: nn, np, best rbf
+    Geometry: ALL in on plot
+    from: 0.01 and finer
+    to: 2nd finest
+    Goal: show errors of best mappings for all geometries excluding tps (user perspective)
+
+  \item pick one geometry, one target mesh: nn, np, gaussian-nX separate
+    Geometry: Turbine
+    from: 0.01 and finer
+    to: 2nd finest
+    Y-axis: plot time of computeMapping and map and peak memory
+    Goal: show peak memory usage and computeMapping and map time of best mappings (user perspective)
+
+  \item pick one geometry and target mesh: compare gaussian-nX on vs separate for varying X (8 series)
+    Geometry: Turbine
+    from: 0.01 and finer
+    to: 2nd finest
+    Goal: show errors (and hopefully runtime) of best mappings (user perspective)
+    % Goal: Options for local-rbf you should not choose and why
+
+  \item pick one geometry, fixed src and tgt meshes, varying rank counts: nn, np, gaussian-nX separate (best error)
+    Y-axis: plot time of computeMapping max + map max (upper limit) 
+    Goal: show strong scalability of best mappings (user perspective)
+    Participant ranks on A are not so important. Part B is the one that computes the mapping.
+    Use micro partition (to start with) 1 Node for Part A, 1,2,4,8,16 Nodes for Part B. Scale with whole nodes.
+    % Strong scaling is defined as how the solution time varies with the number of processors for a fixed total problem size. 
+
+  \item pick one geometry, one target mesh, varying rank counts: nn, np, gaussian-nX separate (best error)
+    Y-axis: plot peak memory 
+    Goal: show the memory overhead for using more ranks
+
+  % Decide after the above. Was shown in the past with the uniform plate. No real added value here.
+  \item varying rank count, varying meshes: nn, np, gaussian-nX separate
+    Geometry: uniform plate with uniform partitioning
+    Choose from and to mesh for serial case. Then double the vertex count of both meshes an double the rank count. Keep problem size per rank constant.
+    Y-axis: plot time of computeMapping max + map max (upper limit) 
+    Goal: show weak scalability of best mappings (user perspective)
+    % Weak scaling is defined as how the solution time varies with the number of processors for a fixed problem size per processor.
+\end{itemize}
+
+\todo{FS - evaluate\_error}
+\todo{Kyle - fix aste connectivity and partitioning}
+\todo{Kyle - meshes}
+\todo{FS - (PETSc on) SuperMUC}
+\todo{FS - create configs and jobscripts}
+\todo{FS - run first accuracy tests (NN, NP)}
+% RBF postponed
+
+\paragraph{Numerical Accuracy}
+
+have a look at Bernhard's thesis, Section 4.2.4
+also have a look at Linder et al. 2017 "Radial Basis Function Interpolation for Black-Box Multi-Physics Simulations"
+also Florian's thesis
+
+\begin{itemize}
+  \item which preCICE version to test: v2.0.2
+  \item which ASTE version? - create a tag
+
+  \item how to configure RBF, compare different settings (basis function, support radius, shape parameter)\\
+    basis functions: gaussian, thin-plate-splines, tps-compact-c2, multi-quadratic\\
+    support radius?? trial and error ( also look at extras/rbfShape )
+
+  \item classical convergence plots
+    challenge: we can refine the input and the output mesh
+
+  \item spatial error plot, screenshot of ParaView, only for one specific (interesting) setting
+
+  \item which functions? some $sin(x+y+z)$?, also some try and error, we want to avoid edge cases
+    Lindner Thesis - Rosenbrock, eggholder, step function
+\end{itemize}
+
+\paragraph{Runtime and Scalability}
+
+\begin{itemize}
+  \item target system: SuperMUC-NG.
+  \item ideally scalability until 10,000 ranks per side.
+  \item for approximate numbers of vertices, you could check BU's thesis, NN and NP (not RBF, has changed much since then), ASTE tests and "Ateles Cube"
+  \item only measure mapping parts ("computeMapping", "map"), optional: sub-stages (but not so interesting for a user)
+\end{itemize}

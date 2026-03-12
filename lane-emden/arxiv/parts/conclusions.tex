@@ -1,0 +1,14 @@
+\section{Conclusions and outlook}
+\label{sec:conclusion}
+
+
+
+We have shown on the basis of various aspects that there is a tremendous gap between a working prototype software -- a software with state-of-the-art numerical and HPC methods (preCICE in 2016) and a sustainable and user-friendly software (preCICE in 2021). While the first one allows for scientific discoveries in scientific computing, only the latter allows for scientific discoveries in application areas as well. This can also be observed in the user numbers of preCICE. While the software today has a large and vivid community of users in a wide variety of application areas, it hardly had any users in 2016.
+To bridge this gap, we presented necessary efforts in documentation, building, packaging, integration with external software, tutorials, tests, continuous integration, and community building.
+Nearly all of these aspects are more complicated for a multi-component coupling software such as preCICE than for most other scientific computing software. This is not only due to the fact that preCICE is a library and, thus, needs another program that calls preCICE, but also that a coupled simulation needs by definition at least two different programs to be coupled. Therefore, often novel solutions are necessary for usually standard problems, such as the variety of testing concepts introduced in \autoref{sec:tests}.  
+
+In forthcoming years, preCICE will undergo various extensions to make the software applicable beyond low-order, mesh-based, surface-coupled problems, such as fluid-structure interaction. Current work focuses on geometric multi-scale coupling, dynamic coupling meshes, waveform iteration~\cite{QNWI}, mesh-particle coupling, macro-micro coupling, and coupling to data-based approaches. An important topic will also be the efficient support of volume-coupled problems, which requires novel ideas in all main ingredients of preCICE: communication, coupling schemes, and data mapping.
+To further increase the sustainability of preCICE, we will build on and extend the system test concept introduced in \autoref{ssec:system_tests}.
+
+
+
