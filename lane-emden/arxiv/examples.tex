@@ -3,6 +3,84 @@
 \usepackage{diffcoeff}
 
 \begin{document}
+
+\section{On the numerical solution of differential equations of Lane-Emden type}
+
+\subsection*{Problem 4.1}
+
+\begin{equation}
+	\begin{cases}\displaystyle
+		\diff[2]{y\left(x\right)}{x}+
+		\frac{2}{x}
+		\diff{y\left(x\right)}{x}+
+		y\left(x\right)=
+		6 + 12 x+ x^{2} + x^{3}
+		 & \text { for }0 \leq x \leq 1. \\[0.5cm]
+		\displaystyle
+		y
+		\left(0\right)=
+		0,\quad
+		\diff{y\left(0\right)}{x}=
+		0.
+		 &
+	\end{cases}
+\end{equation}
+
+\begin{equation*}
+	\boxed{y\left(x\right)=x^{2}+x^{3}.}
+\end{equation*}
+
+\subsection*{Problem 4.2}
+
+\begin{equation}
+	\begin{cases}\displaystyle
+		\diff[2]{y\left(x\right)}{x}+
+		\frac{2}{x}
+		\diff{y\left(x\right)}{x} =
+		2 (2x^{2} + 3 )y\left(x\right)
+		 & \text { for }0 \leq x \leq 1. \\[0.5cm]
+		\displaystyle
+		y
+		\left(0\right)=
+		1,\quad
+		\diff{y\left(0\right)}{x}=
+		0.
+		 &
+	\end{cases}
+\end{equation}
+
+\begin{equation*}
+	\boxed{y\left(x\right)=\exp\left(x^{2}\right).}
+\end{equation*}
+
+\subsection*{Problem 4.3}
+
+\begin{equation}
+	\begin{cases}\displaystyle
+		\diff[2]{y\left(x\right)}{x}+
+		\frac{10}{x}
+		\diff{y\left(x\right)}{x} +
+		y^{10}\left(x\right) =
+		x^{100} + 190x^{8}
+		 & \text { for }0 \leq x \leq 1. \\[0.5cm]
+		\displaystyle
+		y
+		\left(0\right)=
+		0,\quad
+		\diff{y\left(0\right)}{x}=
+		0.
+		 &
+	\end{cases}
+\end{equation}
+
+\begin{equation*}
+	\boxed{y\left(x\right)=x^{10}.}
+\end{equation*}
+
+\section{A computational method for solving the Lane-Emden Initial Value Problems}
+
+\subsection*{Example 3.6}
+
 \begin{equation}
 	\begin{cases}\displaystyle
 		\diff[2]{y\left(x\right)}{x}+
@@ -11,19 +89,22 @@
 		14y\left(x\right)=
 		-4y\left(x\right)
 		\ln\left(y\right)
-		& \text { for }0<x<\infty. \\[0.5cm]
+		 & \text { for }0<x<\infty. \\[0.5cm]
 		\displaystyle
 		y
 		\left(0\right)=
 		1,\quad
 		\diff{y\left(0\right)}{x}=
 		0.
-		&
+		 &
 	\end{cases}
 \end{equation}
-$y\left(x\right)=\exp\left(-x^{2}\right)$.
 
-\newpage
+\begin{equation*}
+	\boxed{y\left(x\right)=\exp\left(-x^{2}\right).}
+\end{equation*}
+
+\subsection*{Example 3.7}
 
 \begin{equation}
 	\begin{cases}\displaystyle
@@ -32,17 +113,20 @@ $y\left(x\right)=\exp\left(-x^{2}\right)$.
 		\diff{y\left(x\right)}{x}+
 		y\left(x\right)=
 		6+12x+x^{2}+x^{3}
-		& \text { for }0\leq x<\infty. \\[0.5cm]
+		 & \text { for }0\leq x<\infty. \\[0.5cm]
 		\displaystyle
 		y
 		\left(0\right)=
 		0,\quad
 		\diff{y\left(0\right)}{\xi}=
 		0.
-		&
+		 &
 	\end{cases}
 \end{equation}
-$y\left(x\right)=x^{2}+x^{3}$.
 
-\newpage
+\begin{equation*}
+	\boxed{y\left(x\right)=y\left(x\right)=x^{2}+x^{3}.}
+\end{equation*}
+
+
 \end{document}
