@@ -1,0 +1,140 @@
+\begin{frame}
+    \frametitle{Ecuaciones de la estructura estelar}
+    Describen la distribución de masa con simetría esférica
+    \begin{align}
+        \mathcolor{mygreen}{\diff{P\left(r\right)}{r}                                                                                     & =
+            -\frac{Gm\left(r\right)}{r^{2}}
+        \rho\left(r\right)}.\label{eq:hydrostatic}                                                                                            \\
+        \mathcolor{myred}{
+        \diff{m\left(r\right)}{r}                                                                                                         & =
+            4\pi r^{2}\rho\left(r\right)}.\label{eq:mass}
+        \shortintertext{Derivando
+            $\mathcolor{myblue}{\dfrac{r^{2}}{\rho\left(r\right)}}\times\eqref{eq:hydrostatic}$
+            respecto a $r$ da}
+        \diff*{\left[
+                \mathcolor{myblue}{\frac{r^{2}}{\rho\left(r\right)}}
+                \mathcolor{mygreen}{\diff{P\left(r\right)}{r}}
+        \right]}{r}                                                                                                                       & =
+        -G
+        \mathcolor{myred}{\diff{m\left(r\right)}{r}}.\label{eq:fusion}
+        \shortintertext{Reemplazando~\eqref{eq:mass} en~\eqref{eq:fusion}}
+        \mathcolor{myred}{\frac{1}{r^{2}}}
+        \diff*{\left[\frac{r^{2}}{\rho\left(r\right)}\diff{P\left(r\right)}{r}\right]}{r}                                                 & =
+        -\mathcolor{myred}{4\pi}G\mathcolor{myred}{\rho\left(r\right)}.\label{eq:total}
+        \shortintertext{Un polítropo describe la relación en la que
+            la presión depende de la densidad.}
+        \mathcolor{mygreen}{
+            P\left(r\right)=
+            K{\left[\rho\left(r\right)\right]}^{\frac{n+1}{n}}\implies
+        \diff{P\left(r\right)}{r}                                                                                                         & =
+            \frac{\left(n+1\right)K}{n}
+            {\left[\rho\left(r\right)\right]}^{\frac{1}{n}}
+            \diff{\rho\left(r\right)}{r}
+        }.\label{eq:polytrope}                                                                                                                \\
+        \shortintertext{Reemplazando~\eqref{eq:polytrope} en~\eqref{eq:total}}
+        \frac{1}{r^{2}}
+        \frac{\mathcolor{mygreen}{\left(n+1\right)K}}{4\mathcolor{mygreen}{n}\pi G}
+        \diff*{\left\{r^{2}\mathcolor{mygreen}{{\left[\rho\left(r\right)\right]}^{\frac{1-n}{n}}\diff{\rho\left(r\right)}{r}}\right\}}{r} & =
+        -\rho\left(r\right).\label{eq:total2}
+        \shortintertext{Introduzca la variable adimensional
+            $\mathcolor{myblue}{r\left(\xi\right)\coloneqq a\xi}$,
+            donde $\mathcolor{mygreen}{a^{2}=\frac{\left(n+1\right)K}{4\pi G}\lambda^{\frac{1-n}{n}}}$ y
+            $\mathcolor{myred}{\rho\left(r\right)=\lambda{\left[\theta\left(r\right)\right]}^{n}}$.
+            Reemplazando en~\eqref{eq:total2}}
+        \mathcolor{myblue}{\frac{1}{a^{2}\xi^{2}}}
+        \mathcolor{mygreen}{\frac{a^{2}\lambda^{\frac{n-1}{n}}}{n}}
+        \diff*{\left\{
+            \mathcolor{myblue}{a^{2}\xi^{2}}
+            \mathcolor{myred}{
+                \lambda^{\frac{1-n}{n}}
+                {\left[\theta\left(\mathcolor{myblue}{a\xi}\right)\right]}^{1-n}
+                \diff{\lambda{\left[\theta\left(\mathcolor{myblue}{a\xi}\right)\right]}^{n}}{\mathcolor{myblue}{a\xi}}
+            }
+        \right\}}{\mathcolor{myblue}{a\xi}}                                                                                               & =
+        -\mathcolor{myred}{\lambda{\left[\theta\left(\mathcolor{myblue}{a\xi}\right)\right]}^{n}}.\notag
+    \end{align}
+\end{frame}
+
+\begin{frame}
+    Simplificando la última ecuación obtenemos
+    \begin{equation}
+        \boxed{
+            \frac{1}{\xi^{2}}
+            \diff*{\left(\xi^{2}\diff{\theta}{\xi}\right)}{\xi}=
+            -\theta^{n}.\tag{Lane-Emden}
+        }\label{eq:Lane-Emden}
+    \end{equation}
+    % Sea $k\geq 1$ un parámetro de forma
+    \begin{block}{Problema de valor inicial singular de tipo Lane-Emden}
+        \begin{equation}\label{eq:type-lane-emden}
+            \begin{cases}\displaystyle
+                \frac{1}{\xi^{m-1}}
+                \diff*{\left(\xi^{m-1}\diff{\theta}{\xi}\right)}{\xi}=
+                \left(g\circ\theta\right)\left(\xi\right)
+                 & \text { para }0<\xi\leq R. \\[2mm]\displaystyle
+                \theta\left(0\right)=
+                \alpha,\quad
+                \diff.|.{\theta}{\xi}[\xi=0]=
+                0.
+                 &
+            \end{cases}
+        \end{equation}
+    \end{block}
+
+    \vspace*{-2\baselineskip}\setlength\belowdisplayshortskip{0pt}
+    \begin{equation}
+        \boxed{
+            \begin{aligned}
+                \text{LHS} & :
+                \frac{1}{\xi^{\alert{3}-1}}
+                \diff*{\left(\xi^{\alert{3}-1}\diff{\theta}{\xi}\right)}{\xi}=
+                \frac{1}{\xi^{2}}
+                \left(
+                2\xi\diff{\theta}{\xi}+
+                \xi^{2}\diff[2]{\theta}{\xi}
+                \right)=
+                \frac{2}{\xi}
+                \diff{\theta}{\xi}+
+                \diff[2]{\theta}{\xi}. \\
+                \text{RHS} & :
+                \left(g\circ\theta\right)
+                \left(\xi\right)=
+                {\left[\theta\left(\xi\right)\right]}^{n},\quad
+                n\geq 0.
+            \end{aligned}
+        }\tag{Lane-Emden}
+    \end{equation}
+
+    \begin{block}{Transformando~\eqref{eq:type-lane-emden} a un sistema EDO de primer orden}
+        Considere el cambio de variable
+        \begin{math}
+            z\left(\xi\right)\leftarrow
+            \diff.|.{\theta}{\xi}[\xi]=
+            y\left(\xi\right)
+        \end{math}.
+    \end{block}
+
+    \begin{equation}
+        \begin{cases}\displaystyle
+            \begin{bmatrix}
+                \diff{y}{\xi} \\
+                \diff{z}{\xi}
+            \end{bmatrix}=
+            \begin{bmatrix}
+                z \\
+                -\frac{2z}{\xi}-
+                g\left(y\right)
+            \end{bmatrix}
+             & \text { para }0<\xi\leq R. \\[0.5cm]\displaystyle
+            \begin{bmatrix}
+                y\left(0\right) \\
+                z\left(0\right)
+            \end{bmatrix}=
+            \begin{bmatrix}
+                \alpha \\
+                0
+            \end{bmatrix}.
+             &
+        \end{cases}
+    \end{equation}
+\end{frame}
