@@ -1,5 +1,35 @@
 \section{Introduction}
 
+Dadas el conjunto de ecuaciones de Estructura Estelar.
+
+\begin{equation*}
+	\left.\begin{aligned}
+		\diff{P}{r} & = -\frac{GM\rho}{r^{2}}.                \\
+		\diff{M}{r} & = 4\pi r^{2}\rho.                       \\
+		P           & = K{\left(\rho\right)}^{1+\frac{1}{n}}.
+	\end{aligned}\right\}
+	\!\!\!\implies\!\!\!
+	\begin{aligned}
+		\frac{1}{r^{2}}
+		\diff*{
+			\left(
+			\frac{r^{2}}{\rho}\diff{P}{r}
+			\right)
+		}{r}=
+		-4\pi G \rho.
+		% \text{See the model derivation.}
+	\end{aligned}
+\end{equation*}\normalsize
+
+Con el objetivo de obtener soluciones numericas para la ecuación Lane-Endem usando métodos eficientes y precisos.
+
+Convertiremos la EDO de segundo orden y de dimensión 1 a una EDO de primer orden y de dimensión 2.
+Con ello obtenemos el teorema de Existencia y Unicidad de la ecuación de lane-Endem \cite{diGiovanni2019}, apoyandonos del teorema del punto fijo de Banach.* %podríamos agregar una referencia sobre el teorema del punto fijo de Banach ,quizás Giovanni lo hizo en su paper.
+
+Además utilizaremos el ADM para aproximar la serie analítica \cite{Adomian1995}.Con el ADM obtendremos una serie con polinomios llamados polinomios de Adomiam, que junto el teorema de Taylor* encontramos una cota de error de la solución por el ADM \cite{Umesh2021}.
+
+Nuestra contribución con este trabajo es , aparte de lo ya redactado arriba , es compararla con el método RK5(4)7M ; Utilizando multíples indices politropicos , hecho que verá en las gráficas posteriores.	
+
 Flexible, modular simulation environments are key to many important application fields such as aerospace engineering~\cite{Slotnick2014}, biomedical engineering~\cite{HellersteibBiomed2019}, climate and environmental research~\cite{Climate2020} and many others.
 The need to provide smart mathematical and software solutions to combine different aspects of such
 simulations in a modular way has been showcased in many publications, e.g.,~\cite{Keyes2013}. With increasing complexity of the respective software environments, the usability and maintainability of the involved software components become a critical issue, which is addressed by a growing research software engineering community (see, e.g., a recent position paper of the German community~\cite{Anzt2021_RSE}).
