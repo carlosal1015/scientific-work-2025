@@ -1,20 +1,8 @@
-The aim of this talk is to present a well-suited approximation of a
-internal structure of a self-gravitating polytropic body model which
-consists of a type Lane-Emden equation~\cite{Lane1870}, a second
-order nonlinear ODE.
-First, we will discuss an efficient algorithm called Adomian
-decomposition method~\cite{Adomian1995} which server as an
-approximation in terms of generalized Taylor series for the
-Lane-Emden equation.
-Next, we follow the methodology given in~\cite{Alzate2014} to
-guarantee the convergence to the solution.
-Finally, we carry out several numerical experiments whose results
-are in accordance with the theoretical analysis.
-
-preCICE is a free/open-source coupling library.
-It enables creating partitioned multi-physics simulations by gluing together separate software packages.
-This paper summarizes the development efforts in preCICE of the past five years.
-During this time span, we have turned the software from a working prototype -- sophisticated numerical coupling methods and scalability on ten thousands of compute cores -- to a sustainable and user-friendly software project with a steadily-growing community.
-Today, we know through forum discussions, conferences, workshops, and publications of more than 100 research groups using preCICE.
-We cover the fundamentals of the software alongside a performance and accuracy analysis of different data mapping methods.
-Afterwards, we describe ready-to-use integration with widely-used external simulation software packages, tests and continuous integration from unit to system level, and community building measures, drawing an overview of the current preCICE ecosystem.
+Lane-Emden-type equations are a class of singular second-order
+nonlinear ordinary differential equations (ODEs) arising from the
+modeling of various physical phenomena, including the internal
+structure of self-gravitating polytropic bodies, thermal explosions,
+and chemical reactions.
+This paper leverages the Adomian Decomposition Method, a robust algorithm for handling singularities at the origin.
+Additionally, we employ deep learning to approximate solutions of Lane-Emden-type equations using physics-informed machine learning.
+We validate our approach through numerical experiments whose results align with the theoretical analysis presented herein.
