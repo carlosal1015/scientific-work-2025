@@ -1,0 +1,79 @@
+The ADM was introduced, and extensively used in the 1980's, has been widely applied and developed to aproximate the solutions to quite classes of nonlinear differential equations without resorting to discretization, perturbation, linearization, or closure approximations methods. #CarlosAbello
+It is usually necessary to make some simplifying assumptions, or t impose some restrictive conditions, turning it into a IVP. #brief
+It's useful for  both of a terministic and stochastic nature problems , linear and nonlinear, coming from physics, chemistry, biology, and engineering, associated with initial and boundary conditions. #CarlosAbello
+The solution is obtained by an expansion in series of the so-called Adomian polynomials #CarlosAbello
+The method provides the solution in a rapidly convergent series with components that are elegantly computed. #wazwaz
+A more dificult question to answer is how this method can be modi®ed to address the concept of singular points. #wazwaz
+It is worth to note that ADM can provide a solution of a differential/integral equation in the form of a series, whose terms are determined individually step by step via a recursive relation using the Adomian polynomials. #brief
+EXAMPLES OF DIFFERENTIAL EQUATIONS RESOLVED BY ADM
+
+
+
+
+
+ The general operator equation is written as
+\begin{equation}\label{eq:generaloperator}
+	Lu+Ru+Nu=g.
+\end{equation}
+Where the operators represent
+
+	\begin{itemize}
+		\setlength\itemsep{0em}
+		\item $L$: Highest order derivative.
+		
+		\item $R$: Lower order derivatives.
+		
+		\item $N$: Nonlinear terms.
+		
+		\item $g$: Source term.
+	\end{itemize}
+
+Applying $L^{-1}$ to~\eqref{eq:generaloperator}, we obtain
+\begin{equation*}
+	u=
+	\Phi+
+	L^{-1}g-
+	L^{-1}Ru-
+	L^{-1}Nu,
+\end{equation*}
+where $\Phi$ is chosen so that the solution $u$ satisfies the initial conditions.
+\begin{definition}[Adomian polynomials $A_{n}$ and $L^{-1}$ for Lane-Emden]
+	\begin{align*}
+		\forall n\in\mathbb{N}\cup\left\{0\right\}:
+		A_{n}  & \coloneqq
+		\frac{1}{n!}
+		\diff*[n]{
+			\left[
+			N\left(
+			\sum_{i=0}^{\infty}
+			\lambda^{i}
+			u_{i}
+			\right)
+			\right]_{\lambda=0}}{\lambda}. \\
+		L^{-1} & \coloneqq
+		\int_{0}^{\xi}
+		\xi^{-2}
+		\int_{0}^{\xi}
+		\xi^{2}\left(\cdot\right)
+		\dl \xi
+		\dl \xi.
+	\end{align*}
+\end{definition}
+\vspace*{-.5\baselineskip}\setlength\belowdisplayshortskip{0pt}
+Decomposing $u=\sum\limits_{n=0}^{\infty}u_{n}$,
+the recursive scheme is
+\begin{equation}\label{eq:adm_system}
+	\boxed{
+		\left\{
+		\begin{aligned}
+			\forall n\in\mathbb{N}\cup\left\{0\right\}:
+			u_{n+1} & =
+			-L^{-1}Ru_{n}-L^{-1}A_{n}. \\
+			u_{0}   & =
+			\phi+L^{-1}g.
+		\end{aligned}
+		\right.
+		}
+\end{equation}
+
+
