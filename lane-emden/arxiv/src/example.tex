@@ -1,0 +1,60 @@
+\documentclass{amsart}
+\begin{document}
+$N(u)=u^2$
+primero identificamos $u=\sum_{n=0}^{\infty} u_n$
+\begin{align*}
+	N(u) & =\underbrace{u_0^2}_{A_0}+\underbrace{2 u_0 u_1}_{A_1}+\underbrace{2 u_0 u_2+u_1^2}_{A_2}+\underbrace{2 u_0 u_3+2 u_1 u_2}_{A_3} \\
+	& +\underbrace{2 u_0 u_4+2 u_1 u_3+u_2^2}_{A_4}+\underbrace{2 u_0 u_5+2 u_1 u_4+2 u_2 u_3}_{A_5}+\cdots \tag{2.22}
+\end{align*}
+así
+$$
+N(u)=\left(u_0+u_1+u_2+u_3+u_4+u_5+\cdots\right)^2
+$$
+(2.20) así tenemos los polinomios de Adomian para $N(u)=u^2$
+al expandir la parte derecha de (2.20) tenemos:
+\begin{align*}
+	N(u) & =u_0^2+2 u_0 u_1+2 u_0 u_2+u_1^2+2 u_0 u_3+2 u_1 u_2+2 u_0 u_4+2 u_1 u_3 \\
+	& +u_2^2+2 u_0 u_5+2 u_1 u_4+2 u_2 u_3+\cdots \tag{2.21}
+\end{align*}
+agrupamos los términos , teniendo en cuenta que la suma de los subíndices de las componentes de $u_n$ sea la misma, y reescribimos la expresión (2.21)
+\begin{align*}
+	& A_0=u_0^2 \\
+	& A_1=2 u_0 u_1 \\
+	& A_2=2 u_0 u_2+u_1^2 \\
+	& A_3=2 u_0 u_3+2 u_1 u_2 \\
+	& A_4=2 u_0 u_4+2 u_1 u_3+u_2^2 \\
+	& A_5=2 u_0 u_5+2 u_1 u_4+2 u_2 u_3
+\end{align*}
+
+$N(u)=u u^{\prime}$
+primero identificamos
+\begin{align*}
+	u & =\sum_{n=0}^{\infty} u_n \\
+	u^{\prime} & =\sum_{n=0}^{\infty} u_n^{\prime} \tag{2.23}
+\end{align*}
+al sustituir (2.23) en $N(u)=u u^{\prime}$ se tiene:
+\begin{align*}
+	N(u) & =\left(u_0+u_1+u_2+u_3+u_4+u_5+\cdots\right) \\
+	& \times\left(u_0^{\prime}+u_1^{\prime}+u_2^{\prime}+u_3^{\prime}+u_4^{\prime}+u_5^{\prime}+\cdots\right) \tag{2.24}
+\end{align*}
+multiplicando los dos factores se tiene:
+\begin{align*}
+	N(u) & =u_0 u_0^{\prime}+u_0^{\prime} u_1+u_0 u_1^{\prime}+u_0^{\prime} u_2+u_1^{\prime} u_1+u_2^{\prime} u_0+u_0^{\prime} u_3 \\
+	& +u_1^{\prime} u_2+u_2^{\prime} u_1+u_3^{\prime} u_0+u_0^{\prime} u_4+u_0 u_4^{\prime}+u_1^{\prime} u_3 \\
+	& +u_1 u_3^{\prime}+u_2 u_2^{\prime}+\cdots \tag{2.25}
+\end{align*}
+agrupamos los términos, teniendo en cuenta que la suma de los subíndices de las componentes de $u_n$ sea la misma, y reescribimos la expresión (2.25)
+\begin{align*}
+	N(u) & =\underbrace{u_0 u_0^{\prime}}_{A_0}+\underbrace{u_0^{\prime} u_1+u_0 u_1^{\prime}}_{A_1}+\underbrace{u_0^{\prime} u_2+u_1^{\prime} u_1+u_2^{\prime} u_0}_{A_2} \\
+	& +\underbrace{u_0^{\prime} u_3+u_1^{\prime} u_2+u_2^{\prime} u_1+u_3^{\prime} u_0}_{A_3} \\
+	& +\underbrace{u_0^{\prime} u_4+u_1^{\prime} u_3+u_2 u_2^{\prime}+u_3^{\prime} u_1++u_4^{\prime} u_0}_{A_4}+\cdots \tag{2.26}
+\end{align*}
+los polinomios de Adomian para la expresión diferencial no lineal $N(u)=u u^{\prime}$ están dados por:
+\begin{align*}
+	& A_0=u_0 u_0^{\prime} \\
+	& A_1=u_0^{\prime} u_1+u_0 u_1^{\prime} \\
+	& A_2=u_0^{\prime} u_2+u_1^{\prime} u_1+u_2^{\prime} u_0 \\
+	& A_3=u_0^{\prime} u_3+u_1^{\prime} u_2+u_2^{\prime} u_1+u_3^{\prime} u_0 \\
+	& A_4=u_0^{\prime} u_4+u_1^{\prime} u_3+u_2^{\prime} u_2+u_3^{\prime} u_1++u_4^{\prime} u_0
+\end{align*}
+\end{document}
