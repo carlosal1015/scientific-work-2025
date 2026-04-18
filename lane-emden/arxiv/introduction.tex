@@ -50,3 +50,62 @@ In addition to the above, our contribution is to compare the ADM with the RK5(4)
 % The two software projects most similar to preCICE are presumably DTK~\cite{Slattery2013_DTK} and OpenPALM~\cite{Duchaine2015_OpenPALM}.
 % DTK offers an API that targets lower-level operations compared to preCICE. Its main job is to map and communicate data between different meshes in parallel. The implementation of the actual coupling logic is left to the user, which leads to greater flexibility, but also to more development effort for the user. OpenPALM employs a similar API, provided by CWIPI. The \textit{front end} of OpenPALM, however, provides a higher-level API that includes coupling logic. On top, a graphical user interface is available to configure and steer coupled simulations.
 % The largest difference of preCICE compared to DTK and OpenPALM is presumably the large number of ready-to-use adapters to widely-used simulation software packages (e.g., OpenFOAM, SU2, FEniCS, deal.II, or CalculiX) (cf.~\autoref{sec:adapters}).
+
+
+Firstly, we shortly recall the Adomian decomposition method (see [4,5,23]) for understanding a construction of the general formula for the differential transformation components which is based on the Adomian polynomials.
+
+Consider the operator equation
+
+
+\begin{equation*}
+L u+R u+N u=g \tag{7}
+\end{equation*}
+
+
+with prescribed auxiliary conditions, where $u$ is the unknown function, $L$ is the highest order derivative which is assumed to be easily invertible, $R$ is a linear differential operator of order less than $L, N u$ represents the nonlinear terms, and $g$ is the source term. Applying the inverse operator $L^{-1}$ to both sides of Eq. (7) and using the given conditions we obtain
+
+$$
+u=v-L^{-1}(R u)-L^{-1}(N u)
+$$
+
+where the function $v$ represents the terms arising from integrating the source term $g$ and from using the auxiliary conditions. The standard Adomian method defines the solution $u$ by an infinite series
+
+$$
+u=\sum_{n=0}^{\infty} u_{n} .
+$$
+
+The nonlinear term $N u$ is usually expressed as a nonlinear function $f(u)$. Generally, the nonlinear function $f(u)$, assumed to be an analytic function, is decomposed as follows:
+
+$$
+f(u)=\sum_{n=0}^{\infty} A_{n}\left(u_{0}, u_{1} \ldots u_{n}\right),
+$$
+
+where $A_{n}$ are the appropriate Adomian polynomials which are generated according to algorithm determined, for example, in [4,5,23]. The Adomian polynomials $A_{n}$ depend, of course, on the particular nonlinearity and are calculated by the general formula
+
+
+\begin{equation*}
+A_{n}\left(u_{0}, u_{1} \ldots u_{n}\right)=\frac{1}{n!} \frac{d^{n}}{d \lambda^{n}}\left[f\left(\sum_{k=0}^{\infty} \lambda^{k} u_{k}\right)\right]_{\lambda=0}, \quad n \geq 0 . \tag{8}
+\end{equation*}
+
+Hence
+
+$$
+\begin{aligned}
+& A_{0}=f\left(u_{0}\right) \\
+& A_{1}=u_{1} f^{\prime}\left(u_{0}\right) \\
+& A_{2}=u_{2} f^{\prime}\left(u_{0}\right)+\frac{u_{1}^{2}}{2!} f^{\prime \prime}\left(u_{0}\right) \\
+& A_{3}=u_{3} f^{\prime}\left(u_{0}\right)+u_{1} u_{2} f^{\prime \prime}\left(u_{0}\right)+\frac{u_{1}^{3}}{3!} f^{\prime \prime \prime}\left(u_{0}\right) \\
+& \vdots
+\end{aligned}
+$$
+
+The components $u_{0}, u_{1}, u_{2}, \ldots$ are thus determined as follows:
+
+$$
+\begin{aligned}
+& u_{0}=v \\
+& u_{k+1}=-L^{-1} R u_{k}-L^{-1} A_{k}, \quad k \geq 0,
+\end{aligned}
+$$
+
+where $u_{0}$ is referred to as the zeroth component.
