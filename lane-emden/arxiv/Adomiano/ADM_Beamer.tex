@@ -1,0 +1,168 @@
+\documentclass{beamer}
+
+% Selección del tema y colores
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Paquetes de idioma y matemáticas
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools} % Necesario para \coloneqq
+
+% Información de la portada
+\title[Método Adomiano (ADM)]{El Método de Descomposición Adomiano}
+\subtitle{Estructura y Aplicaciones}
+\author[Matihus Molina]{Matihus Alberth Molina Larios}
+\institute[UNMSM]{
+	Universidad Nacional Mayor de San Marcos \\
+	Facultad de Ciencias Matemáticas / Matemática 
+}
+\date[Abril 2026]{17 de abril de 2026 \\ San Martín de Porres, Lima, Perú}
+
+% --- NUEVO PAQUETE AÑADIDO AQUÍ ---
+\usepackage{csquotes}
+
+% Paquetes para bibliografía con archivo .bib
+\usepackage[backend=biber, style=numeric, sorting=nty]{biblatex}
+\addbibresource{references.bib} % Reemplaza con el nombre de tu archivo
+
+\begin{document}
+	
+	% Diapositiva 1: Portada
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	% Diapositiva 2: Índice
+	\begin{frame}{Contenido}
+		\tableofcontents
+	\end{frame}
+	
+	% Sección 1: Introducción
+	\section{Introducción}
+	
+	\begin{frame}{Introducción al ADM}
+		\begin{itemize}
+			\item Introducido y utilizado extensamente en la década de 1980.\cite{Abello_Res_2016}
+			\item Ampliamente aplicado para aproximar las soluciones a diversas clases de ecuaciones diferenciales no lineales \textbf{sin recurrir a} métodos de discretización, perturbación, linealización o aproximaciones de cierre.\cite{Abello_Res_2016}
+			\item Generalmente es necesario hacer suposiciones simplificadoras o imponer condiciones restrictivas, convirtiendo el problema en un Problema de Valor Inicial (PVI).\cite{Mak2021}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Naturaleza de los Problemas y Solución}
+		\begin{itemize}
+			\item Es útil para problemas de naturaleza \textbf{determinista y estocástica}, lineales y no lineales, provenientes de la física, química, biología e ingeniería.\cite{Abello_Res_2016}
+			\item La solución se obtiene mediante una expansión en serie de los llamados \textbf{polinomios de Adomian}.
+			\item El método proporciona una serie de rápida convergencia cuyos componentes se calculan de forma elegante e individual, paso a paso, mediante una relación recursiva.\cite{Wazwaz2001}
+			\item \textit{Desafío actual:} Una pregunta más difícil de responder es cómo este método puede ser modificado para abordar el concepto de puntos singulares.\cite{Wazwaz2001}
+		\end{itemize}
+	\end{frame}
+	
+	% Sección 2: Fundamento Matemático
+	\section{Fundamento Matemático}
+	
+	\begin{frame}{Estructura de la Ecuación}
+		La ecuación en forma de operador general se escribe como:
+		\begin{equation}\label{eq:generaloperator}
+			Lu+Ru+Nu=g.
+		\end{equation}
+		Donde los operadores representan:
+		\begin{itemize}
+			\setlength\itemsep{0em}
+			\item $L$: Derivada de mayor orden.
+			\item $R$: Derivadas de menor orden.
+			\item $N$: Términos no lineales.
+			\item $g$: Término fuente.
+		\end{itemize}
+		
+		Aplicando el operador inverso $L^{-1}$ a la ecuación \eqref{eq:generaloperator}, obtenemos:
+		\begin{equation*}
+			u = \Phi + L^{-1}g - L^{-1}Ru - L^{-1}Nu,
+		\end{equation*}
+		donde $\Phi$ se elige para que la solución $u$ satisfaga las condiciones iniciales.
+	\end{frame}
+	
+	% Sección 3: Polinomios y Esquema Recursivo
+	\section{Polinomios de Adomian y Esquema Recursivo}
+	
+	\begin{frame}{Polinomios de Adomian e Inversa Lane-Emden}
+		\begin{definition}[Polinomios de Adomian $A_{n}$ y $L^{-1}$ para Lane-Emden]
+			\begin{align*}
+				\forall n\in\mathbb{N}\cup\left\{0\right\}:
+				A_{n}  & \coloneqq
+				\frac{1}{n!}
+				\frac{d^n}{d\lambda^n}
+				\left[
+				N\left(
+				\sum_{i=0}^{\infty}
+				\lambda^{i}
+				u_{i}
+				\right)
+				\right]_{\lambda=0} \\
+				L^{-1} & \coloneqq
+				\int_{0}^{\xi}
+				\xi^{-2}
+				\int_{0}^{\xi}
+				\xi^{2}\left(\cdot\right)
+				\,d\xi \,d\xi.
+			\end{align*}
+		\end{definition}
+	\end{frame}
+	
+	\begin{frame}{Esquema Recursivo}
+		Descomponiendo la solución como $u=\sum\limits_{n=0}^{\infty}u_{n}$, el esquema recursivo es:
+		
+		\vspace{0.5cm}
+		\begin{equation}\label{eq:adm_system}
+			\boxed{
+				\left\{
+				\begin{aligned}
+					\forall n\in\mathbb{N}\cup\left\{0\right\}:
+					u_{n+1} & = -L^{-1}Ru_{n}-L^{-1}A_{n}. \\
+					u_{0}   & = \Phi+L^{-1}g.
+				\end{aligned}
+				\right.
+			}
+		\end{equation}
+		\vspace{0.5cm}
+		
+		Este sistema permite determinar cada término de la serie analítica apoyándose en los polinomios calculados previamente.
+	\end{frame}
+	
+	% Sección 4: Ejemplos
+	\section{Ejemplos Resueltos}
+	\begin{frame}{Ejemplos de Ecuaciones Resueltas por ADM}
+		\begin{itemize}
+			\item \textit{[Espacio reservado para tu lista de ejemplos de ecuaciones diferenciales]}
+			\item Ecuación de Lane-Emden (aplicando el $L^{-1}$ definido anteriormente).
+			\item ...
+			\item ...
+		\end{itemize}
+	\end{frame}
+	
+	% Sección 5: Conclusión
+	\section{Conclusiones}
+	\begin{frame}{Conclusiones}
+		\begin{itemize}
+			\item El Método de Descomposición Adomiano es una herramienta poderosa y versátil para sistemas no lineales en múltiples disciplinas.
+			\item Proporciona soluciones analíticas continuas y evita el enorme costo computacional de métodos puramente numéricos.
+			\item Mantiene intacta la física del problema subyacente.
+		\end{itemize}
+		
+		\vspace{1cm}
+		\begin{center}
+			\Large \textbf{¡Gracias por su atención!}
+		\end{center}
+	\end{frame}
+	
+	% Sección 6: Referencias
+	\section{Referencias}
+	\begin{frame}[allowframebreaks]{Referencias}
+		% Esto imprimirá automáticamente todo lo que hayas citado de tu archivo .bib
+		\printbibliography 
+	\end{frame}
+	
+\end{document}
