@@ -1,15 +1,27 @@
-\documentclass{beamer}
-
+% arara: clean: { extensions: ['aux', 'bbl', 'bcf', 'blg', 'log', 'nav', 'out', 'pdf', 'run.xml', 'toc'] }
+% arara: lualatex
+% arara: biber
+% arara: lualatex
+% arara: lualatex
+% arara: clean: { extensions: ['aux', 'bbl', 'bcf', 'blg', 'log', 'nav', 'out', 'run.xml', 'toc'] }
+\documentclass[
+    8pt,
+    aspectratio=1610,
+    c,
+    spanish,
+    handout,
+    intlimits,
+    leqno,
+    professionalfonts,
+    spanish,
+    xcolor=svgnames,
+]{beamer}
 % Selección del tema y colores
 \usetheme{Madrid}
 \usecolortheme{default}
-
+\usefonttheme[onlymath]{serif}
 % Paquetes de idioma y matemáticas
-\usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
 \usepackage{mathtools} % Necesario para \coloneqq
 
 % Información de la portada
@@ -20,7 +32,7 @@
 	Universidad Nacional Mayor de San Marcos \\
 	Facultad de Ciencias Matemáticas / Matemática 
 }
-\date[Abril 2026]{17 de abril de 2026 \\ San Martín de Porres, Lima, Perú}
+\date[Abril 2026]{\today\\ San Martín de Porres, Lima, Perú}
 
 % --- NUEVO PAQUETE AÑADIDO AQUÍ ---
 \usepackage{csquotes}
