@@ -1,0 +1,191 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\title{Existencia y Unicidad para la Ecuación de Tipo Lane--Emden: Comparación y Extensión al Caso No Homogéneo}
+\author{}
+\date{\today}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{definition}{Definición}
+\newtheorem{remark}{Observación}
+
+\begin{document}
+
+\maketitle
+
+\section{Comparación de Generalidad: Biles et al. (2002) vs. Main}
+
+El resultado sobre existencia y unicidad presentado por Biles, Robinson y Spraker (2002) es estrictamente más general que la formulación dada en el documento principal por las siguientes razones:
+
+\begin{enumerate}
+    \item \textbf{Operador diferencial y coeficiente singular $p(t)$:}
+    En el documento principal, el teorema de existencia y unicidad se enuncia para la ecuación en la forma:
+    \[
+    \frac{d}{d\xi}\left( \xi^{m-1} \frac{du}{d\xi} \right) = \xi^{m-1} g(u, \xi) \quad \implies \quad u'' + \frac{m-1}{\xi} u' = g(u, \xi),
+    \]
+    donde el parámetro está restringido a $m \ge 1$ (es decir, un coeficiente singular específico de la forma $p(t) = \frac{m-1}{t}$).
+    
+    Por otro lado, Biles et al. (2002) consideran el problema con valores iniciales:
+    \[
+    y''(t) + p(t) y'(t) + q(t, y(t)) = 0, \quad t > 0; \quad y(0) = a, \quad y'(0) = 0,
+    \]
+    donde $p(t) \ge 0$ es únicamente una función medible sobre $(0, 1]$ que satisface la condición débil de integrabilidad ponderada en la singularidad:
+    \[
+    \int_0^1 s \, p(s) \, ds < \infty.
+    \]
+
+    \item \textbf{Regularidad de la no linealidad $q(t, y)$ / $g(u, \xi)$:}
+    Mientras que en el trabajo principal se asume suavidad de clase $C^1$ para la función no lineal ($g \in C^1$), en Biles et al. (2002) únicamente se requieren las condiciones de Carathéodory (medibilidad en $t$ y continuidad en $y$) junto con acotación local para existencia, y la condición de Lipschitz en $y$ para garantizar la unicidad.
+\end{enumerate}
+
+\section{Existencia en la Literatura del Caso No Homogéneo}
+
+El caso no homogéneo para ecuaciones singulares de tipo Lane--Emden:
+\[
+y''(t) + p(t) y'(t) + q(t, y(t)) = f(t), \quad y(0) = a, \quad y'(0) = 0,
+\]
+ha sido ampliamente estudiado en la literatura de ecuaciones diferenciales ordinarias singulares.
+
+Entre las referencias clave destacan:
+\begin{itemize}
+    \item \textbf{Agarwal y O'Regan (2001, 2003):} Desarrollaron la teoría de existencia para problemas con valores iniciales y de frontera singulares no homogéneos utilizando teoría de punto fijo (principios de alternativa no lineal de Leray--Schauder y teoría de conos en espacios de Banach).
+    \item \textbf{Agarwal, O'Regan y Stan\v{e}k (2005):} Publicaron monografías sobre problemas de valor inicial singulares de segundo orden con términos fuente no homogéneos $f(t)$.
+    \item \textbf{Wazwaz (2001--2011):} Abordó el análisis y solución de ecuaciones de Lane--Emden no homogéneas mediante métodos numérico-analíticos como el Método de Descomposición de Adomian (ADM) y el Método de Iteración Variacional (VIM).
+\end{itemize}
+
+\section{Condiciones para el Caso No Homogéneo}
+
+Para extender los teoremas de existencia y unicidad de Biles et al. (2002) al problema no homogéneo:
+\begin{equation} \label{eq:no_homogenea}
+\begin{cases}
+y''(t) + p(t) y'(t) + q(t, y(t)) = f(t), & t \in (0, T], \\
+y(0) = a, \quad y'(0) = 0,
+\end{cases}
+\end{equation}
+utilizamos la función de ponderación $h(t) = \exp\left(\int_t^1 p(s) \, ds\right)$, reduciendo \eqref{eq:no_homogenea} a la ecuación integral equivalente:
+\[
+y(t) = a + \int_0^t \frac{1}{h(s)} \left( \int_0^s h(x) \big( f(x) - q(x, y(x)) \big) \, dx \right) ds.
+\]
+
+Las condiciones suficientes que deben cumplirse son:
+
+\begin{enumerate}
+    \item \textbf{Condiciones sobre los coeficientes y término no lineal (C1--C4):}
+    \begin{itemize}
+        \item $p:(0, 1] \to [0, \infty)$ es medible con $\int_0^1 s \, p(s) \, ds < \infty$.
+        \item $q(t, y)$ satisface las condiciones de Carathéodory y está acotada en $[0, 1] \times [\alpha, \beta]$ con $\alpha < a < \beta$.
+    \end{itemize}
+
+    \item \textbf{Condición sobre el término fuente no homogéneo $f(t)$:}
+    El término no homogéneo $f(t)$ debe ser medible y satisfacer la condición de integrabilidad ponderada cerca de la singularidad:
+    \[
+    \int_0^T \frac{1}{h(s)} \left( \int_0^s h(x) |f(x)| \, dx \right) ds < \infty.
+    \]
+    En el caso particular $p(t) = \frac{k}{t}$ (donde $h(t) = t^k$), esta condición se reduce a que $f \in L^1_{loc}[0, T]$ o específicamente que:
+    \[
+    \int_0^T s \, |f(s)| \, ds < \infty,
+    \]
+    lo cual se satisface trivialmente si $f$ es continua o acotada en $[0, T]$.
+
+    \item \textbf{Garantía de Unicidad:}
+    Para la unicidad, basta con que $q(t, y)$ sea Lipschitz continua respecto a $y$. Dado que el término $f(t)$ solo depende de $t$, la diferencia de dos posibles soluciones $y_1, y_2$ elimina a $f(t)$:
+    \[
+    |y_1(u) - y_2(u)| \le L \int_0^u \frac{1}{h(t)} \left( \int_0^t h(s) |y_1(s) - y_2(s)| \, ds \right) dt.
+    \]
+    Aplicando el Lema de Gronwall, se concluye directamente que $y_1 \equiv y_2$.
+\end{enumerate}
+
+\section{Análisis de la Propiedad de Lipschitz en las Ecuaciones del Póster}
+
+En las aplicaciones numéricas presentadas en el póster, las ecuaciones de tipo Lane--Emden se expresan en la forma:
+\[
+\theta''(\xi) + \frac{2}{\xi}\theta'(\xi) + q(\theta(\xi)) = 0, \quad \theta(0) = \theta_0, \quad \theta'(0) = 0.
+\]
+A continuación se analiza si las tres funciones no lineales $q(\theta)$ consideradas cumplen con la condición de Lipschitz exigida para la unicidad:
+
+\begin{enumerate}
+    \item \textbf{Ecuación de Lane--Emden Estándar:} $q(\theta) = \theta^n$ con $\theta(0) = 1$.
+    \begin{itemize}
+        \item Para $n = 0, 1$, $q(\theta)$ es constante/lineal y, por lo tanto, globalmente Lipschitz.
+        \item Para $n > 1$ entero ($n = 2, 3, 4, 5$), la derivada $q'(\theta) = n\theta^{n-1}$ está acotada en cualquier entorno cerrado del valor inicial $\theta(0) = 1$, de modo que $q(\theta)$ es localmente Lipschitz.
+        \item Para $0 < n < 1$ (ej. $n = 0.2, 0.4, 0.6, 0.8$), $q'(\theta) = n\theta^{n-1}$ permanece acotada siempre que $\theta > 0$. Alrededor de la condición inicial $\theta(0) = 1$, la función es localmente Lipschitz.
+    \end{itemize}
+
+    \item \textbf{Ecuación de Emden--Chandrasekhar (Isoterma):} $q(\theta) = e^\theta$ con $\theta(0) = 0$.
+    \begin{itemize}
+        \item La función es de clase $C^\infty(\mathbb{R})$ y su derivada $q'(\theta) = e^\theta$ está acotada sobre todo conjunto compacto de la solución. Por ende, $q(\theta)$ es localmente Lipschitz en cualquier intervalo acotado.
+    \end{itemize}
+
+    \item \textbf{Ecuación de la Enana Blanca de Chandrasekhar:} $q(\theta) = (\theta^2 - C)^{3/2}$ con $\theta(0) = 1$ y $C < 1$.
+    \begin{itemize}
+        \item Su derivada respecto a $\theta$ es $q'(\theta) = 3\theta\sqrt{\theta^2 - C}$. Dado que $\theta(0) = 1$ y $C < 1$, se tiene $\theta^2 - C > 0$ en una vecindad de la condición inicial, por lo cual $q'(\theta)$ es continua y acotada en dicho entorno, garantizando que $q(\theta)$ es localmente Lipschitz.
+    \end{itemize}
+\end{enumerate}
+
+\section{Extensión del Método de Volúmenes Finitos (FVM) a la Ecuación de Lane--Emden Generalizada No Homogénea}
+
+El Método de Volúmenes Finitos (FVM) desarrollado en \texttt{lanmeemdenfvm.tex} para la ecuación clásica de Lane--Emden puede extenderse de forma natural y elegante a la ecuación generalizada no homogénea considerada por Biles et al. (2002):
+\begin{equation} \label{eq:fvm_generalizada}
+y''(t) + p(t) y'(t) + q(t, y(t)) = f(t), \quad t \in (0, T], \quad y(0) = a, \quad y'(0) = 0.
+\end{equation}
+
+\subsection{Forma Conservativa mediante el Factor Integrante $h(t)$}
+Haciendo uso de la función de peso $h(t) = \exp\left( \int_t^1 p(s) \, ds \right)$, la ecuación \eqref{eq:fvm_generalizada} se puede escribir exactamente en la forma de balance conservativo:
+\begin{equation} \label{eq:fvm_conservativa}
+\frac{d}{dt} \left( h(t) y'(t) \right) = h(t) \Big( f(t) - q(t, y(t)) \Big).
+\end{equation}
+
+\subsection{Formulación Integral sobre el Volumen de Control}
+Consideremos la malla unidimensional dividida en volúmenes de control $V_i = [t_{i-1/2}, t_{i+1/2}]$ centrados en $t_i$. Integrando la ecuación conservativa \eqref{eq:fvm_conservativa} sobre el volumen $V_i$:
+\[
+\int_{t_{i-1/2}}^{t_{i+1/2}} \frac{d}{dt} \left( h(t) y'(t) \right) dt = \int_{t_{i-1/2}}^{t_{i+1/2}} h(t) \Big( f(t) - q(t, y(t)) \Big) dt.
+\]
+Aplicando el Teorema Fundamental del Cálculo en el miembro izquierdo, obtenemos el balance exacto de flujos en las caras de la celda:
+\begin{equation} \label{eq:balance_flujos}
+h(t_{i+1/2}) F_{i+1/2} - h(t_{i-1/2}) F_{i-1/2} = \int_{t_{i-1/2}}^{t_{i+1/2}} h(t) \Big( f(t) - q(t, y(t)) \Big) dt,
+\end{equation}
+donde $F(t) = y'(t)$ representa el flujo difusivo.
+
+\subsection{Evasión de la Singularidad en el Origen ($t = 0$)}
+Para el volumen de control inicial $V_1 = [0, t_{1+1/2}]$ que contiene la singularidad en $t = 0$:
+\begin{itemize}
+    \item La condición de simetría/física en el origen establece que $y'(0) = 0$, por lo tanto el flujo difusivo en la frontera izquierda es nulo: $F_{1/2} = y'(0) = 0$.
+    \item Sustituyendo $F_{1/2} = 0$ en el balance \eqref{eq:balance_flujos} para la primera celda $i=1$:
+    \[
+    h(t_{3/2}) F_{3/2} - 0 = \int_0^{t_{3/2}} h(t) \Big( f(t) - q(t, y(t)) \Big) dt.
+    \]
+\end{itemize}
+Dado que el factor de peso $h(t)$ se evalúa únicamente en las caras de las celdas ($t_{i+1/2} > 0$) y dentro de integrandos acotados, \textbf{el término singular $p(t)$ queda completamente eliminado del cálculo discreto sin necesidad de divisiones por cero ni de aplicar la regla de L'H\^{o}pital}.
+
+\subsection{Discretización y Esquema Numérico Completo}
+\begin{enumerate}
+    \item \textbf{Aproximación de Flujos en las Caras:}
+    Para la cara interior $t_{i+1/2}$, se utiliza diferencias finitas centradas para aproximar el gradiente:
+    \[
+    F_{i+1/2} \approx \frac{y_{i+1} - y_i}{t_{i+1} - t_i}.
+    \]
+
+    \item \textbf{Aproximación del Término Fuente / No Homogéneo:}
+    Integrando mediante la regla del punto medio en la celda:
+    \[
+    \int_{t_{i-1/2}}^{t_{i+1/2}} h(t) \Big( f(t) - q(t, y(t)) \Big) dt \approx \bar{H}_i \Big( f(t_i) - q(t_i, y_i) \Big),
+    \]
+    donde $\bar{H}_i = \int_{t_{i-1/2}}^{t_{i+1/2}} h(t) \, dt$ es el volumen/peso efectivo de la celda $i$.
+
+    \item \textbf{Linealización e Iteración de Newton--Raphson:}
+    Para resolver el sistema no lineal resultante, linealizamos el término $q(t_i, y_i^{(k+1)})$:
+    \[
+    q(t_i, y_i^{(k+1)}) \approx q(t_i, y_i^{(k)}) + \frac{\partial q}{\partial y}(t_i, y_i^{(k)}) \big( y_i^{(k+1)} - y_i^{(k)} \big).
+    \]
+    Esto conduce a un sistema algebraico tridiagonal lineal de la forma $A \mathbf{y}^{(k+1)} = \mathbf{b}$, el cual se resuelve eficientemente en cada paso iterativo mediante el algoritmo de Thomas (TDMA).
+\end{enumerate}
+
+\end{document}
+
+
