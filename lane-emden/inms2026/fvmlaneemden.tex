@@ -1,0 +1,118 @@
+\documentclass[11pt, lettersize]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\geometry{margin=1in}
+
+\title{\textbf{Resolución de la Ecuación de Lane-Emden mediante el Método de Volúmenes Finitos (FVM)}}
+\author{\textbf{Documento Técnico de Referencia}}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		El Método de Volúmenes Finitos (FVM) resuelve la ecuación de Lane-Emden transformándola en un balance de flujos conservativos a través de subdominios esféricos o cilíndricos. Este enfoque numérico garantiza la conservación de la masa y el momento, ofreciendo una alternativa robusta a las aproximaciones tradicionales de diferencias finitas al gestionar de manera natural la singularidad de coordenadas en el origen ($x=0$).
+	\end{abstract}
+	
+	\section{El Problema Central: La Ecuación de Lane-Emden}
+	La ecuación adimensional estándar de Lane-Emden describe el equilibrio hidrostático de un fluido politrópico autogravitante:
+	
+	\begin{equation}
+		\frac{1}{\xi^2} \frac{d}{d\xi} \left( \xi^2 \frac{d\theta}{d\xi} \right) + \theta^n = 0
+	\end{equation}
+	
+	Donde $\xi$ es el radio adimensional, $\theta$ representa la densidad adimensional, y $n$ denota el índice politrópico. Al expandir el término derivado, se evidencia una ecuación con términos singulares:
+	
+	\begin{equation}
+		\frac{d^2\theta}{d\xi^2} + \frac{2}{\xi}\frac{d\theta}{d\xi} + \theta^n = 0
+	\end{equation}
+	
+	En el centro estelar ($\xi = 0$), el término $\frac{2}{\xi}\frac{d\theta}{d\xi}$ genera una anomalía numérica por división entre cero ($0/0$) si se evalúa directamente utilizando diferencias centrales tradicionales.
+	
+	\section{Resolución de la Singularidad mediante Volúmenes Finitos}
+	En lugar de evaluar la ecuación diferencial en puntos discretos, el método FVM integra la ecuación sobre un volumen de control local o celda, definido por el intervalo $V_i = [\xi_{i-1/2}, \xi_{i+1/2}]$.
+	
+	\subsection{Formulación Integral}
+	Se integra la forma conservativa de la ecuación sobre un elemento de capa esférica:
+	
+	\begin{equation}
+		\int_{\xi_{i-1/2}}^{\xi_{i+1/2}} \frac{d}{d\xi} \left( \xi^2 \frac{d\theta}{d\xi} \right) d\xi + \int_{\xi_{i-1/2}}^{\xi_{i+1/2}} \theta^n \xi^2 d\xi = 0
+	\end{equation}
+	
+	\subsection{Evaluación del Flujo en las Caras de la Celda}
+	La aplicación del teorema fundamental del cálculo transforma el término derivado en flujos netos a través de las fronteras del volumen de control:
+	
+	\begin{equation}
+		\left[ \xi^2 \frac{d\theta}{d\xi} \right]_{\xi_{i-1/2}}^{\xi_{i+1/2}} + \int_{\xi_{i-1/2}}^{\xi_{i+1/2}} \theta^n \xi^2 d\xi = 0
+	\end{equation}
+	
+	Desarrollando la expresión se obtiene:
+	
+	\begin{equation}
+		\left( \xi_{i+1/2}^2 F_{i+1/2} - \xi_{i-1/2}^2 F_{i-1/2} \right) + \bar{\theta}_i^n \left( \frac{\xi_{i+1/2}^3 - \xi_{i-1/2}^3}{3} \right) = 0
+	\end{equation}
+	
+	Donde $F = \frac{d\theta}{d\xi}$ representa el flujo difusivo y $\bar{\theta}_i$ es el valor promedio dentro de la celda.
+	
+	\subsection{Evasión de la Singularidad en $\xi = 0$}
+	Para el primer volumen de control ubicado en el núcleo de la estrella ($i=1$, donde $\xi_{1/2} = 0$), las condiciones de contorno físicas exigen que la fuerza gravitatoria y el flujo de masa sean nulos:
+	
+	\begin{equation}
+		\left. \frac{d\theta}{d\xi} \right|_{\xi=0} = 0 \implies F_{1/2} = 0
+	\end{equation}
+	
+	Al evaluar el balance para la primera celda, el flujo de la frontera inferior desaparece por completo:
+	
+	\begin{equation}
+		\xi_{1+1/2}^2 F_{1+1/2} - 0 + \bar{\theta}_1^n \left( \frac{\xi_{1+1/2}^3 - 0}{3} \right) = 0
+	\end{equation}
+	
+	Debido a que la variable $\xi$ se mantiene estrictamente dentro de los términos de frontera y se evalúa únicamente en las coordenadas de las caras ($\xi_{i \pm 1/2}$), \textbf{el término singular $\frac{2}{\xi}$ queda completamente eliminado de la malla de cálculo}.
+	
+	\section{Comparación Algorítmica: FVM frente a otros Esquemas}
+	La Tabla \ref{tab:comparacion} presenta las diferencias fundamentales entre el método de volúmenes finitos y otros esquemas numéricos estándar.
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Comparación de esquemas numéricos para la ecuación de Lane-Emden.}
+		\label{tab:comparacion}
+		\vspace{0.5em}
+		\begin{tabular}{lp{4cm}p{4cm}p{4cm}}
+			\toprule
+			\textbf{Atributo} & \textbf{Volúmenes Finitos (FVM)} & \textbf{Diferencias Finitas (FDM)} & \textbf{Métodos Espectrales} \\
+			\midrule
+			\textbf{Tratamiento de Singularidad} & Evitado inherentemente vía integración volumétrica. & Requiere la regla de L'Hôpital o expansiones de Taylor en $\xi = 0$. & Demanda transformaciones de coordenadas singulares complejas. \\
+			\addlinespace
+			\textbf{Conservación} & Asegura un rastreo físico exacto de la masa por elemento. & No garantiza una conservación estricta a nivel local. & Excelente precisión global, pero carece de conservación local. \\
+			\addlinespace
+			\textbf{Complejidad de Malla} & Estructuración simple con nodos adaptativos cerca del origen. & Exige mapas de coordenadas uniformes para órdenes altos. & Depende de funciones base globales (ej. Chebyshev). \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\section{Esquema General de Implementación}
+	Para codificar un resolvedor FVM unidimensional práctico para este problema, se estructuran los siguientes pasos mecánicos:
+	
+	\begin{enumerate}
+		\item \textbf{Generación de la Malla:} Definir los centros de las celdas $\xi_i$ y las caras $\xi_{i\pm1/2}$. Se sugiere utilizar una malla comprimida cerca de $\xi=0$ para resolver perfiles con gradientes pronunciados.
+		\item \textbf{Linealización:} Linealizar el término fuente $\theta^n$ mediante un esquema de Newton-Raphson o iteración de Picard:
+		\begin{equation}
+			\theta^{n} \approx (\theta^{(k)})^n + n(\theta^{(k)})^{n-1}(\theta^{(k+1)} - \theta^{(k)})
+		\end{equation}
+		\item \textbf{Ensamblaje de la Matriz:} Aproximar linealmente los flujos en las caras:
+		\begin{equation}
+			F_{i+1/2} \approx \frac{\theta_{i+1} - \theta_i}{\xi_{i+1} - \xi_i}
+		\end{equation}
+		Esto genera un sistema de ecuaciones con una matriz tridiagonal muy eficiente de resolver.
+		\item \textbf{Inyección de Fronteras:} Fijar la condición $\theta_1' = 0$ en el núcleo y avanzar el algoritmo espacialmente hasta que $\theta = 0$, punto que define el radio estelar físico ($\xi_1$).
+	\end{enumerate}
+	
+\end{document}

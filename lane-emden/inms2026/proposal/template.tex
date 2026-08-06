@@ -1,0 +1,140 @@
+% arara: clean: { extensions: ['aux', 'bbl', 'blg', 'brf', 'log', 'out', 'pdf'] }
+% arara: lualatex
+% arara: bibtex
+% arara: lualatex
+% arara: lualatex
+% arara: clean: { extensions: ['aux', 'bbl', 'blg', 'brf', 'log', 'out'] }
+% !TeX document-id = {4a66a092-a797-425f-b588-c0b0f6bcb4d3}
+% !TeX TXS-program:compile = txs:///lualatex | txs:///bibtex | txs:///lualatex | txs:///lualatex | txs:///view
+%------------------------------------------------------------------------
+%  Template    
+%------------------------------------------------------------------------
+
+% This file will be compiled by a computer program.
+% Please do not change preamble (before II. COMMANDS ENTERED BY THE AUTHOR  ).
+
+% Este archivo será procesado automaticamente por un programa.
+% Por favor no altere nada en el preamble (hasta II. COMMANDS ENTERED BY THE AUTHOR  ).
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[spanish,english]{babel}
+\usepackage[T1]{fontenc} 
+\usepackage{newtxtext} 
+\usepackage{amsmath}
+
+% I.5 Page layout
+\usepackage[margin=3cm]{geometry}
+
+% I.6 Title and Abstract customization
+\renewenvironment{abstract}{%
+	\section*{\abstractname}}
+	{} 
+\usepackage[affil-it]{authblk}
+
+\usepackage[
+  backref=page,
+	colorlinks=true,
+	urlcolor=blue,
+	linkcolor=blue,
+	anchorcolor=black,
+	citecolor=blue
+]{hyperref}
+
+\newcommand{\MVAt}{{\usefont{U}{mvs}{m}{n}\symbol{`@}}}
+% I.7 Title and author information
+\title{Numerical solution for singular equations of Lane-Emden type by Adomian decomposition and Finite volume methods}
+\author[1]{Matihus Alberth Molina Larios~\thanks{\href{mailto:matihus.molina@unmsm.edu.pe}{\texttt{matihus.molina\MVAt unmsm.edu.pe}}}}
+\author[2]{Carlos Alonso Aznarán Laos~\thanks{\href{mailto:caznaranl@uni.pe}{\texttt{caznaranl\MVAt uni.pe}}}}
+\affil[1]{Facultad de Ciencias Matemáticas, Universidad Nacional Mayor de San Marcos, Perú}
+\affil[2]{Facultad de Ciencias, Universidad Nacional de Ingeniería, Perú}
+
+\date{} %Please, do not change -  POR FAVOR, NO MODIFICAR - .
+%--------------------------------------------------------------------------
+%  II. COMMANDS ENTERED BY THE AUTHOR        
+%--------------------------------------------------------------------------
+
+% Please, include ONLY the COMMANDS that will be used in the abstract, if necessary.
+
+% Por favor, incluya SOLO los COMANDOS que se utilizarán en el resumen, en caso sea necesario. 
+
+\usepackage{filecontents}
+
+\begin{filecontents}{\jobname.bib}
+@article{Umesh2021,
+	author  = {Umesh and Kumar, Manoj},
+	title   = {Approximate solution of singular IVPs of Lane-Emden type and error estimation via advanced Adomian decomposition method},
+	journal = {Journal of Applied Mathematics and Computing},
+	year    = {2021},
+	month   = {Jun},
+	day     = {01},
+	volume  = {66},
+	number  = {1},
+	pages   = {527-542},
+	issn    = {1865-2085},
+	doi     = {10.1007/s12190-020-01444-2}
+}
+@misc{Molina2025,
+	title={Numerical solution for differential equations of Lane-Emden type by Adomian decomposition and integration methods}, 
+	author={Molina Larios, Matihus Alberth and Aznarán Laos, Carlos Alonso},
+	year={2025},
+	url={https://imms.pe/documentos/26PosterMolinaLarios.pdf}
+}
+@article{Biles2002,
+	title   = {A generalization of the Lane-Emden equation},
+	journal = {Journal of Mathematical Analysis and Applications},
+	volume  = {273},
+	number  = {2},
+	pages   = {654-666},
+	year    = {2002},
+	issn    = {0022-247X},
+	doi     = {10.1016/S0022-247X(02)00296-2},
+	author  = {Daniel C. Biles and Mark P. Robinson and John S. Spraker}
+}
+\end{filecontents}
+\bibliographystyle{IEEEtran}
+%--------------------------------------------------------------------------
+%  III. DOCUMENT       
+%--------------------------------------------------------------------------                                     
+\pagenumbering{gobble}
+
+\begin{document}
+
+%The main language of the text is English. If the abstract will be written in Spanish, please uncomment the following command:
+% El idioma principal del texto es English. Si el resumen será escrito en español, por favor, descomentar el siguiente comando:
+%---------
+%\selectlanguage{spanish}
+%---------
+
+\begin{flushleft}
+	\bfseries\footnotesize VIII International Meeting in Mathematical Sciences\\
+	Arequipa, Peru\\
+	December 14--16, 2026
+\end{flushleft}
+
+{\let\newpage\relax\maketitle}
+
+\begin{abstract}
+	The aim of this talk is to present a well-suited approximation of a
+	internal structure of a self-gravitating polytropic body model which
+	consists of a type Lane-Emden equation~\cite{Umesh2021}, a second
+	order nonlinear ODE.
+	First, we will discuss an efficient algorithm called Adomian
+	decomposition method~\cite{Molina2025} which server as an
+	approximation in terms of generalized Taylor series for the
+	Lane-Emden equation.
+	Next, we follow the methodology given in~\cite{Biles2002} to
+	guarantee the convergence to the solution.
+	Finally, we carry out several numerical experiments whose results
+	are in accordance with the theoretical analysis.
+\end{abstract}
+
+\bibliography{\jobname}
+
+\end{document}
+En este trabajo presentamos el problema de lane emden generalizado (\cite{les}, pero no homogéneo), que cuando m=0, e(x)
+se convierte en el modelo de lame (tomamos lo que hemos escrito)
+Viene el problema de valor de lane emden generalizado.
+Extendemos los resultados dados por \cite{Molina,Aznarán}
+en el teorema de existencia y unicidad, el sistema EDO de primer orden es 3x3.
+La estimación con volumenes finitos. (Opcional: comparación con redes neuronales)
+Los experimentos siguen de \cite{umesh}
